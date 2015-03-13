@@ -5,7 +5,7 @@ __author__ = 'Corey Petty'
 # make pin files for tetra-atomic molecules
 #
 import posix
-import mkA3msh
+import shFiles
 
 
 def mkpsh(cmd, mol, dirs):
@@ -32,7 +32,7 @@ def mkpsh(cmd, mol, dirs):
 
     fh = open(sfile, 'w')
 
-    header = mkA3msh.get_sh_header(mol, dirs)
+    header = shFiles.get_sh_header(mol, dirs)
     fh.write(header)
 
     fh.write(plr_cmd + ' < ' + fpin_lr + ' > ' + fpout_lr + '\n')
