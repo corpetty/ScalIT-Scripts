@@ -40,7 +40,7 @@ VERSION = 0
 jmax = [60]
 ngi = [100]
 ndvr = [30, 30, 0]
-nvar = [90, 95, 100]
+nvar = [110, 120, 130]
 
 
 ##################################################
@@ -59,16 +59,18 @@ mol = {
     'parity': 'T', 'useSP': 'T',
     'jtotal': 0, 'dvrType': 2
 }
-#############################
-#        Directories        #
-#############################
+##############################
+#        Directories         #
+#    NOTE: end all with a /  #
+##############################
 dirs = {
     'host': 'PettyMBP',  # host options: PettyMBP, Hrothgar, Robinson, Lonestar
     'home': '/Users/coreypetty/',
-    'data': '/Users/coreypetty/work/ScalIT-ozone/work/'
+    'data': '/Users/coreypetty/work/data/',
+    'scalit': '/Users/coreypetty/work/ScalIT-ozone/',
+    'psodata': '/Users/coreypetty/work/data/psovbr/'
 }
 
-dirs['scalit'] = dirs['home'] + 'work/ScalIT-ozone/'
 dirs['bin'] = dirs['scalit'] + 'bin/'
 dirs['pes'] = dirs['scalit'] + 'src/systems/'
 dirs['work'] = dirs['scalit'] + 'work/test/'
@@ -121,4 +123,5 @@ in_options = {
     'opt3': '0 0 0 0 0\n',                      # do not save wave function
 }
 
+# Actual routine call DO NOT CHANGE
 Triatomic.MakeFiles.mka3(conv_option, cmd, mol, hin_flags, dirs, in_options, jmax, ngi, ndvr, nvar)

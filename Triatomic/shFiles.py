@@ -52,15 +52,15 @@ def get_sh_header(mol, dirs):
                  + "WK_DIR='" + dirs["work"] + mol["Name"] + "'\n   \n" \
                  + 'date'
     elif dirs['host'] == 'PettyMBP':
-        header = "WK_DIR='" + dirs["work"] + mol["Name"] + "'\n\n"
+        header = "WK_DIR='" + dirs["work"] + mol["Name"] + mol['suffix'] + "'\n\n"
     else:
         header = "## Create your own header ##"
 
     return header
 
 
-def mkmsh(cmd, mol, dirs, n0):
-    sfile = dirs["work"] + mol["Name"] + '/' + mol["Name"] + mol['suffix'] + '.sh'
+def mkmsh(cmd, mol, dirs, n0, dir):
+    sfile = dir + mol["Name"] + mol['suffix'] + '.sh'
     fb0 = '$WK_DIR/' + mol["Name"] + mol['suffix']
     header = get_sh_header(mol, dirs)
     fh = open(sfile, 'w')

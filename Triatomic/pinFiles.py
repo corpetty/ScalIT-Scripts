@@ -18,7 +18,7 @@ def mkpsh(cmd, mol, dirs):
     """
 
     mol_name = mol['Name']
-    sfile = dirs['work'] + mol_name + '/' + mol_name + '.sh'
+    script_file = dirs['work'] + mol_name + '/' + mol_name + '.sh'
 
     work_base = '$WK_DIR/' + mol_name
     fpin_lr = work_base + 'lr.pin'
@@ -30,7 +30,7 @@ def mkpsh(cmd, mol, dirs):
     plr_cmd = bin_base + 'vlr'
     pbr_cmd = bin_base + 'vbr'
 
-    fh = open(sfile, 'w')
+    fh = open(script_file, 'w')
 
     header = shFiles.get_sh_header(mol, dirs)
     fh.write(header)
@@ -39,7 +39,7 @@ def mkpsh(cmd, mol, dirs):
 
     fh.write(pbr_cmd + ' < ' + fpin_br + ' > ' + fpout_br + '\n\n')
     fh.close()
-    posix.system('chmod u+x ' + sfile)
+    posix.system('chmod u+x ' + script_file)
 
 
 def mkpin(cmd, mol, dirs):
