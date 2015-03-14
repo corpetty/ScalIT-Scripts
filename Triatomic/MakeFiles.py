@@ -32,20 +32,20 @@ def mka3(option, cmd, mol, hin_flags, dirs, opts, jmax, ngi, ndvr, nvar):
     # Set suffix to what is being converged
     if option < 0:
         mol["suffix"] = "p"
+        dirs['run_data_dir'] += 'psovbr/'
     elif option == 0:
         mol["suffix"] = "j"
     elif option == 1:
         mol["suffix"] = "A0"
-    elif option == 10:
+    elif option == 2:
         mol["suffix"] = "r"
-    elif option == 11:
+    elif option == 3:
         mol["suffix"] = "R"
     else:
         mol["suffix"] = "J"
 
     # Set working directories, check to see if they exist, create if not.
-    work_dir = dirs['work'] + mol['Name'] + mol['suffix'] + '/'
-    data_dir = dirs['data'] + mol['Name'] + mol['suffix'] + '/'
+    dirs['run_work_dir'] = dirs['work'] + mol['Name'] + mol['suffix'] + '/'
 
     print '----> Checking for directory existence'
 
@@ -55,11 +55,11 @@ def mka3(option, cmd, mol, hin_flags, dirs, opts, jmax, ngi, ndvr, nvar):
     else:
         print '     Directory Exists: ' + dirs['work']
 
-    if not posixpath.exists(work_dir):
-        print '     Creating: ' + work_dir
-        posix.mkdir(work_dir)
+    if not posixpath.exists(dirs['run_work_dir']):
+        print '     Creating: ' + dirs['run_work_dir']
+        posix.mkdir(dirs['run_work_dir'])
     else:
-        print '     Directory Exists: ' + work_dir
+        print '     Directory Exists: ' + dirs['run_work_dir']
 
     if not posixpath.exists(dirs['data']):
         print '     Creating: ' + dirs['data']
@@ -67,20 +67,20 @@ def mka3(option, cmd, mol, hin_flags, dirs, opts, jmax, ngi, ndvr, nvar):
     else:
         print '     Directory Exists: ' + dirs['data']
 
-    if not posixpath.exists(data_dir):
-        print '     Creating: ' + data_dir
-        posix.mkdir(data_dir)
+    if not posixpath.exists(dirs['run_data_dir']):
+        print '     Creating: ' + dirs['run_data_dir']
+        posix.mkdir(dirs['run_data_dir'])
     else:
-        print '     Directory Exists: ' + data_dir
+        print '     Directory Exists: ' + dirs['run_data_dir']
 
-    data_base = data_dir + '/' + mol['Name'] + mol['suffix']
+    data_base = dirs['run_data_dir'] + mol['Name'] + mol['suffix']
 
-    file_base = work_dir + '/' + mol['Name'] + mol['suffix']
+    file_base = dirs['run_work_dir'] + mol['Name'] + mol['suffix']
 
     if option < 0:  # the initial step, do VBR
-        cmd['np'] = 1
-        pinFiles.mkpin(cmd, mol, dirs)
-        pinFiles.mkpsh(cmd, mol, dirs)
+        # cmd['np'] = 1 TODO: check to see if this is necessary
+        pinFiles.mkpin(mol, dirs)
+        pinFiles.mkpsh(mol, dirs)
 
     elif option == 0:  # jmax convergence
         for x in nvar:
@@ -96,9 +96,9 @@ def mka3(option, cmd, mol, hin_flags, dirs, opts, jmax, ngi, ndvr, nvar):
             opts['fpt'] = data_base + '_%(x)d' % {'x': x} + 'wf.dat\n'
             inFiles.mkin(opts, fin)
 
-        shFiles.mkmsh(cmd, mol, dirs, nvar, work_dir)
+        shFiles.mkmsh(cmd, mol, dirs, nvar)
 
-    elif option == 1: # Angular basis size convergence
+    elif option == 1:  # Angular basis size convergence
         for x in nvar:
             ndvr[2] = x
             fhin = '%(fb)s_%(j1)d%(suf)s' % {'fb': file_base, 'j1': x, 'suf': '.hin'}
@@ -114,7 +114,7 @@ def mka3(option, cmd, mol, hin_flags, dirs, opts, jmax, ngi, ndvr, nvar):
 
         shFiles.mkmsh(cmd, mol, dirs, nvar)
 
-    elif option == 10:  # little r convergence, (j1=j2)
+    elif option == 2:  # little r convergence, (j1=j2)
         for x in nvar:
             ndvr[0] = x
             fhin = '%(fb)s_%(j1)d%(suf)s' % {'fb': file_base, 'j1': x, 'suf': '.hin'}
@@ -130,7 +130,7 @@ def mka3(option, cmd, mol, hin_flags, dirs, opts, jmax, ngi, ndvr, nvar):
 
         shFiles.mkmsh(cmd, mol, dirs, nvar)
 
-    elif option == 11:  # Big R convergence, (j1=j2)
+    elif option == 3:  # Big R convergence, (j1=j2)
         for x in nvar:
             ndvr[1] = x
             fhin = '%(fb)s_%(j1)d%(suf)s' % {'fb': file_base, 'j1': x, 'suf': '.hin'}
@@ -144,7 +144,7 @@ def mka3(option, cmd, mol, hin_flags, dirs, opts, jmax, ngi, ndvr, nvar):
             opts['fpt'] = data_base + '_%(x)d' % {'x': x} + 'wf.dat\n'
             inFiles.mkin(opts, fin)
 
-        shFiles.mkmsh(cmd, mol, dirs, nvar, work_dir)
+        shFiles.mkmsh(cmd, mol, dirs, nvar)
 
     else:  # J Total convergence
         for x in nvar:

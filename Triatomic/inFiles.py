@@ -23,6 +23,7 @@ def mkin(opts, fname):
     fh1.write(opts['fhgm'])
     fh1.write(opts['fpt'])
     fh1.close()
+    print '    File Generated: ' + fname
 
 
 def mkhin(mol, dirs, jmax, ngi, ndvr, flags, fname, var):
@@ -40,8 +41,8 @@ def mkhin(mol, dirs, jmax, ngi, ndvr, flags, fname, var):
     :return:
     """
     psovbr_data_base = dirs['psodata'] + mol['Name']
-    data_base = dirs['data'] + 'input/' + mol['Name']
-    pes_data_base = dirs['pesData'] + mol['Name'] + '/' + mol['Name']
+    data_base = dirs['data'] + mol['Name'] + '/' + mol['Name']
+    pes_data_base = dirs['pes_data'] + mol['Name'] + '/' + mol['Name']
     mass = mol['mass']
     re = mol['re']
 
@@ -84,4 +85,5 @@ def mkhin(mol, dirs, jmax, ngi, ndvr, flags, fname, var):
     fhin = open(fname, 'w')
     fhin.write(write_string)
     fhin.close()
+    print '    File Generated: ' + fname
 

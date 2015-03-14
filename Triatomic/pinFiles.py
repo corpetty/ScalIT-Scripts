@@ -1,32 +1,27 @@
 __author__ = 'Corey Petty'
 # !/bin/env python
 
-#
-# make pin files for tetra-atomic molecules
-#
 import posix
 import shFiles
 
 
-def mkpsh(cmd, mol, dirs):
+def mkpsh(mol, dirs):
     """
     Create *.sh script files for PRESINC sequential module.
-    :param cmd: 
     :param mol: 
     :param dirs: 
     :return:
     """
+    
+    script_file = dirs['run_work_dir'] + mol['Name'] + '.sh'
 
-    mol_name = mol['Name']
-    script_file = dirs['work'] + mol_name + '/' + mol_name + '.sh'
-
-    work_base = '$WK_DIR/' + mol_name
+    work_base = dirs['run_work_dir'] + '/' + mol['Name']
     fpin_lr = work_base + 'lr.pin'
     fpout_lr = work_base + 'lr.pout'
     fpin_br = work_base + 'BR.pin'
     fpout_br = work_base + 'BR.pout'
 
-    bin_base = '$BIN_DIR/' + mol_name + '/' + mol_name
+    bin_base = dirs['bin'] + mol['Name'] + '/' + mol['Name']
     plr_cmd = bin_base + 'vlr'
     pbr_cmd = bin_base + 'vbr'
 
@@ -39,31 +34,33 @@ def mkpsh(cmd, mol, dirs):
 
     fh.write(pbr_cmd + ' < ' + fpin_br + ' > ' + fpout_br + '\n\n')
     fh.close()
+    print '    File Generated: ' + script_file
     posix.system('chmod u+x ' + script_file)
 
 
-def mkpin(cmd, mol, dirs):
+def mkpin(mol, dirs):
     """ 
     Create the header of *.pin script files.
-    :param cmd: NOT QUITE SURE WHY THIS IS HERE.
     :param mol:  run parameters of working molecule
     :param dirs: relevant directories of host
     :return: null
     """
-    data_dir = dirs['data'] + mol['Name'] + '/' + mol['Name']
-    pes_dir = dirs['pes'] + mol['Name'] + '/' + mol['Name']
-    work_base = dirs['work'] + mol['Name'] + '/' + mol['Name']
+    
+    pes_data_base = dirs['pes_data'] + mol['Name'] + '/' + mol['Name']
+    work_base = dirs['run_work_dir'] + mol['Name']
+    data_base = dirs['run_data_dir'] + mol['Name']
 
-    vlr = data_dir + 'vlr.dat'
-    vbr = data_dir + 'vbr.dat'
+    # Setting up string base for output files of *.pin
+    vlr = data_base + 'vlr.dat'
+    vbr = data_base + 'vbr.dat'
 
-    plr = pes_dir + '_vlr.dat'
-    pbr = pes_dir + '_vbr.dat'
+    # Setting up string base for PES eff potential input files
+    plr = pes_data_base + '_vlr.dat'
+    pbr = pes_data_base + '_vbr.dat'
 
-    dvr_type = mol['dvr_type']
-    i = 0
+    i = 0  # reference to lr
     header = '%(type)d %(mass)f %(nmax)d %(nmin)d %(useSP)s \n' \
-             % {'type': dvr_type, 'mass': mol['mass'][i], 'nmax': mol['Nmax'][i],
+             % {'type': mol['dvr_type'], 'mass': mol['mass'][i], 'nmax': mol['Nmax'][i],
                 'nmin': mol['Nmin'][i], 'useSP': mol['useSP']} \
              + '%(Rmin)f %(Rmax)f\n' % {'Rmin': mol['Rmin'][i], 'Rmax': mol['Rmax'][i]}
 
@@ -73,10 +70,11 @@ def mkpin(cmd, mol, dirs):
     if mol['useSP'] == 'T':
         fh.write(plr + '\n')
     fh.close()
+    print '    File Generated: ' + work_base + 'lr.pin'
 
-    i = 1
+    i = 1  # reference to BR
     header = '%(type)d %(mass)f %(nmax)d %(nmin)d %(useSP)s \n' \
-             % {'type': dvr_type, 'mass': mol['mass'][i], 'nmax': mol['Nmax'][i],
+             % {'type': mol['dvr_type'], 'mass': mol['mass'][i], 'nmax': mol['Nmax'][i],
                 'nmin': mol['Nmin'][i], 'useSP': mol['useSP']} \
              + '%(Rmin)f %(Rmax)f\n' % {'Rmin': mol['Rmin'][i], 'Rmax': mol['Rmax'][i]}
 
@@ -86,5 +84,6 @@ def mkpin(cmd, mol, dirs):
     if mol['useSP'] == 'T':
         fh.write(pbr + '\n')
     fh.close()
+    print '    File Generated: ' + work_base + 'BR.pin'
 
 

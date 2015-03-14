@@ -20,17 +20,17 @@ import Triatomic.MakeFiles
 # other options: fix jmax, r, R; variable of J Total
 #
 # VERSION: which program
-# VERSION = 0: sequential
+#   VERSION = 0: sequential
 #   VERSION < 0: mpi program without parallel IO (currently best for HPCC environment)
 #   VERSION > 0: mpi program with parallel IO
 #
 #############################################################################################################
 
-conv_option = -1
+conv_option = 0
 VERSION = 0
 
 jmax = [60]
-ngi = [300]
+ngi = [100]
 ndvr = [30, 30, 0]
 nvar = [110, 120, 130]
 
@@ -62,32 +62,34 @@ nvar = [110, 120, 130]
 #                       2 : radial sinc DVR
 #############################################################################################################
 mol = {
-    'Name': 'ozone',
-    'permutation': 'o',
-    'mass': (14578.471659, 9718.981106),
-    'Rmin': (1.5, 0.0), 'Nmax': (6000, 6000),
-    'Rmax': (6.0, 5.0), 'Nmin': (40, 60),
-    're': (2.401, 1.256),
-    'parity': 'T', 'useSP': 'T',
-    'jtotal': 0, 'dvr_type': 2
+    'Name': '',                 # Fill in as ScalIT calls it, i.e. ho2
+    'permutation': '',          # 'e' or 'o'
+    'mass': (0.0, 0.0),         # (lr, BR)
+    'Rmin': (0.0, 0.0),         # (lr, BR)
+    'Rmax': (0.0, 0.0),         # (lr, BR)
+    'Nmax': (6000, 6000),       # default (lr, BR)
+    'Nmin': (80, 80),           # default (lr, BR)
+    'parity': '',               # 'T' or 'F'
+    'useSP': '',                # 'T' or 'F'
+    'jtotal': 0,                # default, vibrational
+    'dvrType': 2                # deafult, radial sinc DVR
 }
 #############################################################################################################
 #        Directories
 #    NOTE: end all with a /
 #############################################################################################################
-dirs = dict(
-    host='PettyMBP',
-    home='/Users/coreypetty/',
-    data='/Users/coreypetty/work/data/',
-    scalit='/Users/coreypetty/work/ScalIT-ozone/'
-)
+dirs = {
+    'host': 'PettyMBP',  # host options: PettyMBP, Hrothgar, Robinson, Lonestar
+    'home': '/Users/coreypetty/',
+    'data': '/Users/coreypetty/work/data/',
+    'scalit': '/Users/coreypetty/work/ScalIT-ozone/',
+    'psodata': '/Users/coreypetty/work/data/psovbr/'
+}
 
 dirs['bin'] = dirs['scalit'] + 'bin/'
 dirs['pes'] = dirs['scalit'] + 'src/systems/'
 dirs['work'] = dirs['scalit'] + 'work/test/'
-dirs['pes_data'] = dirs['scalit'] + 'data/'
-dirs['run_work_dir'] = ''  # To be defined later after mol['suffix'] is defined
-dirs['run_data_dir'] = dirs['data'] + mol['Name'] + '/'
+dirs['pesData'] = dirs['scalit'] + 'data/'
 
 #############################################################################################################
 #          commands in MPI
@@ -101,7 +103,7 @@ if VERSION == 0:  # Sequential program
     cmd['mpi'] = ''
 elif dirs['host'] == 'Hrothgar':  # options in hrothgar cluster
     cmd['mpi'] = 'mpirun -np %(np)d -machinefile mach.$$' % {'np': cmd['np']}
-# add Lonestar, Robinson, PettyMBP
+# TODO: add Lonestar, Robinson, PettyMBP to MPI commands
 
 bin_dir = dirs['bin'] + mol['Name'] + '/'
 if VERSION == 0:  # sequential program
@@ -118,28 +120,28 @@ else:  # MPI 2, Parallel IO
 #           Misc. parameters
 #############################################################################################################
 hin_flags = {
-    'FcFlag': 0,  # Fixed Coordinates Flag,           0 : None
-    'CbFlag': 0,  # Combined Basis Flag,              0 : None
-    'AbsFlag': 0,  # Absorbtion Potentials Flag,       0 : None
-    'Ecutoff': 0.1,  # Energy Cutoff Value (a.u. for Ozone)
-    'ReFlag': 0  # Store/Extract equilibrium values, 0 : Neither
+    'FcFlag': 0,                                # Fixed Coordinates Flag,           0 : None
+    'CbFlag': 0,                                # Combined Basis Flag,              0 : None
+    'AbsFlag': 0,                               # Absorbtion Potentials Flag,       0 : None
+    'Ecutoff': 0.1,                             # Energy Cutoff Value (a.u. for Ozone)
+    'ReFlag': 0                                 # Store/Extract equilibrium values, 0 : Neither
 }
 
 #############################################################################################################
 #          parameters for *.in file
 #############################################################################################################
 in_options = {
-    'ndvr': '',  # dimensionality for each layer
-    'opt0': 'F F F\n',  # coordinator dependence
-    'opt1': '1 0\n',  # "task osb_preconditioner"
-    'opt2': 'F T F F\n',  # "store_all complex "
-    'bjQMR': '10 1.0D-3 10000 1.0D-3\n',  # block_Jacobi/QMR "bjNum bjToler qmrNum qmrToler"
+    'ndvr': '',                                 # dimensionality for each layer
+    'opt0': 'F F F\n',                          # coordinator dependence
+    'opt1': '1 0\n',                            # "task osb_preconditioner"
+    'opt2': 'F T F F\n',                        # "store_all complex "
+    'bjQMR': '10 1.0D-3 10000 1.0D-3\n',        # block_Jacobi/QMR "bjNum bjToler qmrNum qmrToler"
     'pistConv': '0.0 1.0D-9 50 10 400 30 5\n',  # PIST convergence "E0 LancToler nStart nStep nMax nNum nGap"
-    'nState': '0.0 1.0D-3 10.0 1000\n',  # OSB parameters "mE0 mDE mBeta nCnt
-    'fh0': '',  # store H0 filename
-    'fhgm': '',  # store Hgm filename
-    'fpt': '',  # store wave function filename
-    'opt3': '0 0 0 0 0\n',  # do not save wave function
+    'nState': '0.0 1.0D-3 10.0 1000\n',         # OSB parameters "mE0 mDE mBeta nCnt
+    'fh0': '',                                  # store H0 filename
+    'fhgm': '',                                 # store Hgm filename
+    'fpt': '',                                  # store wave function filename
+    'opt3': '0 0 0 0 0\n',                      # do not save wave function
 }
 
 #############################################################################################################

@@ -1,10 +1,16 @@
-__author__ = 'coreypetty'
+__author__ = 'Corey Petty'
+
+
 def get3size(permutation, parity, j_tot, j_max):
     """
     This function calculates the size of the combined angular basis
     for triatomic molecules as defined by the
     ScalIT/index/index_AB2(e/o).f90 files.
-    - Written by Corey Petty
+    :param permutation:
+    :param parity:
+    :param j_tot:
+    :param j_max:
+    :return:
     """
     global size
     if permutation == 'e':
