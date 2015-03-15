@@ -1,5 +1,7 @@
 __author__ = 'Corey Petty'
 
+import posix
+import posixpath
 
 def mkin(opts, fname):
     """
@@ -37,10 +39,14 @@ def mkhin(mol, dirs, jmax, ngi, ndvr, flags, fname, var):
     :param ndvr:
     :param flags:
     :param fname:
-    :param var:
+    :param var: Current variable value for convergence
     :return:
     """
-    psovbr_data_base = dirs['psodata'] + mol['Name']
+    if mol['suffix'] != 'p':
+        if not posixpath.exists(dirs['data'] + mol['Name'] + '/psovbr/'):
+            print "     PRESINC data files aren't found, please run option = -1"
+
+    psovbr_data_base = dirs['data'] + mol['Name'] + '/psovbr/' + mol['Name']
     data_base = dirs['data'] + mol['Name'] + '/' + mol['Name']
     pes_data_base = dirs['pes_data'] + mol['Name'] + '/' + mol['Name']
     mass = mol['mass']

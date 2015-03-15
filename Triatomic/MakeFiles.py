@@ -32,7 +32,6 @@ def mka3(option, cmd, mol, hin_flags, dirs, opts, jmax, ngi, ndvr, nvar):
     # Set suffix to what is being converged
     if option < 0:
         mol["suffix"] = "p"
-        dirs['run_data_dir'] += 'psovbr/'
     elif option == 0:
         mol["suffix"] = "j"
     elif option == 1:
@@ -73,6 +72,14 @@ def mka3(option, cmd, mol, hin_flags, dirs, opts, jmax, ngi, ndvr, nvar):
     else:
         print '     Directory Exists: ' + dirs['run_data_dir']
 
+    if mol['suffix'] == 'p':
+        dirs['run_data_dir'] += 'psovbr/'
+        if not posixpath.exists(dirs['run_data_dir']):
+            print '     Creating: ' + dirs['run_data_dir']
+            posix.mkdir(dirs['run_data_dir'])
+        else:
+            print '     Directory Exists: ' + dirs['run_data_dir']
+
     data_base = dirs['run_data_dir'] + mol['Name'] + mol['suffix']
 
     file_base = dirs['run_work_dir'] + mol['Name'] + mol['suffix']
@@ -98,6 +105,7 @@ def mka3(option, cmd, mol, hin_flags, dirs, opts, jmax, ngi, ndvr, nvar):
 
         shFiles.mkmsh(cmd, mol, dirs, nvar)
 
+    # TODO: make sure that jkNum is greater than ndvr(3) or else error returns
     elif option == 1:  # Angular basis size convergence
         for x in nvar:
             ndvr[2] = x
