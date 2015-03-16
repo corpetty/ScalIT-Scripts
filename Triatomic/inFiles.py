@@ -1,7 +1,7 @@
 __author__ = 'Corey Petty'
 
-import posix
 import posixpath
+
 
 def mkin(opts, fname):
     """
@@ -34,7 +34,7 @@ def mkhin(mol, dirs, jmax, ngi, ndvr, flags, fname, var):
         2nd Step of the ScalIT suite.
     :param mol: parameters of the current molecule
     :param dirs: relevant directories
-    :param jmax: 
+    :param jmax:
     :param ngi:
     :param ndvr:
     :param flags:
@@ -65,7 +65,7 @@ def mkhin(mol, dirs, jmax, ngi, ndvr, flags, fname, var):
 
     write_string = '%(jtol)d %(parity)s\n' % {'jtol': mol['jtotal'], 'parity': mol['parity']}
 
-    write_string += '%(jmax)d %(ngi)d \n' % {('jmax'): jmax[0], ('ngi'): ngi[0]}
+    write_string += '%(jmax)d %(ngi)d \n' % {'jmax': jmax, 'ngi': ngi}
 
     write_string += '%(FcFlag)d %(CbFlag)d %(AbsFlag)d %(useSP)s %(Ecutoff)f\n' \
                     % {'FcFlag': flags['FcFlag'], 'CbFlag': flags['CbFlag'], 'AbsFlag': flags['AbsFlag'],

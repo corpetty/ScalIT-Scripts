@@ -1,6 +1,7 @@
 __author__ = 'Corey Petty'
 # !/usr/bin/env python
 
+import sys
 import pinFiles  # generate *.pin files and *.sh script for *.pin/*.pout
 import shFiles  # make *.sh script for *.hin/*.in
 import inFiles  # generate *.hin and *.in files
@@ -12,18 +13,36 @@ def mka3(run_options, mol, hin_flags, dirs, in_options):
     """
     Functions to create files for convergence testing for tri-atomic molecules
     :param run_options: which variable is selected for the convergence testing
+    :type run_options: dict
     :param mol: data related to the molecule: 
                  {'name','mass(3)','rmin(3)','rmax(3)',
                   'Nmax(3)','Nmin(3)','re(3)'}
-    :param hin_flags: 
+    :type mol: dict
+    :param hin_flags: flags used for *.hin file creation
+    :type hin_flags: dict
     :param dirs: directories for the work {'pes','pes_data','bin','dat','work'}
+    :type dirs: dict
     :param in_options: options for PIST calculations, current has:
                  {'ndvr','opt0~3','bjQMR','pistConv',
                   'nState','fh0','fhgm','fpt'}
+    :type in_options: dict
     :return:
     """
     jmax = run_options['jmax']
     ndvr = run_options['ndvr']
+    if run_options['restrict_num_angles'] == 'T':
+        ndvr[2] = run_options['num_angles']
+    else:
+        ndvr[2] = indexing.get3size(mol['permutation'], mol['parity'], mol['jtotal'], jmax)
+
+    if (indexing.get3size(mol['permutation'], mol['parity'], mol['jtotal'], jmax) < run_options['num_angles']
+            and run_options['restrict_num_angles'] == 'T'):
+        print 'Error:  Desired number of angles is greater than amount possible!'
+        print '            Options:'
+        print '                increase jmax'
+        print '                decrease desired number of angles'
+        print "                change 'restrict_num_angles' flag to 'F' (uses jkNum)"
+        sys.exit(0)
 
     # Set suffix to what is being converged
     if run_options['conv_option'] < 0:
@@ -53,9 +72,9 @@ def mka3(run_options, mol, hin_flags, dirs, in_options):
 
     elif run_options['conv_option'] == 0:  # jmax convergence
         for x in run_options['nvar']:
-            jmax[0] = x
+            jmax = x
             fhin = '%(fb)s_%(j1)d%(suf)s' % {'fb': file_base, 'j1': x, 'suf': '.hin'}
-            ndvr[2] = indexing.get3size(mol['permutation'], mol['parity'], mol['jtotal'], jmax[0])
+            ndvr[2] = indexing.get3size(mol['permutation'], mol['parity'], mol['jtotal'], jmax)
             inFiles.mkhin(mol, dirs, jmax, run_options['ngi'], ndvr, hin_flags, fhin, x)
             fin = '%(fb)s_%(j1)d%(suf)s' % {'fb': file_base, 'j1': x, 'suf': '.in'}
             in_options['ndvr'] = '3 %(nlr)d %(nBR)d %(nA0)d\n' % {'nlr': ndvr[0],

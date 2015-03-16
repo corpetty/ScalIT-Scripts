@@ -28,12 +28,14 @@ import Triatomic.MakeFiles
 run_options = dict(
     version=0,
     conv_option=2,
-    nvar=[30, 35, 40],       # values of convergence parameter, list length specifies how many jobs in script
-    jmax=120,
-    ngi=300,               # default value
-    ndvr=[30, 30, 0],        # ndvr[2] will be set later
-    nodes_desired=1,         # number of nodes requested for mpi job.  Number of cores depends on platform
-    local_cores=4            # if dirs['host'] is 'local', number of cores desired to run mpi jobs
+    nvar=[30, 35, 40],        # values of convergence parameter, list length specifies how many jobs in script
+    jmax=60,
+    ngi=300,                  # default value
+    restrict_num_angles='F',  # Whether or not to truncate jkNum.  'F' means ndvr[3]=jkNum
+    num_angles=50,            # if restrict_num_angles == 'T', use this as ndvr[3].
+    ndvr=[30, 30, 0],         # ndvr[2] will be set later
+    nodes_desired=1,          # number of nodes requested for mpi job.  Number of cores depends on platform
+    local_cores=4             # if dirs['host'] is 'local', number of cores desired to run mpi jobs
 )
 
 

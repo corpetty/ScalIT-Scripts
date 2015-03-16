@@ -6,11 +6,13 @@ def get3size(permutation, parity, j_tot, j_max):
     This function calculates the size of the combined angular basis
     for triatomic molecules as defined by the
     ScalIT/index/index_AB2(e/o).f90 files.
-    :param permutation:
-    :param parity:
-    :param j_tot:
-    :param j_max:
-    :return:
+    :param permutation: 'e' or 'o'
+    :param parity: 'T' or 'F'
+    :param j_tot: Total angular momentum quantum number, J
+    :type j_tot: int
+    :param j_max: angular momentum associated with little r
+    :type j_max: int
+    :return: int
     """
     global size
     if permutation == 'e':
