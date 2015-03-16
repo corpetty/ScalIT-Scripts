@@ -4,7 +4,7 @@ __author__ = 'coreypetty'
 # generate .sh script files for queue system
 #
 import posix
-
+from Util import setEnvironment
 
 def get_sh_header(mol, dirs):
     """
@@ -51,7 +51,7 @@ def get_sh_header(mol, dirs):
                  + "BIN_DIR='" + dirs["bin"] + mol["Name"] + "'     \n" \
                  + "WK_DIR='" + dirs["run_work_dir"] + "'\n         \n" \
                  + 'date'
-    elif dirs['host'] == 'PettyMBP':
+    elif dirs['host'] == 'local':
         header = "WK_DIR='" + dirs["run_work_dir"] + "'\n\n"
     else:
         header = "## Create your own header ##"
@@ -59,21 +59,33 @@ def get_sh_header(mol, dirs):
     return header
 
 
-def mkmsh(cmd, mol, dirs, n0):
+def mkmsh(mol, dirs, run_options):
+    mpi = setEnvironment.environment_mpi(dirs, mol, run_options)
+    bin_dir = dirs['bin'] + mol['Name'] + '/'
+    if run_options['version'] == 0:  # sequential program
+        mpi['hin'] = bin_dir + mol['Name'] + '_' + mol['permutation']
+        mpi['in'] = dirs['bin'] + 'iterate'
+    elif run_options['version'] < 0:  # MPI 1
+        mpi['hin'] = bin_dir + 'p' + mol['Name'] + '_' + mol['permutation']
+        mpi['in'] = dirs['bin'] + 'p_iterate'
+    else:  # MPI 2, Parallel IO
+        mpi['hin'] = bin_dir + 'm' + mol['Name'] + '_' + mol['permutation']
+        mpi['in'] = dirs['bin'] + 'm_iterate'
+
     sfile = dirs['run_work_dir'] + mol["Name"] + mol['suffix'] + '.sh'
     fb0 = '$WK_DIR/' + mol["Name"] + mol['suffix']
     header = get_sh_header(mol, dirs)
     fh = open(sfile, 'w')
     fh.write(header)
-    for x in n0:
+    for x in run_options['nvar']:
         fb = '%(fb)s_%(x)d' % {'fb': fb0, 'x': x}
         fhin = fb + '.hin'
         fhout = fb + '.hout'
         fin = fb + '.in'
         fout = fb + '.out'
         fh.write('(')
-        fh.write(cmd['mpi'] + ' ' + cmd['hin'] + ' <  ' + fhin + ' >  ' + fhout + '\n')
-        fh.write(cmd['mpi'] + ' ' + cmd['in'] + ' <  ' + fin + ' >  ' + fout + '\n')
+        fh.write(mpi['cmd'] + ' ' + mpi['hin'] + ' <  ' + fhin + ' >  ' + fhout + '\n')
+        fh.write(mpi['cmd'] + ' ' + mpi['in'] + ' <  ' + fin + ' >  ' + fout + '\n')
         fh.write(') &\n\n')
     fh.close()
     posix.system('chmod u+x ' + sfile)

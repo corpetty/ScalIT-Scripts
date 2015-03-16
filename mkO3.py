@@ -19,18 +19,23 @@ import Triatomic.MakeFiles
 #
 # other options: fix jmax, r, R; variable of J Total
 #
-# VERSION: which program
-# VERSION = 0: sequential
-#   VERSION < 0: mpi program without parallel IO (currently best for HPCC environment)
-#   VERSION > 0: mpi program with parallel IO
+# version: which program
+# version = 0: sequential
+#   version < 0: mpi program without parallel IO (currently best for HPCC environment)
+#   version > 0: mpi program with parallel IO
 #
 #############################################################################################################
-VERSION = 0
-conv_option = 2
-nvar = [30, 35, 40]         # values of convergence parameter, list length specifies how many jobs in script
-jmax = [120]
-ngi = [300]                 # default value
-ndvr = [30, 30, 0]          # ndvr[2] will be set later
+run_options = dict(
+    version=0,
+    conv_option=2,
+    nvar=[30, 35, 40],       # values of convergence parameter, list length specifies how many jobs in script
+    jmax=120,
+    ngi=300,               # default value
+    ndvr=[30, 30, 0],        # ndvr[2] will be set later
+    nodes_desired=1,         # number of nodes requested for mpi job.  Number of cores depends on platform
+    local_cores=4            # if dirs['host'] is 'local', number of cores desired to run mpi jobs
+)
+
 
 #############################################################################################################
 #   Molecular Parameters
@@ -75,7 +80,7 @@ mol = dict(
 #    NOTE: end all with a /
 #############################################################################################################
 dirs = dict(
-    host='PettyMBP',
+    host='local',
     home='/Users/coreypetty/',
     data='/Users/coreypetty/work/data/',
     scalit='/Users/coreypetty/work/ScalIT-ozone/'
@@ -94,7 +99,7 @@ hin_flags = dict(
 #          parameters for *.in file
 #############################################################################################################
 in_options = dict(
-    ndvr='',                                    # dimensionality for each layer
+    ndvr='',                                    # dimensionality for each layer, defined elsewhere
     opt0='F F F\n',                             # coordinator dependence
     opt1='1 0\n',                               # "task osb_preconditioner"
     opt2='F T F F\n',                           # "store_all complex "
@@ -106,41 +111,6 @@ in_options = dict(
     fpt='',                                     # store wave function filename
     opt3='0 0 0 0 0\n',                         # do not save wave function
 )
-
-#############################################################################################################
-#          Setting up default directories from User Inputed Directories : DO NOT CHANGE
-#############################################################################################################
-dirs['bin'] = dirs['scalit'] + 'bin/'
-dirs['pes'] = dirs['scalit'] + 'src/systems/'
-dirs['work'] = dirs['scalit'] + 'work/test/'
-dirs['pes_data'] = dirs['scalit'] + 'data/'
-dirs['run_work_dir'] = ''  # To be defined later after mol['suffix'] is defined
-dirs['run_data_dir'] = dirs['data'] + mol['Name'] + '/'
-#############################################################################################################
-#          commands in MPI : DO NOT CHANGE
-#############################################################################################################
-cmd = {
-    'np': '$NSLOTS',
-    'wtime': '5:0:0'
-}
-
-if VERSION == 0:  # Sequential program
-    cmd['mpi'] = ''
-elif dirs['host'] == 'Hrothgar':  # options in hrothgar cluster
-    cmd['mpi'] = 'mpirun -np %(np)d -machinefile mach.$$' % {'np': cmd['np']}
-# TODO: add Lonestar, Robinson, PettyMBP
-
-bin_dir = dirs['bin'] + mol['Name'] + '/'
-if VERSION == 0:  # sequential program
-    cmd['hin'] = bin_dir + mol['Name'] + '_' + mol['permutation']
-    cmd['in'] = dirs['bin'] + 'iterate'
-elif VERSION < 0:  # MPI 1
-    cmd['hin'] = bin_dir + 'p' + mol['Name'] + '_' + mol['permutation']
-    cmd['in'] = dirs['bin'] + 'p_iterate'
-else:  # MPI 2, Parallel IO
-    cmd['hin'] = bin_dir + 'm' + mol['Name'] + '_' + mol['permutation']
-    cmd['in'] = dirs['bin'] + 'm_iterate'
-
 #############################################################################################################
 # Actual routine call DO NOT CHANGE
-Triatomic.MakeFiles.mka3(conv_option, cmd, mol, hin_flags, dirs, in_options, jmax, ngi, ndvr, nvar)
+Triatomic.MakeFiles.mka3(run_options, mol, hin_flags, dirs, in_options)
