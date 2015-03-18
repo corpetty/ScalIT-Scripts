@@ -5,13 +5,14 @@ def environment_mpi(params):
     """
     Sets the MPI environment variables
     :param params: 
-    :return mpi: dictionary of MPI environment variables
+    :return: null
     """
     # TODO: incorporate the "mpi" variable into the params Dictionary
     mpi = {}
     
     if params['run_opts']['version'] == 0:  # Sequential program
         mpi['cmd'] = ''
+        mpi['cores'] = 1
     elif params['dirs']['host'] == 'Hrothgar':  # options in hrothgar cluster
         mpi['cores_per_node'] = 12
         mpi['cores'] = mpi['cores_per_node'] * params['run_opts']['nodes_desired']
@@ -27,16 +28,18 @@ def environment_mpi(params):
     elif params['dirs']['host'] == 'local':
         mpi['cores'] = params['run_opts']['local_cores']
         mpi['cmd'] = 'mpirun -np %(np)d' % {'np': mpi['cores']}
-    
-    bin_dir = params['dirs']['bin'] + params['mol']['Name'] + '/'
-    if params['run_opts']['version'] == 0:  # sequential program
-        mpi['hin'] = bin_dir + params['mol']['Name'] + '_' + params['hin_opts']['permutation']
-        mpi['in'] = params['dirs']['bin'] + 'iterate'
-    elif params['run_opts']['version'] < 0:  # MPI 1
-        mpi['hin'] = bin_dir + 'p' + params['mol']['Name'] + '_' + params['hin_opts']['permutation']
-        mpi['in'] = params['dirs']['bin'] + 'p_iterate'
-    else:  # MPI 2, Parallel IO
-        mpi['hin'] = bin_dir + 'm' + params['mol']['Name'] + '_' + params['hin_opts']['permutation']
-        mpi['in'] = params['dirs']['bin'] + 'm_iterate'
 
-    return mpi
+    if params['run_opts']['version'] == 0:  # sequential program
+        mpi['hin'] = "$BIN_DIR/" + params['mol']['Name'] + '/' \
+                     + params['mol']['Name'] + '_' + params['hin_opts']['permutation']
+        mpi['in'] = "$BIN_DIR/" + 'iterate'
+    elif params['run_opts']['version'] < 0:  # MPI 1
+        mpi['hin'] = "$BIN_DIR/" + params['mol']['Name'] + '/' \
+                     + 'p' + params['mol']['Name'] + '_' + params['hin_opts']['permutation']
+        mpi['in'] = "$BIN_DIR/" + 'p_iterate'
+    else:  # MPI 2, Parallel IO
+        mpi['hin'] = "$BIN_DIR/" + params['mol']['Name'] + '/' \
+                     + 'm' + params['mol']['Name'] + '_' + params['hin_opts']['permutation']
+        mpi['in'] = "$BIN_DIR/" + 'm_iterate'
+
+    params['mpi'] = mpi

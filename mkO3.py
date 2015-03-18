@@ -26,7 +26,7 @@ import Triatomic.MakeFiles
 #
 #############################################################################################################
 run_opts = dict(
-    version=0,
+    version=-1,
     conv_option=0,
     nvar=[120, 130, 140],  # values of convergence parameter, list length specifies how many jobs in script
     nodes_desired=1,  # number of nodes requested for mpi job.  Number of cores depends on platform
@@ -53,9 +53,10 @@ mol = dict(
 #############################################################################################################
 #           Relevant User Directories
 #    NOTE: end all with a /
+#    host options: local, Robinson, Hrothgar, Lonestar
 #############################################################################################################
 dirs = dict(
-    host='local',
+    host='Robinson',
     home='/Users/coreypetty/',
     data='/Users/coreypetty/work/data/',
     scalit='/Users/coreypetty/work/ScalIT-ozone/'
