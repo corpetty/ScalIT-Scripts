@@ -1,4 +1,5 @@
 __author__ = 'Corey Petty'
+import sys
 
 
 def get3size(permutation, parity, j_tot, j_max):
@@ -59,3 +60,25 @@ def get3size(permutation, parity, j_tot, j_max):
                 if jk/2*2 != jk:
                     size += 1
     return size
+
+
+def check_jknum(params):
+    if params['hin_opts']['restrict_num_angles'] == 'T':
+        params['hin_opts']['theta'] = params['hin_opts']['num_angles']
+    else:
+        params['hin_opts']['theta'] = get3size(params['hin_opts']['permutation'],
+                                               params['hin_opts']['parity'],
+                                               params['hin_opts']['jtotal'],
+                                               params['hin_opts']['jmax'])
+
+    if (get3size(params['hin_opts']['permutation'],
+                 params['hin_opts']['parity'],
+                 params['hin_opts']['jtotal'],
+                 params['hin_opts']['jmax']) < params['hin_opts']['num_angles']
+            and params['hin_opts']['restrict_num_angles'] == 'T'):
+        print 'Error:  Desired number of angles is greater than amount possible!'
+        print '            Options:'
+        print '                increase jmax'
+        print '                decrease desired number of angles'
+        print "                change 'restrict_num_angles' flag to 'F' (uses jkNum)"
+        sys.exit(0)

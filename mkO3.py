@@ -22,13 +22,13 @@ import Triatomic.MakeFiles
 # version: which program
 # version = 0: sequential
 # version < 0: mpi program without parallel IO (currently best for HPCC environment)
-#   version > 0: mpi program with parallel IO
+# version > 0: mpi program with parallel IO
 #
 #############################################################################################################
 run_opts = dict(
     version=0,
-    conv_option=-1,
-    nvar=[30, 35, 40],  # values of convergence parameter, list length specifies how many jobs in script
+    conv_option=0,
+    nvar=[120, 130, 140],  # values of convergence parameter, list length specifies how many jobs in script
     nodes_desired=1,  # number of nodes requested for mpi job.  Number of cores depends on platform
     local_cores=4  # if dirs['host'] is 'local', number of cores desired to run mpi jobs
 )
