@@ -3,17 +3,23 @@ A Python Scripting sytem to create input files and respective run scripts for ru
 
 ## Platforms that have been implemented
 
-  - Corey Petty's Macbook Pro (or any local platform that runs **ScalIT**)
+  - local platform that runs **ScalIT**
   - Robinson HPCC at TTU
   - Hrothgar HPCC at TTU
   - Lonestar HPCC at UT Austin
 
 ## Systems that have been implemented
 
-  - Dawes' Ozone
+All triatomics that are currently implemented in ScalIT
 
 ## Convergence parameters that have been tested
 
-  - option = 0: jmax convergence
-  - option = 2: r convergence
-  - option = 3: R convergence
+Here is a table showing available options:
+
+|  Option | Convergence Parameter  |
+|:-------:|:----------------------:|
+|  -1     | run PRESINC            |
+|  0      | jmax                   |
+|  1      | theta                  |
+|  2      | r                      |
+|  3      | R                      |
