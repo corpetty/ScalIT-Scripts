@@ -3,11 +3,10 @@ __author__ = 'Corey Petty'
 
 def environment_mpi(params):
     """
-    Sets the MPI environment variables
+    Sets the MPI environment variables, add to the params Dictionary
     :param params: 
     :return: null
     """
-    # TODO: incorporate the "mpi" variable into the params Dictionary
     mpi = {}
     
     if params['run_opts']['version'] == 0:  # Sequential program

@@ -6,13 +6,28 @@ from Util import setEnvironment
 def get_sh_header(params):
     """
     get the header of script files for various HPC platforms.
+    :returns: str
     """
     # Lonestar at UT Texas at Austin - 13 March 2015
     setEnvironment.environment_mpi(params)
-    # TODO: fill in correct Lonestar Header
     if params['dirs']['host'] == 'Lonestar':
-        header = '#!/bin/bash\n\n' \
-                 + "WK_DIR='" + params['dirs']["run_work_dir"] + params['mol']["Name"] + "'\n\n"
+        header = '#!/bin/bash                                                   \n' \
+                 + '#$ -V                                                       \n' \
+                 + '#$ -cwd                                                     \n' \
+                 + '#$ -j y                                                     \n' \
+                 + '#$ -R y                                                     \n' \
+                 + '#$ -S /bin/bash                                             \n' \
+                 + '#$ -l h_rt=' + params['run_opts']['run_time'] + '           \n' \
+                 + "#$ -N '" + params['hin_opts']["jtotal"] + params['mol']["Name"] \
+                 + params['hin_opts']["permutation"] + "'                       \n" \
+                 + '#$ -o $JOB_NAME.' + str(params['mpi']['cores'])                 \
+                 + '.$JOB_ID                                                    \n' \
+                 + '#$ -e $JOB_NAME.e$JOB_ID                                    \n' \
+                 + '#$ -q normal                                                \n' \
+                 + '#$ -pe 12way ' + str(params['mpi']['cores']) + '            \n' \
+                 + "BIN_DIR='" + params['dirs']["bin"] + "'                     \n" \
+                 + "WK_DIR='" + params['dirs']["run_work_dir"] + "'           \n\n" \
+                 + 'date'
     # Hrothgar cluster at TTU - 13 March 2015
     elif params['dirs']['host'] == 'Hrothgar':
         header = '#!/bin/bash                                                   \n' \
@@ -55,7 +70,10 @@ def get_sh_header(params):
         header = "WK_DIR='" + params['dirs']["run_work_dir"] + "'\n\n" \
                  + "BIN_DIR='" + params['dirs']["bin"] + "'         \n"
     else:
-        header = "## Create your own header ##"
+        header = "## Create your own header ##             \n" \
+                 + '#!/bin/bash                            \n' \
+                 + "BIN_DIR='" + params['dirs']['bin'] + "'\n" \
+                 + "WK_DIR=" + params['dirs']["run_work_dir"]
 
     return header
 

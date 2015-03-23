@@ -28,7 +28,7 @@ import Triatomic.MakeFiles
 run_opts = dict(
     version=-1,
     conv_option=0,
-    nvar=[120, 130, 140],       # values of convergence parameter, list length specifies how many jobs in script
+    nvar=[0, 0, 0],             # values of convergence parameter, list length specifies how many jobs in script
     nodes_desired=1,            # number of nodes requested for mpi job.  Number of cores depends on platform
     local_cores=4,              # if dirs['host'] is 'local', number of cores desired to run mpi jobs
     run_time='48:00:00'         # used if host == Lonestar (hrs:mins:sec)
@@ -45,11 +45,11 @@ run_opts = dict(
 #   Rmax:           maximum distance in coordinate range for little r and Big R
 #############################################################################################################
 mol = dict(
-    Name='ozone',
-    mass=(14578.471659, 9718.981106),
-    Rmin=(1.5, 0.0),
-    Rmax=(6.0, 5.0),
-    re=(2.401, 1.256),
+    Name='',
+    mass=(0.0, 0.0),
+    Rmin=(0.0, 0.0),
+    Rmax=(0.0, 0.0),
+    re=(0.0, 0.0),
 )
 #############################################################################################################
 #           Relevant User Directories
@@ -57,10 +57,10 @@ mol = dict(
 #    host options: local, Robinson, Hrothgar, Lonestar
 #############################################################################################################
 dirs = dict(
-    host='Robinson',
-    home='/Users/coreypetty/',
-    data='/Users/coreypetty/work/data/',
-    scalit='/Users/coreypetty/work/ScalIT-ozone/'
+    host='local',
+    home='~/',              # directory location of your home folder
+    data='~/data/',         # directory location of your data folder (where to store large files)
+    scalit='~/ScalIT/'      # directory location of your ScalIT installation
 )
 #############################################################################################################
 #           PRESINC Construction (*.pin file) Parameters
@@ -77,7 +77,7 @@ dirs = dict(
 #   max_DVR_fns:    Number of VBR functions output from module.
 #
 #############################################################################################################
-pin_opts = dict(
+pin_opts = dict(                    # All set to default values
     dvr_type=2,
     useSP='T',
     num_sinc_fns=[6000, 6000],
@@ -113,18 +113,18 @@ pin_opts = dict(
 #############################################################################################################
 hin_opts = dict(
     jtotal=0,
-    jmax=130,
+    jmax=0,
     permutation='o',
     parity='T',
-    num_lr_functions=30,
-    num_Br_functions=30,
+    num_lr_functions=0,
+    num_Br_functions=0,
     restrict_num_angles='T',
     num_angles=50,
     ngi=300,
     FcFlag=0,
     CbFlag=0,
     AbsFlag=0,
-    Ecutoff=0.1,
+    Ecutoff=0.2,                # default to 0.2 a.u.
     ReFlag=0
 )
 #############################################################################################################
@@ -141,7 +141,7 @@ hin_opts = dict(
 #                           "mE0 mDE mBeta nCnt"
 #   opt3:                do not save wave function
 #############################################################################################################
-in_opts = dict(
+in_opts = dict(                                 # All set to default values
     opt0='F F F\n',
     opt1='1 0\n',
     opt2='F T F F\n',
@@ -151,7 +151,7 @@ in_opts = dict(
     opt3='0 0 0 0 0\n',
 )
 #############################################################################################################
-# Actual routine call DO NOT CHANGE
+# Actual routine call DO NOT CHANGE BELOW HERE
 params = dict(
     run_opts=run_opts,
     pin_opts=pin_opts,

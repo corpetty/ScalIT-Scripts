@@ -23,3 +23,9 @@ Here is a table showing available options:
 |  1      | theta                  |
 |  2      | r                      |
 |  3      | R                      |
+
+## How to run
+
+  1. Copy mkA3_template.py to a new file
+  2. Input molecular variables, host, relevant directories, and convergence parameters
+  3. run python file to generate all input files and scripts to run them.
