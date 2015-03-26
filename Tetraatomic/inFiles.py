@@ -51,17 +51,22 @@ def mkhin(params, fname, var):
     hre = data_base + params['mol']['suffix'] + '_' + '%(var)d' % {'var': var} + 'hre.dat'
 
     # Setting string base for PSOVBR data file locations.
-    vlr = psovbr_data_base + 'vlr.dat'
+    vr1 = psovbr_data_base + 'vr1.dat'
+    vr2 = psovbr_data_base + 'vr2.dat'
     vbr = psovbr_data_base + 'vbr.dat'
 
-    plr = pes_data_base + '_vlr.dat'
+    pr1 = pes_data_base + '_vr1.dat'
+    pr2 = pes_data_base + '_vr2.dat'
     pbr = pes_data_base + '_vbr.dat'
 
-    write_string = '%(jtol)d %(parity)s ' % {'jtol': params['hin_opts']['jtotal'],
+    write_string = '%(jtol)d %(parity)s\n' % {'jtol': params['hin_opts']['j_total'],
                                               'parity': params['hin_opts']['parity']}
 
-    write_string += '%(jmax)d %(ngi)d \n' % {'jmax': params['hin_opts']['jmax'],
-                                             'ngi': params['hin_opts']['ngi']}
+    write_string += '%(j1max)d %(j2max)d %(jmax)d %(ngi)d %(ngi)d %(ngi)d \n' % \
+                    {'j1max': params['hin_opts']['j1_max'],
+                     'j2max': params['hin_opts']['j2_max'],
+                     'jmax': params['hin_opts']['j_max'],
+                     'ngi': params['hin_opts']['ngi']}
 
     write_string += '%(FcFlag)d %(CbFlag)d %(AbsFlag)d %(useSP)s %(Ecutoff)f\n' \
                     % {'FcFlag': params['hin_opts']['FcFlag'],
@@ -75,13 +80,19 @@ def mkhin(params, fname, var):
     write_string += '%(mass1)f %(re1)f %(ndvr1)d\n' \
                     % {'mass1': params['mol']['mass'][0],
                        're1': params['mol']['re'][0],
-                       'ndvr1': params['hin_opts']['num_lr_functions']}
-    write_string += vlr + '\n'
+                       'ndvr1': params['hin_opts']['num_r1_functions']}
+    write_string += vr1 + '\n'
 
-    write_string += '%(mass1)f %(re1)f %(ndvr1)d\n' \
-                    % {'mass1': params['mol']['mass'][1],
-                       're1': params['mol']['re'][1],
-                       'ndvr1': params['hin_opts']['num_Br_functions']}
+    write_string += '%(mass2)f %(re2)f %(ndvr2)d\n' \
+                    % {'mass2': params['mol']['mass'][1],
+                       're2': params['mol']['re'][1],
+                       'ndvr2': params['hin_opts']['num_r2_functions']}
+    write_string += vr2 + '\n'
+
+    write_string += '%(mass3)f %(re3)f %(ndvr3)d\n' \
+                    % {'mass3': params['mol']['mass'][2],
+                       're3': params['mol']['re'][2],
+                       'ndvr3': params['hin_opts']['num_Br_functions']}
     write_string += vbr + '\n'
 
     write_string += '%(ndvr)d %(reFlag)d\n' \
@@ -90,7 +101,7 @@ def mkhin(params, fname, var):
     write_string += hre + '\n'
 
     if params['pin_opts']['useSP'] == 'T':
-        write_string += plr + '\n' + pbr + '\n'
+        write_string += pr1 + '\n' + pr2 + '\n' + pbr + '\n'
 
     fhin = open(fname, 'w')
     fhin.write(write_string)

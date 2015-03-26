@@ -15,15 +15,18 @@ def mkpsh(params):
     """
     
     script_file = params['dirs']['run_work_dir'] + params['mol']['Name'] + '.sh'
+    work_base = "$WK_DIR/" + params['mol']['Name']
 
-    work_base = params['dirs']['run_work_dir'] + '/' + params['mol']['Name']
-    fpin_lr = work_base + 'lr.pin'
-    fpout_lr = work_base + 'lr.pout'
+    fpin_r1 = work_base + 'r1.pin'
+    fpout_r1 = work_base + 'r1.pout'
+    fpin_r2 = work_base + 'r2.pin'
+    fpout_r2 = work_base + 'r2.pout'
     fpin_br = work_base + 'BR.pin'
     fpout_br = work_base + 'BR.pout'
 
-    bin_base = params['dirs']['bin'] + params['mol']['Name'] + '/' + params['mol']['Name']
-    plr_cmd = bin_base + 'vlr'
+    bin_base = "$BIN_DIR/" + params['mol']['Name'] + '/' + params['mol']['Name']
+    pr1_cmd = bin_base + 'vlr'
+    pr2_cmd = bin_base + 'vlr'
     pbr_cmd = bin_base + 'vbr'
 
     fh = open(script_file, 'w')
@@ -31,7 +34,9 @@ def mkpsh(params):
     header = shFiles.get_sh_header(params)
     fh.write(header)
 
-    fh.write(plr_cmd + ' < ' + fpin_lr + ' > ' + fpout_lr + '\n')
+    fh.write(pr1_cmd + ' < ' + fpin_r1 + ' > ' + fpout_r1 + '\n')
+
+    fh.write(pr2_cmd + ' < ' + fpin_r2 + ' > ' + fpout_r2 + '\n')
 
     fh.write(pbr_cmd + ' < ' + fpin_br + ' > ' + fpout_br + '\n\n')
     fh.close()
@@ -52,14 +57,16 @@ def mkpin(params):
     data_base = params['dirs']['run_data_dir'] + params['mol']['Name']
 
     # Setting up string base for output files of *.pin
-    vlr = data_base + 'vlr.dat'
+    vr1 = data_base + 'vr1.dat'
+    vr2 = data_base + 'vr2.dat'
     vbr = data_base + 'vbr.dat'
 
     # Setting up string base for PES eff potential input files
-    plr = pes_data_base + '_vlr.dat'
+    pr1 = pes_data_base + '_vr1.dat'
+    pr2 = pes_data_base + '_vr2.dat'
     pbr = pes_data_base + '_vbr.dat'
 
-    i = 0  # reference to lr
+    i = 0  # reference to r1
     header = '%(type)d %(mass)f %(nmax)d %(nmin)d %(useSP)s \n' \
              % {'type': params['pin_opts']['dvr_type'],
                 'mass': params['mol']['mass'][i],
@@ -68,15 +75,32 @@ def mkpin(params):
                 'useSP': params['pin_opts']['useSP']} \
              + '%(Rmin)f %(Rmax)f\n' % {'Rmin': params['mol']['Rmin'][i],
                                         'Rmax': params['mol']['Rmax'][i]}
-    fh = open(work_base + 'lr.pin', 'w')
+    fh = open(work_base + 'r1.pin', 'w')
     fh.write(header)
-    fh.write(vlr + '\n')
+    fh.write(vr1 + '\n')
     if params['pin_opts']['useSP'] == 'T':
-        fh.write(plr + '\n')
+        fh.write(pr1 + '\n')
     fh.close()
-    print '    File Generated: ' + work_base + 'lr.pin'
+    print '    File Generated: ' + work_base + 'r1.pin'
 
-    i = 1  # reference to BR
+    i = 1  # reference to r2
+    header = '%(type)d %(mass)f %(nmax)d %(nmin)d %(useSP)s \n' \
+             % {'type': params['pin_opts']['dvr_type'],
+                'mass': params['mol']['mass'][i],
+                'nmax': params['pin_opts']['num_sinc_fns'][i],
+                'nmin': params['pin_opts']['max_DVR_fns'][i],
+                'useSP': params['pin_opts']['useSP']} \
+             + '%(Rmin)f %(Rmax)f\n' % {'Rmin': params['mol']['Rmin'][i],
+                                        'Rmax': params['mol']['Rmax'][i]}
+    fh = open(work_base + 'r2.pin', 'w')
+    fh.write(header)
+    fh.write(vr2 + '\n')
+    if params['pin_opts']['useSP'] == 'T':
+        fh.write(pr2 + '\n')
+    fh.close()
+    print '    File Generated: ' + work_base + 'r2.pin'
+
+    i = 2  # reference to BR
     header = '%(type)d %(mass)f %(nmax)d %(nmin)d %(useSP)s \n' \
              % {'type': params['pin_opts']['dvr_type'],
                 'mass': params['mol']['mass'][i],
