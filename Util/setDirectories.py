@@ -13,7 +13,6 @@ def set_default_directories(params):
     """
     params['dirs']['bin'] = params['dirs']['scalit'] + 'bin/'
     params['dirs']['pes'] = params['dirs']['scalit'] + 'src/systems/'
-    params['dirs']['work'] = params['dirs']['scalit'] + 'work/test/'
     params['dirs']['pes_data'] = params['dirs']['scalit'] + 'data/'
     params['dirs']['run_work_dir'] = params['dirs']['work'] + params['mol']['Name'] + params['mol']['suffix'] + '/'
     params['dirs']['run_data_dir'] = params['dirs']['data'] + params['mol']['Name'] + '/'

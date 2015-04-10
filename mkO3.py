@@ -27,7 +27,7 @@ import Triatomic.MakeFiles
 #############################################################################################################
 run_opts = dict(
     version=-1,
-    conv_option=0,
+    conv_option=-1,
     nvar=[120, 130, 140],       # values of convergence parameter, list length specifies how many jobs in script
     nodes_desired=1,            # number of nodes requested for mpi job.  Number of cores depends on platform
     local_cores=4,              # if dirs['host'] is 'local', number of cores desired to run mpi jobs
@@ -57,10 +57,11 @@ mol = dict(
 #    host options: local, Robinson, Hrothgar, Lonestar
 #############################################################################################################
 dirs = dict(
-    host='Robinson',
-    home='/Users/coreypetty/',
-    data='/Users/coreypetty/work/data/',
-    scalit='/Users/coreypetty/work/ScalIT-ozone/'
+    host='Lonestar',
+    work='/work/01670/corpetty/work/ozone/',
+    home='/home1/01670/corpetty/',
+    data='/scratch/01670/corpetty/DataFiles/',
+    scalit='/work/01670/corpetty/ScalIT-ozone/'
 )
 #############################################################################################################
 #           PRESINC Construction (*.pin file) Parameters
@@ -112,7 +113,7 @@ pin_opts = dict(
 #                                   0 : Neither
 #############################################################################################################
 hin_opts = dict(
-    jtotal=0,
+    j_total=0,
     jmax=130,
     permutation='o',
     parity='T',

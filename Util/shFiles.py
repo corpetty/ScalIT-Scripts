@@ -28,7 +28,7 @@ def get_sh_header(params):
                  + '#$ -pe 12way ' + str(params['mpi']['cores']) + '            \n' \
                  + "BIN_DIR='" + params['dirs']["bin"] + "'                     \n" \
                  + "WK_DIR='" + params['dirs']["run_work_dir"] + "'           \n\n" \
-                 + 'date'
+                 + 'date \n'
     # Hrothgar cluster at TTU - 13 March 2015
     elif params['dirs']['host'] == 'Hrothgar':
         header = '#!/bin/bash                                                   \n' \
@@ -47,7 +47,7 @@ def get_sh_header(params):
                  + '#$ -pe mpi ' + str(params['mpi']['cores']) + '              \n' \
                  + "BIN_DIR='" + params['dirs']["bin"] + "'                     \n" \
                  + "WK_DIR='" + params['dirs']["run_work_dir"] + "'           \n\n" \
-                 + 'date'
+                 + 'date \n'
     # Robinson Cluster at TTU Chemistry - 13 March 2015
     elif params['dirs']['host'] == 'Robinson':
         header = '#!/bin/bash                                        \n' \
