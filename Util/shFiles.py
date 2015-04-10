@@ -3,6 +3,7 @@ __author__ = 'Corey Petty'
 import posix
 from Util import setEnvironment
 
+
 def get_sh_header(params):
     """
     get the header of script files for various HPC platforms.
@@ -18,7 +19,7 @@ def get_sh_header(params):
                  + '#$ -R y                                                     \n' \
                  + '#$ -S /bin/bash                                             \n' \
                  + '#$ -l h_rt=' + params['run_opts']['run_time'] + '           \n' \
-                 + "#$ -N '" + params['hin_opts']["jtotal"] + params['mol']["Name"] \
+                 + "#$ -N '" + str(params['hin_opts']["j_total"]) + params['mol']["Name"] \
                  + params['hin_opts']["permutation"] + "'                       \n" \
                  + '#$ -o $JOB_NAME.' + str(params['mpi']['cores'])                 \
                  + '.$JOB_ID                                                    \n' \
@@ -67,13 +68,14 @@ def get_sh_header(params):
                  + "WK_DIR='" + params['dirs']["run_work_dir"] + "'\n\n" \
                  + 'date\n'
     elif params['dirs']['host'] == 'local':
-        header = "WK_DIR='" + params['dirs']["run_work_dir"] + "'\n\n" \
-                 + "BIN_DIR='" + params['dirs']["bin"] + "'         \n"
+        header = '#!/bin/bash                                        \n' \
+                 + "WK_DIR='" + params['dirs']["run_work_dir"] + "'  \n" \
+                 + "BIN_DIR='" + params['dirs']["bin"] + "'      \n  \n"
     else:
-        header = "## Create your own header ##             \n" \
-                 + '#!/bin/bash                            \n' \
-                 + "BIN_DIR='" + params['dirs']['bin'] + "'\n" \
-                 + "WK_DIR=" + params['dirs']["run_work_dir"]
+        header = "#!/bin/bash                                         \n" \
+                 + '## Create your own header ##                      \n' \
+                 + "BIN_DIR='" + params['dirs']['bin'] + "'           \n" \
+                 + "WK_DIR='" + params['dirs']["run_work_dir"] + "' \n\n"
 
     return header
 

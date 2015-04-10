@@ -14,7 +14,7 @@ All triatomics that are currently implemented in ScalIT
 
 ## Convergence parameters that have been tested
 
-Here is a table showing available options:
+Here is a table showing available options, all other parameters are held constant for each option:
 
 |  Option | Convergence Parameter  |
 |:-------:|:----------------------:|

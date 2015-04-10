@@ -7,7 +7,7 @@ import indexing  # calculates number of angular basis functions for .in files
 from Util import setDirectories, shFiles  # sets directory environment, if doesn't exist, creates
 
 
-def mka3(params):
+def mka4(params):
     """
     Functions to create files for convergence testing for tri-atomic params['mol']ecules
     :param params: Contains all data to create files for ScalIT
@@ -19,20 +19,26 @@ def mka3(params):
         params['mol']["suffix"] = "p"
         variable = ''
     elif params['run_opts']['conv_option'] == 0:
-        params['mol']["suffix"] = "j"
-        variable = "jmax"
+        params['mol']["suffix"] = "j1"
+        variable = "j1_max"
     elif params['run_opts']['conv_option'] == 1:
+        params['mol']["suffix"] = "j2"
+        variable = "j2_max"
+    elif params['run_opts']['conv_option'] == 2:
         params['mol']["suffix"] = "th"
         variable = 'theta'
-    elif params['run_opts']['conv_option'] == 2:
-        params['mol']["suffix"] = "r"
-        variable = 'num_lr_functions'
     elif params['run_opts']['conv_option'] == 3:
+        variable = 'num_r1_functions'
+        params['mol']["suffix"] = "r1"
+    elif params['run_opts']['conv_option'] == 4:
+        variable = 'num_r2_functions'
+        params['mol']["suffix"] = "r2"
+    elif params['run_opts']['conv_option'] == 5:
         params['mol']["suffix"] = "R"
         variable = 'num_Br_functions'
     else:
         params['mol']["suffix"] = "J"
-        variable = "jtotal"
+        variable = "j_total"
 
     # Set working directories, check to see if they exist, create if not.
     setDirectories.set_default_directories(params)
@@ -51,9 +57,11 @@ def mka3(params):
             fhin = '%(fb)s_%(x)d%(suf)s' % {'fb': file_base, 'x': x, 'suf': '.hin'}
             inFiles.mkhin(params, fhin, x)
             fin = '%(fb)s_%(x)d%(suf)s' % {'fb': file_base, 'x': x, 'suf': '.in'}
-            params['in_opts']['ndvr'] = '3 %(nlr)d %(nBR)d %(nA0)d\n' % {'nlr': params['hin_opts']['num_lr_functions'],
-                                                                         'nBR': params['hin_opts']['num_Br_functions'],
-                                                                         'nA0': params['hin_opts']['theta']}
+            params['in_opts']['ndvr'] = '4 %(nr1)d %(nr2)d %(nBR)d %(nA0)d\n' % \
+                                        {'nr1': params['hin_opts']['num_r1_functions'],
+                                         'nr2': params['hin_opts']['num_r2_functions'],
+                                         'nBR': params['hin_opts']['num_Br_functions'],
+                                         'nA0': params['hin_opts']['theta']}
             params['in_opts']['fh0'] = data_base + '_%(x)d' % {'x': x} + 'h0.dat\n'
             params['in_opts']['fhgm'] = data_base + '_%(x)d' % {'x': x} + 'hgm.dat\n'
             params['in_opts']['fpt'] = data_base + '_%(x)d' % {'x': x} + 'wf.dat\n'
