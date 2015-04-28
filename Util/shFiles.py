@@ -37,7 +37,7 @@ def get_sh_header(params):
                  + '#$ -j y                                                     \n' \
                  + '#$ -R y                                                     \n' \
                  + '#$ -S /bin/bash                                             \n' \
-                 + "#$ -N '" + params['hin_opts']["jtotal"] + params['mol']["Name"] \
+                 + "#$ -N '" + params['hin_opts']["j_total"] + params['mol']["Name"] \
                  + params['hin_opts']["permutation"] + "'                       \n" \
                  + '#$ -o $JOB_NAME.' + str(params['mpi']['cores'])                 \
                  + '.$JOB_ID                                                    \n' \
@@ -56,7 +56,7 @@ def get_sh_header(params):
                  + '#$ -j y                                          \n' \
                  + '#$ -R y                                          \n' \
                  + '#$ -S /bin/bash                                  \n' \
-                 + "#$ -N J" + str(params['hin_opts']["jtotal"])         \
+                 + "#$ -N J" + str(params['hin_opts']["j_total"])         \
                  + params['mol']["Name"]                                 \
                  + '_' + params['hin_opts']["permutation"] + "       \n" \
                  + '#$ -o $JOB_NAME.' + str(params['mpi']['cores'])      \
