@@ -151,6 +151,49 @@ in_opts = dict(
     nState='0.0 1.0D-3 10.0 1000\n',
     opt3='0 0 0 0 0\n',
 )
+# TODO: Create descriptions for all these
+in_opts2 = dict(
+    sDep=['F', 'F', 'F'],
+    sJOB=1,
+    sOSB=0,
+    sCX='F',
+    sNDVR='T',
+    sST='T',
+    sAP='F',
+    bj_NumberIters=10,
+    bj_Tolerance='1.0D-3',
+    qmr_NumberIters=10000,
+    qmr_Tolerance='1.0D-3',
+    pist_E0=0.0,
+    pist_LancToler='1.0D-9',
+    pist_nStart=50,
+    pist_nStep=10,
+    pist_nMax=400,
+    pist_nGap=5,
+    osb_mE0=0.0,
+    osb_mDE='1.0D-3',
+    osb_mBeta=1.0,
+    osb_nCnt=1000,
+    sHOSB=0,
+    sVOSB=0,
+    sHW=0,
+    sVX=0,
+    sPT=0
+)
+# TODO: Create descriptions for all these
+in_file_names = dict(
+    fH0='',
+    fRES='',
+    fDep=['', '', ''],
+    fAPP='',
+    fAPR='',
+    fHOSB='',
+    fVOSB='',
+    fEig='',
+    fHW='',
+    fVX='',
+    fPT=''
+)
 #############################################################################################################
 # Actual routine call DO NOT CHANGE
 params = dict(
