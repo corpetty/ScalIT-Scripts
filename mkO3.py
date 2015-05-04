@@ -53,15 +53,15 @@ mol = dict(
 )
 #############################################################################################################
 #           Relevant User Directories
-#    NOTE: end all with a /
+#    NOTE: DO NOT end directories with a "/", this will be added when necessary
 #    host options: local, Robinson, Hrothgar, Lonestar
 #############################################################################################################
 dirs = dict(
     host='Lonestar',
-    work='/work/01670/corpetty/work/ozone/',
-    home='/home1/01670/corpetty/',
-    data='/scratch/01670/corpetty/DataFiles/',
-    scalit='/work/01670/corpetty/ScalIT-ozone/'
+    work='/work/01670/corpetty/work/ozone',
+    home='/home1/01670/corpetty',
+    data='/scratch/01670/corpetty/DataFiles',
+    scalit='/work/01670/corpetty/ScalIT-ozone'
 )
 #############################################################################################################
 #           PRESINC Construction (*.pin file) Parameters

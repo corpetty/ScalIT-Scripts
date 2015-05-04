@@ -1,6 +1,7 @@
 __author__ = 'Corey Petty'
 
 import posixpath
+from Util import checkSwitch
 
 
 def mkin(opts, fname):
@@ -28,6 +29,45 @@ def mkin(opts, fname):
     print '    File Generated: ' + fname
 
 
+def mkin2(opts, fname):
+    """
+
+    :param opts:
+    :param fname:
+    :return:
+    """
+    infile = open(fname, 'w')
+    infile.write(opts['sDep'])
+    infile.write(opts['sJOB'] + ' '
+                 + opts['sOSB'])
+    infile.write(opts['sCX'] + ' '
+                 + opts['sNDVR'] + ' '
+                 + opts['sSt'] + ' '
+                 + opts['sAP'])
+    infile.write(opts['bj_NumberIters'] + ' '
+                 + opts['bj_Tolerance'] + ' '
+                 + opts['qmr_NumberIters'] + ' '
+                 + opts['qmr_Tolerance'])
+    infile.write(opts['pist_E0'] + ' ' + opts['pist_lancToler'] + ' '
+                 + opts['pist_nStart'] + ' '
+                 + opts['nStep'] + ' '
+                 + opts['nMax'] + ' '
+                 + opts['pist_ngap'])
+    infile.write(opts['osb_mE0'] + ' '
+                 + opts['osb_mDE'] + ' '
+                 + opts['osb_mBeta'] + ' '
+                 + opts['osb_nCnt'])
+    infile.write(opts['sHOSB'] + ' '
+                 + opts['sVOSB'] + ' '
+                 + opts['sHW'] + ' '
+                 + opts['sVX'] + ' '
+                 + opts['sPT'])
+    for i in opts:
+        checkSwitch.whichswitch(opts[i], infile, opts['file_names'][i])
+    infile.close()
+    print '    File Generated: ' + fname
+
+
 def mkhin(params, fname, var):
     """
     Generate the *.hin file for tri-atomics params['mol']ecules for use in the
@@ -39,12 +79,12 @@ def mkhin(params, fname, var):
     :return:
     """
     if params['mol']['suffix'] != 'p':
-        if not posixpath.exists(params['dirs']['data'] + params['mol']['Name'] + '/psovbr/'):
+        if not posixpath.exists(params['dirs']['data'] + '/' + params['mol']['Name'] + '/psovbr/'):
             print "     PRESINC data files aren't found, please run option = -1"
 
-    psovbr_data_base = params['dirs']['data'] + params['mol']['Name'] + '/psovbr/' + params['mol']['Name']
-    data_base = params['dirs']['data'] + params['mol']['Name'] + '/' + params['mol']['Name']
-    pes_data_base = params['dirs']['pes_data'] + params['mol']['Name'] + '/' + params['mol']['Name']
+    psovbr_data_base = params['dirs']['data'] + '/' + params['mol']['Name'] + '/psovbr/' + params['mol']['Name']
+    data_base = params['dirs']['data'] + '/' + params['mol']['Name'] + '/' + params['mol']['Name']
+    pes_data_base = params['dirs']['pes_data'] + '/' + params['mol']['Name'] + '/' + params['mol']['Name']
 
     h0 = data_base + params['mol']['suffix'] + '_' + '%(var)d' % {'var': var} + 'h0.dat'
     h1 = data_base + params['mol']['suffix'] + '_' + '%(var)d' % {'var': var} + 'hgm.dat'

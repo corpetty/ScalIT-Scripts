@@ -11,11 +11,11 @@ def set_default_directories(params):
     :type params: dict
     :return: null
     """
-    params['dirs']['bin'] = params['dirs']['scalit'] + 'bin/'
-    params['dirs']['pes'] = params['dirs']['scalit'] + 'src/systems/'
-    params['dirs']['pes_data'] = params['dirs']['scalit'] + 'data/'
-    params['dirs']['run_work_dir'] = params['dirs']['work'] + params['mol']['Name'] + params['mol']['suffix'] + '/'
-    params['dirs']['run_data_dir'] = params['dirs']['data'] + params['mol']['Name'] + '/'
+    params['dirs']['bin'] = params['dirs']['scalit'] + '/' + 'bin'
+    params['dirs']['pes'] = params['dirs']['scalit'] + '/' + 'src/systems'
+    params['dirs']['pes_data'] = params['dirs']['scalit'] + '/' + 'data'
+    params['dirs']['run_work_dir'] = params['dirs']['work'] + '/' + params['mol']['Name'] + params['mol']['suffix']
+    params['dirs']['run_data_dir'] = params['dirs']['data'] + '/' + params['mol']['Name']
 
     print '----> Checking for directory existence'
 
@@ -44,7 +44,7 @@ def set_default_directories(params):
         print '    Directory Exists: ' + params['dirs']['run_data_dir']
 
     if params['mol']['suffix'] == 'p':
-        params['dirs']['run_data_dir'] += 'psovbr/'
+        params['dirs']['run_data_dir'] += '/psovbr'
         if not posixpath.exists(params['dirs']['run_data_dir']):
             print '    Creating: ' + params['dirs']['run_data_dir']
             posix.mkdir(params['dirs']['run_data_dir'])

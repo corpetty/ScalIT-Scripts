@@ -83,7 +83,7 @@ def get_sh_header(params):
 def mkmsh(params):
     header = get_sh_header(params)
 
-    sfile = params['dirs']['run_work_dir'] + params['mol']["Name"] + params['mol']['suffix'] + '.sh'
+    sfile = params['dirs']['run_work_dir'] + '/' + params['mol']["Name"] + params['mol']['suffix'] + '.sh'
     fb0 = '$WK_DIR/' + params['mol']["Name"] + params['mol']['suffix']
     fh = open(sfile, 'w')
     fh.write(header)

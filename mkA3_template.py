@@ -53,14 +53,14 @@ mol = dict(
 )
 #############################################################################################################
 #           Relevant User Directories
-#    NOTE: end all with a /
+#    NOTE: DO NOT end directories with a "/", they will be added when necessary
 #    host options: local, Robinson, Hrothgar, Lonestar
 #############################################################################################################
 dirs = dict(
     host='local',
-    home='~/',              # directory location of your home folder
-    data='~/data/',         # directory location of your data folder (where to store large files)
-    scalit='~/ScalIT/'      # directory location of your ScalIT installation
+    home='~',              # directory location of your home folder
+    data='~/data',         # directory location of your data folder (where to store large files)
+    scalit='~/ScalIT'      # directory location of your ScalIT installation
 )
 #############################################################################################################
 #           PRESINC Construction (*.pin file) Parameters

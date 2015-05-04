@@ -37,8 +37,8 @@ def mka3(params):
     # Set working directories, check to see if they exist, create if not.
     setDirectories.set_default_directories(params)
 
-    data_base = params['dirs']['run_data_dir'] + params['mol']['Name'] + params['mol']['suffix']
-    file_base = params['dirs']['run_work_dir'] + params['mol']['Name'] + params['mol']['suffix']
+    data_base = params['dirs']['run_data_dir'] + '/' + params['mol']['Name'] + params['mol']['suffix']
+    file_base = params['dirs']['run_work_dir'] + '/' + params['mol']['Name'] + params['mol']['suffix']
 
     print '----> Creating run files'
     if params['run_opts']['conv_option'] < 0:  # the initial step, do VBR

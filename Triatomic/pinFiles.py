@@ -14,7 +14,7 @@ def mkpsh(params):
     :return:
     """
     
-    script_file = params['dirs']['run_work_dir'] + params['mol']['Name'] + '.sh'
+    script_file = params['dirs']['run_work_dir'] + '/' + params['mol']['Name'] + '.sh'
 
     work_base = "$WK_DIR/" + params['mol']['Name']
     fpin_lr = work_base + 'lr.pin'
@@ -48,9 +48,9 @@ def mkpin(params):
     :return: null
     """
 
-    pes_data_base = params['dirs']['pes_data'] + params['mol']['Name'] + '/' + params['mol']['Name']
-    work_base = params['dirs']['run_work_dir'] + params['mol']['Name']
-    data_base = params['dirs']['run_data_dir'] + params['mol']['Name']
+    pes_data_base = params['dirs']['pes_data'] + '/' + params['mol']['Name'] + '/' + params['mol']['Name']
+    work_base = params['dirs']['run_work_dir'] + '/' + params['mol']['Name']
+    data_base = params['dirs']['run_data_dir'] + '/' + params['mol']['Name']
 
     # Setting up string base for output files of *.pin
     vlr = data_base + 'vlr.dat'
