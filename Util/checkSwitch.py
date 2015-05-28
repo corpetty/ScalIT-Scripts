@@ -11,7 +11,7 @@ def whichswitch(option, writefile, filename):
     :type filename: str
     :return: null
     """
-    if option == 0:
+    if option == '0':
         return
     else:
         writefile.write(filename)

@@ -1,70 +1,85 @@
 __author__ = 'Corey Petty'
 
 import posixpath
-from Util import checkSwitch
 
 
-def mkin(opts, fname):
-    """
-    Generate the *.in file for tri-atomic molecules for use in the
-        3rd Step of the ScalIT suite
-    
-    :param opts: options, as defined
-    :param fname: filename to be created
-    :return:
-    """
-    fh1 = open(fname, 'w')
-    fh1.write(opts['ndvr'])
-    fh1.write(opts['opt0'])
-    fh1.write(opts['opt1'])
-    fh1.write(opts['opt2'])
-    fh1.write(opts['bjQMR'])
-    fh1.write(opts['pistConv'])
-    fh1.write(opts['nState'])
-    fh1.write(opts['opt3'])
-    fh1.write(opts['fh0'])
-    fh1.write(opts['fhgm'])
-    fh1.write(opts['fpt'])
-    fh1.close()
-    print '    File Generated: ' + fname
-
-
-def mkin2(opts, fname):
+def mkin(opts, in_file_names, fname):
     """
 
     :param opts:
     :param fname:
     :return:
     """
+
     infile = open(fname, 'w')
-    infile.write(opts['sDep'])
+    infile.write(opts['sF'] + ' '
+                 + opts['num_lr_functions'] + ' '
+                 + opts['num_Br_functions'] + ' '
+                 + opts['theta']
+                 + '\n')
+    infile.write(opts['sDep'][0] + ' '
+                 + opts['sDep'][1] + ' '
+                 + opts['sDep'][2]
+                 + '\n')
     infile.write(opts['sJOB'] + ' '
-                 + opts['sOSB'])
+                 + opts['sOSB']
+                 + '\n')
     infile.write(opts['sCX'] + ' '
                  + opts['sNDVR'] + ' '
-                 + opts['sSt'] + ' '
-                 + opts['sAP'])
+                 + opts['sST'] + ' '
+                 + opts['sAP']
+                 + '\n')
     infile.write(opts['bj_NumberIters'] + ' '
                  + opts['bj_Tolerance'] + ' '
                  + opts['qmr_NumberIters'] + ' '
-                 + opts['qmr_Tolerance'])
-    infile.write(opts['pist_E0'] + ' ' + opts['pist_lancToler'] + ' '
+                 + opts['qmr_Tolerance']
+                 + '\n')
+    infile.write(opts['pist_E0'] + ' ' + opts['pist_LancToler'] + ' '
                  + opts['pist_nStart'] + ' '
-                 + opts['nStep'] + ' '
-                 + opts['nMax'] + ' '
-                 + opts['pist_ngap'])
+                 + opts['pist_nStep'] + ' '
+                 + opts['pist_nMax'] + ' '
+                 + opts['pist_nGap']
+                 + '\n')
     infile.write(opts['osb_mE0'] + ' '
                  + opts['osb_mDE'] + ' '
                  + opts['osb_mBeta'] + ' '
-                 + opts['osb_nCnt'])
+                 + opts['osb_nCnt']
+                 + '\n')
     infile.write(opts['sHOSB'] + ' '
                  + opts['sVOSB'] + ' '
                  + opts['sHW'] + ' '
                  + opts['sVX'] + ' '
-                 + opts['sPT'])
-    for i in opts:
-        checkSwitch.whichswitch(opts[i], infile, opts['file_names'][i])
-    infile.close()
+                 + opts['sPT']
+                 + '\n')
+    infile.write(in_file_names['fH0']
+                 + '\n')
+    infile.write(in_file_names['fH0gm']
+                 + '\n')
+    if opts['sDep'][0] == 'T':
+        infile.write(in_file_names['fDep'][0]
+                     + '\n')
+    if opts['sDep'][1] == 'T':
+        infile.write(in_file_names['fDep'][1]
+                     + '\n')
+    if opts['sDep'][2] == 'T':
+        infile.write(in_file_names['fDep'][2]
+                     + '\n')
+    if opts['sHOSB'] != '0':
+        infile.write(in_file_names['fHOSB']
+                     + '\n')
+    if opts['sVOSB'] != '0':
+        infile.write(in_file_names['fVOSB']
+                     + '\n')
+    if opts['sHW'] != '0':
+        infile.write(in_file_names['fHW']
+                     + '\n')
+    if opts['sVX'] != '0':
+        infile.write(in_file_names['fVX']
+                     + '\n')
+    if opts['sPT'] != '0':
+        infile.write(in_file_names['fPT']
+                     + '\n')
+
     print '    File Generated: ' + fname
 
 
@@ -82,7 +97,7 @@ def mkhin(params, fname, var):
         if not posixpath.exists(params['dirs']['data'] + '/' + params['mol']['Name'] + '/psovbr/'):
             print "     PRESINC data files aren't found, please run option = -1"
 
-    psovbr_data_base = params['dirs']['data'] + '/' + params['mol']['Name'] + '/psovbr/' + params['mol']['Name']
+    psovbr_data_base = params['dirs']['data'] + '/' + params['mol']['Name'] + '/psovbr/' + 'presinc_'
     data_base = params['dirs']['data'] + '/' + params['mol']['Name'] + '/' + params['mol']['Name']
     pes_data_base = params['dirs']['pes_data'] + '/' + params['mol']['Name'] + '/' + params['mol']['Name']
 
@@ -91,14 +106,14 @@ def mkhin(params, fname, var):
     hre = data_base + params['mol']['suffix'] + '_' + '%(var)d' % {'var': var} + 'hre.dat'
 
     # Setting string base for PSOVBR data file locations.
-    vlr = psovbr_data_base + 'vlr.dat'
-    vbr = psovbr_data_base + 'vbr.dat'
+    vlr = psovbr_data_base + 'lr.dat'
+    vbr = psovbr_data_base + 'br.dat'
 
     plr = pes_data_base + '_vlr.dat'
     pbr = pes_data_base + '_vbr.dat'
 
-    write_string = '%(jtol)d %(parity)s ' % {'jtol': params['hin_opts']['jtotal'],
-                                              'parity': params['hin_opts']['parity']}
+    write_string = '%(jtol)d %(parity)s ' % {'jtol': params['hin_opts']['j_total'],
+                                             'parity': params['hin_opts']['parity']}
 
     write_string += '%(jmax)d %(ngi)d \n' % {'jmax': params['hin_opts']['jmax'],
                                              'ngi': params['hin_opts']['ngi']}
@@ -136,4 +151,3 @@ def mkhin(params, fname, var):
     fhin.write(write_string)
     fhin.close()
     print '    File Generated: ' + fname
-

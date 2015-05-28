@@ -27,7 +27,7 @@ import Triatomic.MakeFiles
 #############################################################################################################
 run_opts = dict(
     version=-1,
-    conv_option=-1,
+    conv_option=0,
     nvar=[120, 130, 140],       # values of convergence parameter, list length specifies how many jobs in script
     nodes_desired=1,            # number of nodes requested for mpi job.  Number of cores depends on platform
     local_cores=4,              # if dirs['host'] is 'local', number of cores desired to run mpi jobs
@@ -57,11 +57,11 @@ mol = dict(
 #    host options: local, Robinson, Hrothgar, Lonestar
 #############################################################################################################
 dirs = dict(
-    host='Lonestar',
-    work='/work/01670/corpetty/work/ozone',
-    home='/home1/01670/corpetty',
-    data='/scratch/01670/corpetty/DataFiles',
-    scalit='/work/01670/corpetty/ScalIT-ozone'
+    host='local',
+    work='/Users/coreypetty/work/ozone',
+    home='/Users/coreypetty',
+    data='/Users/coreypetty/work/ozone/data',
+    scalit='/Users/coreypetty/work/ScalIT-ozone'
 )
 #############################################################################################################
 #           PRESINC Construction (*.pin file) Parameters
@@ -142,57 +142,56 @@ hin_opts = dict(
 #                           "mE0 mDE mBeta nCnt"
 #   opt3:                do not save wave function
 #############################################################################################################
+# in_opts = dict(
+#     opt0='F F F\n',
+#     opt1='1 0\n',
+#     opt2='F T F F\n',
+#     bjQMR='10 1.0D-3 10000 1.0D-3\n',
+#     pistConv='0.0 1.0D-9 50 10 400 30 5\n',
+#     nState='0.0 1.0D-3 10.0 1000\n',
+#     opt3='0 0 0 0 0\n',
+# )
 in_opts = dict(
-    opt0='F F F\n',
-    opt1='1 0\n',
-    opt2='F T F F\n',
-    bjQMR='10 1.0D-3 10000 1.0D-3\n',
-    pistConv='0.0 1.0D-9 50 10 400 30 5\n',
-    nState='0.0 1.0D-3 10.0 1000\n',
-    opt3='0 0 0 0 0\n',
-)
-# TODO: Create descriptions for all these
-in_opts2 = dict(
+    sF='3',
     sDep=['F', 'F', 'F'],
-    sJOB=1,
-    sOSB=0,
+    sJOB='1',
+    sOSB='0',
     sCX='F',
     sNDVR='T',
     sST='T',
     sAP='F',
-    bj_NumberIters=10,
+    bj_NumberIters='10',
     bj_Tolerance='1.0D-3',
-    qmr_NumberIters=10000,
+    qmr_NumberIters='10000',
     qmr_Tolerance='1.0D-3',
-    pist_E0=0.0,
+    pist_E0='0.0',
     pist_LancToler='1.0D-9',
-    pist_nStart=50,
-    pist_nStep=10,
-    pist_nMax=400,
-    pist_nGap=5,
-    osb_mE0=0.0,
+    pist_nStart='50',
+    pist_nStep='10',
+    pist_nMax='400',
+    pist_nGap='5',
+    osb_mE0='0.0',
     osb_mDE='1.0D-3',
-    osb_mBeta=1.0,
-    osb_nCnt=1000,
-    sHOSB=0,
-    sVOSB=0,
-    sHW=0,
-    sVX=0,
-    sPT=0
+    osb_mBeta='1.0',
+    osb_nCnt='1000',
+    sHOSB='0',
+    sVOSB='0',
+    sHW='0',
+    sVX='0',
+    sPT='0'
 )
-# TODO: Create descriptions for all these
+
 in_file_names = dict(
-    fH0='',
-    fRES='',
-    fDep=['', '', ''],
-    fAPP='',
-    fAPR='',
-    fHOSB='',
-    fVOSB='',
-    fEig='',
-    fHW='',
-    fVX='',
-    fPT=''
+    fRES='fRES.dat',
+    fDep=['fDep1.dat', 'fDep2.dat', 'fDep3.dat'],
+    fAPP='fAPP.dat',
+    fAPR='fAPR.dat',
+    fHOSB='fHOSB.dat',
+    fVOSB='fVOSB.dat',
+    fEig='fEig.dat',
+    fHW='fHW.dat',
+    fVX='fVW.dat',
+    fPT='fPT.dat'
 )
 #############################################################################################################
 # Actual routine call DO NOT CHANGE
@@ -201,6 +200,7 @@ params = dict(
     pin_opts=pin_opts,
     hin_opts=hin_opts,
     in_opts=in_opts,
+    in_file_names=in_file_names,
     mol=mol,
     dirs=dirs
 )

@@ -107,4 +107,3 @@ def mkhin(params, fname, var):
     fhin.write(write_string)
     fhin.close()
     print '    File Generated: ' + fname
-

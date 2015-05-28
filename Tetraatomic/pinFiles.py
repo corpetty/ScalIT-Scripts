@@ -116,5 +116,3 @@ def mkpin(params):
         fh.write(pbr + '\n')
     fh.close()
     print '    File Generated: ' + work_base + 'BR.pin'
-
-

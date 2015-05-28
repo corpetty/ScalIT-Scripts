@@ -50,11 +50,11 @@ def mkpin(params):
 
     pes_data_base = params['dirs']['pes_data'] + '/' + params['mol']['Name'] + '/' + params['mol']['Name']
     work_base = params['dirs']['run_work_dir'] + '/' + params['mol']['Name']
-    data_base = params['dirs']['run_data_dir'] + '/' + params['mol']['Name']
+    data_base = params['dirs']['run_data_dir'] + '/' + 'presinc_'
 
     # Setting up string base for output files of *.pin
-    vlr = data_base + 'vlr.dat'
-    vbr = data_base + 'vbr.dat'
+    vlr = data_base + 'lr.dat'
+    vbr = data_base + 'BR.dat'
 
     # Setting up string base for PES eff potential input files
     plr = pes_data_base + '_vlr.dat'
@@ -93,5 +93,3 @@ def mkpin(params):
         fh.write(pbr + '\n')
     fh.close()
     print '    File Generated: ' + work_base + 'BR.pin'
-
-

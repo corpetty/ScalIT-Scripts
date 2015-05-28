@@ -51,11 +51,11 @@ def mka3(params):
             fhin = '%(fb)s_%(x)d%(suf)s' % {'fb': file_base, 'x': x, 'suf': '.hin'}
             inFiles.mkhin(params, fhin, x)
             fin = '%(fb)s_%(x)d%(suf)s' % {'fb': file_base, 'x': x, 'suf': '.in'}
-            params['in_opts']['ndvr'] = '3 %(nlr)d %(nBR)d %(nA0)d\n' % {'nlr': params['hin_opts']['num_lr_functions'],
-                                                                         'nBR': params['hin_opts']['num_Br_functions'],
-                                                                         'nA0': params['hin_opts']['theta']}
-            params['in_opts']['fh0'] = data_base + '_%(x)d' % {'x': x} + 'h0.dat\n'
-            params['in_opts']['fhgm'] = data_base + '_%(x)d' % {'x': x} + 'hgm.dat\n'
-            params['in_opts']['fpt'] = data_base + '_%(x)d' % {'x': x} + 'wf.dat\n'
-            inFiles.mkin(params['in_opts'], fin)
+            params['in_opts']['num_lr_functions'] = str(params['hin_opts']['num_lr_functions'])
+            params['in_opts']['num_Br_functions'] = str(params['hin_opts']['num_Br_functions'])
+            params['in_opts']['theta'] = str(params['hin_opts']['theta'])
+            params['in_file_names']['fH0'] = data_base + '_%(x)d' % {'x': x} + 'h0.dat'
+            params['in_file_names']['fH0gm'] = data_base + '_%(x)d' % {'x': x} + 'hgm.dat'
+            params['in_file_names']['fPt'] = data_base + '_%(x)d' % {'x': x} + 'wf.dat'
+            inFiles.mkin(params['in_opts'], params['in_file_names'], fin)
         shFiles.mkmsh(params)

@@ -62,7 +62,7 @@ def get_sh_header(params):
                  + '#$ -o $JOB_NAME.' + str(params['mpi']['cores'])      \
                  + '.$JOB_ID.out                                     \n' \
                  + '#$ -e $JOB_NAME.e$JOB_ID                         \n' \
-                 + '#$ -q normal                                     \n' \
+                 + '#$ -q normal.q                                      \n' \
                  + '#$ -pe mpi ' + str(params['mpi']['cores']) + '   \n' \
                  + "BIN_DIR='" + params['dirs']["bin"] + "'          \n" \
                  + "WK_DIR='" + params['dirs']["run_work_dir"] + "'\n\n" \
