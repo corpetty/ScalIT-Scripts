@@ -70,14 +70,17 @@ def get_sh_header(params):
     elif params['dirs']['host'] == 'local':
         header = '#!/bin/bash                                        \n' \
                  + "WK_DIR='" + params['dirs']["run_work_dir"] + "'  \n" \
-                 + "BIN_DIR='" + params['dirs']["bin"] + "'      \n  \n"
+                 + "BIN_DIR='" + params['dirs']["bin"] + "'      \n  \n" \
+                 + 'date \n'
     else:
         header = "#!/bin/bash                                         \n" \
                  + '## Create your own header ##                      \n' \
                  + "BIN_DIR='" + params['dirs']['bin'] + "'           \n" \
-                 + "WK_DIR='" + params['dirs']["run_work_dir"] + "' \n\n"
+                 + "WK_DIR='" + params['dirs']["run_work_dir"] + "' \n\n" \
+                 + 'date \n'
 
     return header
+
 
 
 def mkmsh(params):
@@ -97,6 +100,7 @@ def mkmsh(params):
         fh.write(params['mpi']['cmd'] + ' ' + params['mpi']['hin'] + ' <  ' + fhin + ' >  ' + fhout + '\n')
         fh.write(params['mpi']['cmd'] + ' ' + params['mpi']['in'] + ' <  ' + fin + ' >  ' + fout + '\n')
         fh.write(') &\n\n')
+    fh.write('wait \n')
     fh.write('date')
     fh.close()
     posix.system('chmod u+x ' + sfile)

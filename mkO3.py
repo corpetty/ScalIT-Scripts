@@ -1,3 +1,4 @@
+# coding=utf-8
 __author__ = 'Corey Petty'
 # !/usr/bin/env python
 
@@ -87,7 +88,7 @@ pin_opts = dict(
 #############################################################################################################
 #           Hamiltonian Construction (*.hin file) Parameters
 #
-#   jtotal:                     Total angular momentum quantum number, J
+#   j_total:                    Total angular momentum quantum number, J
 #   jmax:                       Number of basis functions associated with little j
 #   permutation:                Permutation symmmetry
 #                                   'e' : even
@@ -129,29 +130,57 @@ hin_opts = dict(
     ReFlag=0
 )
 #############################################################################################################
-#          Diagonalization Step (*.in file) Parameters
-# TODO: Fill in descriptions of all variables here
-#   opt0:                coordinator dependence
-#   opt1:                "task osb_preconditioner"
-#   opt2:                "store_all complex "
-#   bjQMR:               block_Jacobi/QMR
-#                           "bjNum bjToler qmrNum qmrToler"
-#   pistConv:            PIST convergence
-#                           "E0 LancToler nStart nStep nMax nNum nGap"
-#   nState:              OSB parameters
-#                           "mE0 mDE mBeta nCnt"
-#   opt3:                do not save wave function
+#          Diagonalization Step (*.in file) Switches
+#   sF:             Number of layers in Hamiltonian
+#                       3 : If no radial dimensional combination is used (default)
+#                       2 : If radial dimensional combination is used
+#   sDep:           Whether or not coordinate dependancy exist
+#                       'T' : exists
+#                       'F' : does not exist (default)
+#   sJOB:           Type of job to run
+#                       1     : Bound states (default)
+#                       2,3   : Resonance States (disabled currently)
+#                       4,5,6 : CRP calculations (disabled currently)
+#   sOSB:           Choice of OSB preconditioning
+#                       1 : Simple OSB Preconditioning  (Eig − E0)^−1
+#                       2 : First OSBD Preconditioning  (Eig − E0)^−1 or mDE^−1
+#                       3 : Second OSBD Preconditioning (Eig − E0)^−1 or [(1−β)⋆DE+β(E−E0)]^−1
+#                       4 : OSBW Preconditioning        (Eig − E0)^−1 or Hp^−1
+#   sCX:            Whether matrices are complex
+#                       'T' : matrices are complex
+#                       'F' : matrices are not complex
+#   sNDVR:          Whether DVR is used in outermost layer
+#                       'T' : DVR is used in outermost layer
+#                       'F' : DVR is NOT used in outermost layer
+#   sST:            Whether off-diagonal matrices of HOSB are stored in memory
+#                       'T' : matrices are stored in memory
+#                       'F' : matrices are NOT stored
+#   sAP:            Whether absorbtion potentials exist
+#                       'T' : they exist
+#                       'F' : they do NOT exist
+#   sHOSB:          Whether to store or load HOSB data file
+#                       < 0 : load HOSB data file
+#                         0 : Do nothing
+#                       > 0 : save HOSB data file
+#   sVOSB:          Whether to store or load VOSB data file
+#                       < 0 : load VOSB data file
+#                         0 : Do nothing
+#                       > 0 : save VOSB data file
+#   sHW:            Whether to store or laod HW0 and OSBW data file
+#                       < 0 : load data file
+#                         0 : Do nothing
+#                       > 0 : save data file
+#   sVX:            Whether to store or load PIST initial vector data file
+#                       < 0 : load data file
+#                         0 : Do nothing
+#                       > 0 : save data file
+#   sPT:            Whether to store or load PIST final vector data file
+#                       < 0 : load data file
+#                         0 : Do nothing
+#                       > 0 : save data file
+#
 #############################################################################################################
-# in_opts = dict(
-#     opt0='F F F\n',
-#     opt1='1 0\n',
-#     opt2='F T F F\n',
-#     bjQMR='10 1.0D-3 10000 1.0D-3\n',
-#     pistConv='0.0 1.0D-9 50 10 400 30 5\n',
-#     nState='0.0 1.0D-3 10.0 1000\n',
-#     opt3='0 0 0 0 0\n',
-# )
-in_opts = dict(
+in_switches = dict(
     sF='3',
     sDep=['F', 'F', 'F'],
     sJOB='1',
@@ -160,6 +189,32 @@ in_opts = dict(
     sNDVR='T',
     sST='T',
     sAP='F',
+    sHOSB='0',
+    sVOSB='0',
+    sHW='0',
+    sVX='0',
+    sPT='0'
+)
+#############################################################################################################
+#          Diagonalization Step (*.in file) Switches
+#
+#   bj_NumberIters:     Number of iterations for Block-Jacobi diagonalization
+#   bj_Tolerance:       Tolerance threshhold for Block-Jacobi diagonalization
+#   qmr_NumberIters:    Number of iterations for QMR
+#   qmr_Tolerance:      Desired tolerance for QMR
+#   pist_E0:            Central energy for PIST (THIS IS WHERE YOUR EIGENVALUES WILL BE CENTERED ON)
+#   pist_LancToler:     Error Tolerance for Lanczos (THIS IS OVERALL ERROR OF RUN)
+#   pist_nStart:        Iteration that starts to check Lanczos tolerance
+#   pist_nStep:         How many Lanczos iterations before rechecking for tolerance
+#   pist_nMax:          Maximum number of Lanczos iterations before quitting
+#   pist_nGap:          How many previous iterations to compare to for tolerance check
+#   osb_mE0:            Central energy of Wyatt window (This Must be close to pist_E0)
+#   osb_mDE:            Threshold energy to ...... TODO: explain this
+#   osb_mBeta:          Parameter for OSBD, as can be seen in sOSB options
+#   osb_nCnt:           Number of desired eigenenergies to converge to pist_LancToler
+#
+#############################################################################################################
+in_parameters = dict(
     bj_NumberIters='10',
     bj_Tolerance='1.0D-3',
     qmr_NumberIters='10000',
@@ -174,13 +229,22 @@ in_opts = dict(
     osb_mDE='1.0D-3',
     osb_mBeta='1.0',
     osb_nCnt='1000',
-    sHOSB='0',
-    sVOSB='0',
-    sHW='0',
-    sVX='0',
-    sPT='0'
 )
-
+#############################################################################################################
+#          Diagonalization Step (*.in file) Switches
+#
+#   fRES:
+#   fDep:
+#   fAPP:
+#   fAPR:
+#   fHOSB:
+#   fVOSB:
+#   fEig:
+#   fHW:
+#   fVX:
+#   fPT:
+#
+#############################################################################################################
 in_file_names = dict(
     fRES='fRES.dat',
     fDep=['fDep1.dat', 'fDep2.dat', 'fDep3.dat'],
@@ -194,7 +258,10 @@ in_file_names = dict(
     fPT='fPT.dat'
 )
 #############################################################################################################
-# Actual routine call DO NOT CHANGE
+# Actual routine call DO NOT CHANGE ANYTHING BELOW THIS!
+in_opts = dict()
+in_opts.update(in_switches)
+in_opts.update(in_parameters)
 params = dict(
     run_opts=run_opts,
     pin_opts=pin_opts,

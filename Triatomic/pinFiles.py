@@ -2,18 +2,17 @@ __author__ = 'Corey Petty'
 # !/bin/env python
 
 import posix
-
 from Util import shFiles
 
 
 def mkpsh(params):
     """
     Create *.sh script files for PRESINC sequential module.
-    :param params['mol']: 
-    :param params['dirs']: 
+    :param params['mol']:
+    :param params['dirs']:
     :return:
     """
-    
+
     script_file = params['dirs']['run_work_dir'] + '/' + params['mol']['Name'] + '.sh'
 
     work_base = "$WK_DIR/" + params['mol']['Name']
@@ -93,3 +92,5 @@ def mkpin(params):
         fh.write(pbr + '\n')
     fh.close()
     print '    File Generated: ' + work_base + 'BR.pin'
+
+
