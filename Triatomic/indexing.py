@@ -68,7 +68,7 @@ def check_jknum(params):
     else:
         params['hin_opts']['theta'] = get3size(params['hin_opts']['permutation'],
                                                params['hin_opts']['parity'],
-                                               params['hin_opts']['jtotal'],
+                                               params['hin_opts']['j_total'],
                                                params['hin_opts']['jmax'])
     if (get3size(params['hin_opts']['permutation'],
                  params['hin_opts']['parity'],
