@@ -207,11 +207,12 @@ in_switches = dict(
 #   pist_nStart:        Iteration that starts to check Lanczos tolerance
 #   pist_nStep:         How many Lanczos iterations before rechecking for tolerance
 #   pist_nMax:          Maximum number of Lanczos iterations before quitting
+#   pist_nE0            The number of eigenvalues to be calculated
 #   pist_nGap:          How many previous iterations to compare to for tolerance check
 #   osb_mE0:            Central energy of Wyatt window (This Must be close to pist_E0)
 #   osb_mDE:            Threshold energy to ...... TODO: explain this
 #   osb_mBeta:          Parameter for OSBD, as can be seen in sOSB options
-#   osb_nCnt:           Number of desired eigenenergies to converge to pist_LancToler
+#   osb_nCnt:           Size of Wyatt energy window centered on osb_mE0
 #
 #############################################################################################################
 in_parameters = dict(
@@ -224,6 +225,7 @@ in_parameters = dict(
     pist_nStart='50',
     pist_nStep='10',
     pist_nMax='400',
+    pist_nE0='30',
     pist_nGap='5',
     osb_mE0='0.0',
     osb_mDE='1.0D-3',

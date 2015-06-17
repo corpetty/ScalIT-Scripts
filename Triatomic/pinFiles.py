@@ -23,7 +23,7 @@ def mkpsh(params):
 
     bin_base = "$BIN_DIR/" + params['mol']['Name'] + '/' + params['mol']['Name']
     plr_cmd = bin_base + 'vlr'
-    pbr_cmd = bin_base + 'vbr'
+    pbr_cmd = bin_base + 'vBR'
 
     fh = open(script_file, 'w')
 

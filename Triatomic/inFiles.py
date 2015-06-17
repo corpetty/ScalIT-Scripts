@@ -38,6 +38,7 @@ def mkin(opts, in_file_names, fname):
                  + opts['pist_nStart'] + ' '
                  + opts['pist_nStep'] + ' '
                  + opts['pist_nMax'] + ' '
+                 + opts['pist_nE0'] + ' '
                  + opts['pist_nGap']
                  + '\n')
     infile.write(opts['osb_mE0'] + ' '
