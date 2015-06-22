@@ -108,10 +108,10 @@ def mkhin(params, fname, var):
 
     # Setting string base for PSOVBR data file locations.
     vlr = psovbr_data_base + 'lr.dat'
-    vbr = psovbr_data_base + 'br.dat'
+    vbr = psovbr_data_base + 'BR.dat'
 
     plr = pes_data_base + '_vlr.dat'
-    pbr = pes_data_base + '_vbr.dat'
+    pbr = pes_data_base + '_vBR.dat'
 
     write_string = '%(jtol)d %(parity)s ' % {'jtol': params['hin_opts']['j_total'],
                                              'parity': params['hin_opts']['parity']}
