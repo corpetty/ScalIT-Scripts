@@ -101,6 +101,8 @@ def mkmsh(params):
         fh.write(params['mpi']['cmd'] + ' ' + params['mpi']['in'] + ' <  ' + fin + ' >  ' + fout + '\n')
         fh.write(') &\n\n')
     fh.write('wait \n')
+    if params['dirs']['hosts'] == 'Robinson' or params['dirs']['hosts'] == 'Lonestar':
+        fh.write('rm machinefile.$JOB_ID \n')
     fh.write('date')
     fh.close()
     posix.system('chmod u+x ' + sfile)
