@@ -4,7 +4,33 @@ import posix
 from Util import setEnvironment
 
 
-def get_sh_header(params):
+def mkmsh(params, variable):
+    header = get_sh_header(params, variable)
+
+    sfile = params['dirs']['run_work_dir'] + '/' + params['mol']["Name"] + params['mol']['suffix'] \
+            + '_' + variable + '.sh'
+    fb0 = '$WK_DIR/' + params['mol']["Name"] + params['mol']['suffix']
+    fh = open(sfile, 'w')
+    fh.write(header)
+    fb = '%(fb)s_%(x)d' % {'fb': fb0, 'x': variable}
+    fhin = fb + '.hin'
+    fhout = fb + '.hout'
+    fin = fb + '.in'
+    fout = fb + '.out'
+    fh.write('(')
+    fh.write(params['mpi']['cmd'] + ' ' + params['mpi']['hin'] + ' <  ' + fhin + ' >  ' + fhout + '\n')
+    fh.write(params['mpi']['cmd'] + ' ' + params['mpi']['in'] + ' <  ' + fin + ' >  ' + fout + '\n')
+    fh.write(') &\n\n')
+    fh.write('wait \n')
+    if params['dirs']['host'] == 'Robinson' or params['dirs']['host'] == 'Lonestar':
+        fh.write('rm machinefile.$JOB_ID \n')
+    fh.write('date')
+    fh.close()
+    posix.system('chmod u+x ' + sfile)
+    print '    File Generated: ' + sfile
+
+
+def get_sh_header(params, variable):
     """
     get the header of script files for various HPC platforms.
     :returns: str
@@ -80,30 +106,3 @@ def get_sh_header(params):
                  + 'date \n'
 
     return header
-
-
-
-def mkmsh(params):
-    header = get_sh_header(params)
-
-    sfile = params['dirs']['run_work_dir'] + '/' + params['mol']["Name"] + params['mol']['suffix'] + '.sh'
-    fb0 = '$WK_DIR/' + params['mol']["Name"] + params['mol']['suffix']
-    fh = open(sfile, 'w')
-    fh.write(header)
-    for x in params['run_opts']['nvar']:
-        fb = '%(fb)s_%(x)d' % {'fb': fb0, 'x': x}
-        fhin = fb + '.hin'
-        fhout = fb + '.hout'
-        fin = fb + '.in'
-        fout = fb + '.out'
-        fh.write('(')
-        fh.write(params['mpi']['cmd'] + ' ' + params['mpi']['hin'] + ' <  ' + fhin + ' >  ' + fhout + '\n')
-        fh.write(params['mpi']['cmd'] + ' ' + params['mpi']['in'] + ' <  ' + fin + ' >  ' + fout + '\n')
-        fh.write(') &\n\n')
-    fh.write('wait \n')
-    if params['dirs']['host'] == 'Robinson' or params['dirs']['host'] == 'Lonestar':
-        fh.write('rm machinefile.$JOB_ID \n')
-    fh.write('date')
-    fh.close()
-    posix.system('chmod u+x ' + sfile)
-    print '    File Generated: ' + sfile

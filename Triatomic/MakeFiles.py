@@ -58,4 +58,4 @@ def mka3(params):
             params['in_file_names']['fH0gm'] = data_base + '_%(x)d' % {'x': x} + 'hgm.dat'
             params['in_file_names']['fPt'] = data_base + '_%(x)d' % {'x': x} + 'wf.dat'
             inFiles.mkin(params['in_opts'], params['in_file_names'], fin)
-        shFiles.mkmsh(params)
+            shFiles.mkmsh(params, x)
