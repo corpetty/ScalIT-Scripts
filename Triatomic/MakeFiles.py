@@ -32,7 +32,7 @@ def mka3(params):
         variable = 'num_Br_functions'
     else:
         params['mol']["suffix"] = "J"
-        variable = "jtotal"
+        variable = "j_total"
 
     # Set working directories, check to see if they exist, create if not.
     setDirectories.set_default_directories(params)

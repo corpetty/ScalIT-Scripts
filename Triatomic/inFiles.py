@@ -114,8 +114,7 @@ def mkhin(params, fname, var):
     pbr = pes_data_base + '_vBR.dat'
 
     write_string = '%(jtol)d %(parity)s ' % {'jtol': params['hin_opts']['j_total'],
-                                             'parity': params['hin_opts']['parity']}
-
+                                            'parity': params['hin_opts']['parity']}
     write_string += '%(jmax)d %(ngi)d \n' % {'jmax': params['hin_opts']['jmax'],
                                              'ngi': params['hin_opts']['ngi']}
 

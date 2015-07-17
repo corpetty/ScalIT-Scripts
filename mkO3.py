@@ -28,8 +28,8 @@ import Triatomic.MakeFiles
 #############################################################################################################
 run_opts = dict(
     version=-1,
-    conv_option=0,
-    nvar=[120, 130, 140],       # values of convergence parameter, list length specifies how many jobs in script
+    conv_option=4,
+    nvar=[1, 2, 3],       # values of convergence parameter, list length specifies how many jobs in script
     nodes_desired=1,            # number of nodes requested for mpi job.  Number of cores depends on platform
     local_cores=4,              # if dirs['host'] is 'local', number of cores desired to run mpi jobs
     run_time='48:00:00'         # used if host == Lonestar (hrs:mins:sec)
