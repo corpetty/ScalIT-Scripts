@@ -18,7 +18,7 @@ def mkmsh(params, variable):
     fin = fb + '.in'
     fout = fb + '.out'
     fh.write('(')
-    fh.write(params['mpi']['cmd'] + ' ' + params['mpi']['hin'] + ' <  ' + fhin + ' >  ' + fhout + '\n')
+    fh.write(params['mpi']['cmdhin'] + ' ' + params['mpi']['hin'] + ' <  ' + fhin + ' >  ' + fhout + '\n')
     fh.write(params['mpi']['cmd'] + ' ' + params['mpi']['in'] + ' <  ' + fin + ' >  ' + fout + '\n')
     fh.write(') &\n\n')
     fh.write('wait \n')

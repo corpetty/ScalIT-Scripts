@@ -16,17 +16,21 @@ def environment_mpi(params):
         mpi['cores_per_node'] = 12
         mpi['cores'] = mpi['cores_per_node'] * params['run_opts']['nodes_desired']
         mpi['cmd'] = 'mpirun -np %(np)d -machinefile machinefile.$JOB_ID' % {'np': mpi['cores_per_node']}
+        mpi['cmdhin'] = 'mpirun -np 4 -machinefile machinefile.$JOB_ID'
     elif params['dirs']['host'] == 'Robinson':
         mpi['cores_per_node'] = 12
         mpi['cores'] = mpi['cores_per_node'] * params['run_opts']['nodes_desired']
         mpi['cmd'] = 'mpirun -np %(np)d -machinefile machinefile.$JOB_ID' % {'np': mpi['cores_per_node']}
+        mpi['cmdhin'] = 'mpirun -np 4 -machinefile machinefile.$JOB_ID'
     elif params['dirs']['host'] == 'Lonestar':
         mpi['cores_per_node'] = 12
         mpi['cores'] = mpi['cores_per_node'] * params['run_opts']['nodes_desired']
         mpi['cmd'] = 'ibrun -n %(np)d -o 0' % {'np': mpi['cores_per_node']}
+        mpi['cmdhin'] = 'ibrun -n 4 -o 0'
     elif params['dirs']['host'] == 'local':
         mpi['cores'] = params['run_opts']['local_cores']
         mpi['cmd'] = 'mpirun -np %(np)d' % {'np': params['run_opts']['local_cores']}
+        mpi['cmdhin'] = 'mpirun -np %(np)d' % {'np': params['run_opts']['local_cores']}
 
     if params['run_opts']['version'] == 0:  # sequential program
         mpi['hin'] = "$BIN_DIR/" + params['mol']['Name'] + '/' \
