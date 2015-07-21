@@ -46,7 +46,8 @@ def get_sh_header(params, variable):
                  + '#$ -S /bin/bash                                             \n' \
                  + '#$ -l h_rt=' + params['run_opts']['run_time'] + '           \n' \
                  + "#$ -N '" + str(params['hin_opts']["j_total"]) + params['mol']["Name"] \
-                 + params['hin_opts']["permutation"] + "'                       \n" \
+                 + params['hin_opts']["permutation"] + '_' + params['mol']['suffix'] \
+                 + str(variable) + "'                                                \n" \
                  + '#$ -o $JOB_NAME.' + str(params['mpi']['cores'])                 \
                  + '.$JOB_ID                                                    \n' \
                  + '#$ -e $JOB_NAME.e$JOB_ID                                    \n' \
