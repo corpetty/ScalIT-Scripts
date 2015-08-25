@@ -27,7 +27,7 @@ def mkpsh(params):
 
     fh = open(script_file, 'w')
 
-    header = shFiles.get_sh_header(params)
+    header = shFiles.get_sh_header(params, "")
     fh.write(header)
 
     fh.write(plr_cmd + ' < ' + fpin_lr + ' > ' + fpout_lr + ' &\n')
