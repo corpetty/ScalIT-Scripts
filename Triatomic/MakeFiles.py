@@ -49,13 +49,15 @@ def mka3(params):
             params['hin_opts'][variable] = x
             indexing.check_jknum(params)
             fhin = '%(fb)s_%(x)d%(suf)s' % {'fb': file_base, 'x': x, 'suf': '.hin'}
+            params['in_file_names']['fH0'] = data_base + '_%(x)d' % {'x': x} + 'h0_' + \
+                                             params['hin_opts']['permutation'] + '.dat'
+            params['in_file_names']['fH0gm'] = data_base + '_%(x)d' % {'x': x} + 'hgm_' + \
+                                               params['hin_opts']['permutation'] + '.dat'
             inFiles.mkhin(params, fhin, x)
             fin = '%(fb)s_%(x)d%(suf)s' % {'fb': file_base, 'x': x, 'suf': '.in'}
             params['in_opts']['num_lr_functions'] = str(params['hin_opts']['num_lr_functions'])
             params['in_opts']['num_Br_functions'] = str(params['hin_opts']['num_Br_functions'])
             params['in_opts']['theta'] = str(params['hin_opts']['theta'])
-            params['in_file_names']['fH0'] = data_base + '_%(x)d' % {'x': x} + 'h0.dat'
-            params['in_file_names']['fH0gm'] = data_base + '_%(x)d' % {'x': x} + 'hgm.dat'
             params['in_file_names']['fPt'] = data_base + '_%(x)d' % {'x': x} + 'wf.dat'
             inFiles.mkin(params['in_opts'], params['in_file_names'], fin)
             shFiles.mkmsh(params, x)

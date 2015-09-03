@@ -102,9 +102,8 @@ def mkhin(params, fname, var):
     data_base = params['dirs']['data'] + '/' + params['mol']['Name'] + '/' + params['mol']['Name']
     pes_data_base = params['dirs']['pes_data'] + '/' + params['mol']['Name'] + '/' + params['mol']['Name']
 
-    h0 = data_base + params['mol']['suffix'] + '_' + '%(var)d' % {'var': var} + 'h0.dat'
-    h1 = data_base + params['mol']['suffix'] + '_' + '%(var)d' % {'var': var} + 'hgm.dat'
-    hre = data_base + params['mol']['suffix'] + '_' + '%(var)d' % {'var': var} + 'hre.dat'
+    hre = data_base + params['mol']['suffix'] + '_' + '%(var)d' % {'var': var} + 'hre_' \
+        + params['hin_opts']['permutation'] + '.dat'
 
     # Setting string base for PSOVBR data file locations.
     vlr = psovbr_data_base + 'lr.dat'
@@ -114,7 +113,7 @@ def mkhin(params, fname, var):
     pbr = pes_data_base + '_vBR.dat'
 
     write_string = '%(jtol)d %(parity)s ' % {'jtol': params['hin_opts']['j_total'],
-                                            'parity': params['hin_opts']['parity']}
+                                             'parity': params['hin_opts']['parity']}
     write_string += '%(jmax)d %(ngi)d \n' % {'jmax': params['hin_opts']['jmax'],
                                              'ngi': params['hin_opts']['ngi']}
 
@@ -125,7 +124,7 @@ def mkhin(params, fname, var):
                        'useSP': params['pin_opts']['useSP'],
                        'Ecutoff': params['hin_opts']['Ecutoff']}
 
-    write_string += h0 + '\n' + h1 + '\n'
+    write_string += params['in_file_names']['fH0'] + '\n' + params['in_file_names']['fH0gm'] + '\n'
 
     write_string += '%(mass1)f %(re1)f %(ndvr1)d\n' \
                     % {'mass1': params['mol']['mass'][0],
