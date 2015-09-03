@@ -42,7 +42,7 @@ def mkpsh(params):
 def mkpin(params):
     """
     Create the header of *.pin script files.
-    :param params['mol']:  run parameters of working params['mol']ecule
+    :param params['mol']:  run parameters of working molecule
     :param params['dirs']: relevant directories of host
     :return: null
     """

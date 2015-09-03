@@ -1,7 +1,7 @@
 __author__ = 'Corey Petty'
 
-import posix
 import posixpath
+import os
 
 
 def set_default_directories(params):
@@ -21,25 +21,25 @@ def set_default_directories(params):
 
     if not posixpath.exists(params['dirs']['work']):
         print '    Creating: ' + params['dirs']['work']
-        posix.mkdir(params['dirs']['work'])
+        os.makedirs(params['dirs']['work'])
     else:
         print '    Directory Exists: ' + params['dirs']['work']
 
     if not posixpath.exists(params['dirs']['run_work_dir']):
         print '    Creating: ' + params['dirs']['run_work_dir']
-        posix.mkdir(params['dirs']['run_work_dir'])
+        os.makedirs(params['dirs']['run_work_dir'])
     else:
         print '    Directory Exists: ' + params['dirs']['run_work_dir']
 
     if not posixpath.exists(params['dirs']['data']):
         print '    Creating: ' + params['dirs']['data']
-        posix.mkdir(params['dirs']['data'])
+        os.makedirs(params['dirs']['data'])
     else:
         print '    Directory Exists: ' + params['dirs']['data']
 
     if not posixpath.exists(params['dirs']['run_data_dir']):
         print '    Creating: ' + params['dirs']['run_data_dir']
-        posix.mkdir(params['dirs']['run_data_dir'])
+        os.makedirs(params['dirs']['run_data_dir'])
     else:
         print '    Directory Exists: ' + params['dirs']['run_data_dir']
 
@@ -47,6 +47,6 @@ def set_default_directories(params):
         params['dirs']['run_data_dir'] += '/psovbr'
         if not posixpath.exists(params['dirs']['run_data_dir']):
             print '    Creating: ' + params['dirs']['run_data_dir']
-            posix.mkdir(params['dirs']['run_data_dir'])
+            os.makedirs(params['dirs']['run_data_dir'])
         else:
             print '    Directory Exists: ' + params['dirs']['run_data_dir']
