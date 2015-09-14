@@ -95,14 +95,15 @@ def mkhin(params, fname, var):
     :return:
     """
     if params['mol']['suffix'] != 'p':
-        if not posixpath.exists(params['dirs']['data'] + '/' + params['mol']['Name'] + '/psovbr/'):
+        if not posixpath.exists(params['dirs']['psovbr_dir']):
             print "     PRESINC data files aren't found, please run option = -1"
+            exit()
 
-    psovbr_data_base = params['dirs']['data'] + '/' + params['mol']['Name'] + '/psovbr/' + 'presinc_'
-    data_base = params['dirs']['data'] + '/' + params['mol']['Name'] + '/' + params['mol']['Name']
+    psovbr_data_base = params['dirs']['psovbr_dir'] + '/' + 'presinc_'
+    data_base = params['dirs']['data'] + '/' + params['mol']['Name'] + '/'
     pes_data_base = params['dirs']['pes_data'] + '/' + params['mol']['Name'] + '/' + params['mol']['Name']
 
-    hre = data_base + params['mol']['suffix'] + '_' + '%(var)d' % {'var': var} + 'hre_' \
+    hre = data_base + params['mol']['suffix'] + '_' + '%(var)d' % {'var': var} + '-hre_' \
         + params['hin_opts']['permutation'] + '.dat'
 
     # Setting string base for PSOVBR data file locations.

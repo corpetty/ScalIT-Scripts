@@ -7,9 +7,8 @@ from Util import setEnvironment
 def mkmsh(params, variable):
     header = get_sh_header(params, variable)
 
-    sfile = params['dirs']['run_work_dir'] + '/' + params['mol']["Name"] + params['mol']['suffix'] \
-            + '_' + str(variable) + '.sh'
-    fb0 = '$WK_DIR/' + params['mol']["Name"] + params['mol']['suffix']
+    sfile = params['dirs']['run_dir'] + '/' + params['mol']['suffix'] + '_' + str(variable) + '.sh'
+    fb0 = '$WK_DIR/' + params['mol']['suffix']
     fh = open(sfile, 'w')
     fh.write(header)
     fb = '%(fb)s_%(x)d' % {'fb': fb0, 'x': variable}
@@ -54,7 +53,7 @@ def get_sh_header(params, variable):
                  + '#$ -q normal                                                \n' \
                  + '#$ -pe 12way ' + str(params['mpi']['cores']) + '            \n' \
                  + "BIN_DIR='" + params['dirs']["bin"] + "'                     \n" \
-                 + "WK_DIR='" + params['dirs']["run_work_dir"] + "'           \n\n" \
+                 + "WK_DIR='" + params['dirs']["run_dir"] + "'           \n\n" \
                  + 'date \n'
     # Hrothgar cluster at TTU - 13 March 2015
     elif params['dirs']['host'] == 'Hrothgar':
@@ -73,7 +72,7 @@ def get_sh_header(params, variable):
                  + '#$ -P hrothgar                                              \n' \
                  + '#$ -pe mpi ' + str(params['mpi']['cores']) + '              \n' \
                  + "BIN_DIR='" + params['dirs']["bin"] + "'                     \n" \
-                 + "WK_DIR='" + params['dirs']["run_work_dir"] + "'           \n\n" \
+                 + "WK_DIR='" + params['dirs']["run_dir"] + "'           \n\n" \
                  + 'date \n'
     # Robinson Cluster at TTU Chemistry - 13 March 2015
     elif params['dirs']['host'] == 'Robinson':
@@ -92,18 +91,18 @@ def get_sh_header(params, variable):
                  + '#$ -q normal.q                                      \n' \
                  + '#$ -pe mpi ' + str(params['mpi']['cores']) + '   \n' \
                  + "BIN_DIR='" + params['dirs']["bin"] + "'          \n" \
-                 + "WK_DIR='" + params['dirs']["run_work_dir"] + "'\n\n" \
+                 + "WK_DIR='" + params['dirs']["run_dir"] + "'\n\n" \
                  + 'date\n'
     elif params['dirs']['host'] == 'local':
         header = '#!/bin/bash                                        \n' \
-                 + "WK_DIR='" + params['dirs']["run_work_dir"] + "'  \n" \
+                 + "WK_DIR='" + params['dirs']["run_dir"] + "'       \n" \
                  + "BIN_DIR='" + params['dirs']["bin"] + "'      \n  \n" \
                  + 'date \n'
     else:
         header = "#!/bin/bash                                         \n" \
                  + '## Create your own header ##                      \n' \
                  + "BIN_DIR='" + params['dirs']['bin'] + "'           \n" \
-                 + "WK_DIR='" + params['dirs']["run_work_dir"] + "' \n\n" \
+                 + "WK_DIR='" + params['dirs']["run_dir"] + "' \n\n" \
                  + 'date \n'
 
     return header

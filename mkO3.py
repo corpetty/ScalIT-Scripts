@@ -28,7 +28,7 @@ import Triatomic.MakeFiles
 #############################################################################################################
 run_opts = dict(
     version=-1,
-    conv_option=4,
+    conv_option=2,
     nvar=[1, 2, 3],       # values of convergence parameter, list length specifies how many jobs in script
     nodes_desired=1,            # number of nodes requested for mpi job.  Number of cores depends on platform
     local_cores=4,              # if dirs['host'] is 'local', number of cores desired to run mpi jobs
@@ -40,6 +40,7 @@ run_opts = dict(
 #   Molecular Parameters
 #
 #   Name:           name of molecular system as ScalIT sees it
+#   mass_opt:       personal isotopic mass label (book keeping parameter)
 #   mass:           reduced masses for little r and Big r
 #   re:             equilibrium distances for little r and Big R
 #   Rmin:           minimum distance in coordinate range for little r and Big R
@@ -47,10 +48,11 @@ run_opts = dict(
 #############################################################################################################
 mol = dict(
     Name='ozone',
+    mass_opt='mix',
     mass=(14578.471659, 9718.981106),
     Rmin=(1.5, 0.0),
     Rmax=(6.0, 5.0),
-    re=(2.401, 1.256),
+    re=(2.401, 1.256)
 )
 #############################################################################################################
 #           Relevant User Directories

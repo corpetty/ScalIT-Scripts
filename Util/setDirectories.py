@@ -14,8 +14,37 @@ def set_default_directories(params):
     params['dirs']['bin'] = params['dirs']['scalit'] + '/' + 'bin'
     params['dirs']['pes'] = params['dirs']['scalit'] + '/' + 'src/systems'
     params['dirs']['pes_data'] = params['dirs']['scalit'] + '/' + 'data'
-    params['dirs']['run_work_dir'] = params['dirs']['work'] + '/' + params['mol']['Name'] + params['mol']['suffix']
-    params['dirs']['run_data_dir'] = params['dirs']['data'] + '/' + params['mol']['Name']
+
+    # Setting the directory script/input/output files will be stored for runs (usually $WORK space)
+    params['dirs']['work_mol_dir'] = params['dirs']['work'] + '/' + params['mol']['Name']
+    if params['mol']['mass_opt'] == '':
+        params['dirs']['run_dir'] = params['dirs']['work_mol_dir']
+    else:
+        params['dirs']['run_dir'] = params['dirs']['work_mol_dir'] + '/' + params['mol']['mass_opt']
+    if params['hin_opts']['permutation'] == 'e':
+        params['dirs']['run_dir'] += '/even'
+    else:
+        params['dirs']['run_dir'] += '/odd'
+    params['dirs']['run_dir'] += '/' + params['mol']['suffix']
+
+    # Setting the directory data files will be stored for jobs (usually $SCRATCH space)
+    params['dirs']['data_mol_dir'] = params['dirs']['data'] + '/' + params['mol']['Name']
+    if params['mol']['mass_opt'] == '':
+        params['dirs']['run_data_dir'] = params['dirs']['data_mol_dir']
+    else:
+        params['dirs']['run_data_dir'] = params['dirs']['data_mol_dir'] + '/' + params['mol']['mass_opt']
+    if params['hin_opts']['permutation'] == 'e':
+        params['dirs']['run_data_dir'] += '/even'
+    else:
+        params['dirs']['run_data_dir'] += '/odd'
+
+
+    if params['mol']['mass_opt'] == '':
+        params['dirs']['psovbr_dir'] = params['dirs']['data_mol_dir']
+    else:
+        params['dirs']['psovbr_dir'] = params['dirs']['data_mol_dir'] + '/' + params['mol']['mass_opt']
+    params['dirs']['psovbr_dir'] += '/psovbr'
+
 
     print '----> Checking for directory existence'
 
@@ -25,11 +54,11 @@ def set_default_directories(params):
     else:
         print '    Directory Exists: ' + params['dirs']['work']
 
-    if not posixpath.exists(params['dirs']['run_work_dir']):
-        print '    Creating: ' + params['dirs']['run_work_dir']
-        os.makedirs(params['dirs']['run_work_dir'])
+    if not posixpath.exists(params['dirs']['run_dir']):
+        print '    Creating: ' + params['dirs']['run_dir']
+        os.makedirs(params['dirs']['run_dir'])
     else:
-        print '    Directory Exists: ' + params['dirs']['run_work_dir']
+        print '    Directory Exists: ' + params['dirs']['run_dir']
 
     if not posixpath.exists(params['dirs']['data']):
         print '    Creating: ' + params['dirs']['data']
@@ -44,9 +73,10 @@ def set_default_directories(params):
         print '    Directory Exists: ' + params['dirs']['run_data_dir']
 
     if params['mol']['suffix'] == 'p':
-        params['dirs']['run_data_dir'] += '/psovbr'
-        if not posixpath.exists(params['dirs']['run_data_dir']):
-            print '    Creating: ' + params['dirs']['run_data_dir']
-            os.makedirs(params['dirs']['run_data_dir'])
+
+        # Setting the psovbr data directory
+        if not posixpath.exists(params['dirs']['psovbr_dir']):
+            print '    Creating: ' + params['dirs']['psovbr_dir']
+            os.makedirs(params['dirs']['psovbr_dir'])
         else:
-            print '    Directory Exists: ' + params['dirs']['run_data_dir']
+            print '    Directory Exists: ' + params['dirs']['psovbr_dir']
