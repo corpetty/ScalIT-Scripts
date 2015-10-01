@@ -30,6 +30,9 @@ def mka3(params):
     elif params['run_opts']['conv_option'] == 3:
         params['mol']["suffix"] = "R"
         variable = 'num_Br_functions'
+    elif params['run_opts']['conv_option'] == 4:
+        params['mol']["suffix"] = ""
+        variable = ''
     else:
         params['mol']["suffix"] = "J"
         variable = "j_total"

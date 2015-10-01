@@ -1,7 +1,6 @@
 # coding=utf-8
 __author__ = 'Corey Petty'
 # !/usr/bin/env python
-
 import Triatomic.MakeFiles
 
 #############################################################################################################
@@ -17,6 +16,7 @@ import Triatomic.MakeFiles
 # conv_option = [2-3], fix jmax, nA0
 # conv_option = 2: fix R;       r convergence testing
 # conv_option = 3: fix r;       R convergence testing
+# conv_option = 4: single run   specify all basis sizes
 #
 # other options: fix jmax, r, R; variable of J Total
 #
@@ -128,7 +128,7 @@ hin_opts = dict(
     FcFlag=0,
     CbFlag=0,
     AbsFlag=0,
-    Ecutoff=0.1,
+    Ecutoff=0.1,  # TODO: This should be set automatically by molecule
     ReFlag=0
 )
 #############################################################################################################
