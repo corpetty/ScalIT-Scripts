@@ -1,7 +1,7 @@
 __author__ = 'Corey Petty'
 # !/usr/bin/env python
 
-import Tetraatomic.MakeFiles
+import Tetraatomic_deprecated.MakeFiles
 
 #############################################################################################################
 # do convergence testing for tri-atomic molecules.
@@ -168,4 +168,4 @@ params = dict(
     mol=mol,
     dirs=dirs
 )
-Tetraatomic.MakeFiles.mka4(params)
+Tetraatomic_deprecated.MakeFiles.mka4(params)

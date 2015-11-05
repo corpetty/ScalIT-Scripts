@@ -1,0 +1,19 @@
+MPI = 
+PATH = 
+EXECUTATBLE = 
+INFILE = 
+OUTFILE = 
+
+#!/bin/bash
+#$ -V
+#$ -cwd
+#$ -j y
+#$ -S /bin/bash
+#$ -R y
+#$ -N  
+#$ -o $JOB_NAME.hout
+#$ -e $JOB_NAME.e$JOB_ID
+#$ -q himem.q 
+#$ -pe mpi 1
+
+$MPI $PATH $EXECUTABLE < $INFILE > $OUTFILE

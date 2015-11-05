@@ -1,0 +1,12 @@
+JTot parity jmax nGI
+FcFlag CbFlag AbsFlag useSP Ecutoff
+fH0
+fH0gm
+MASS1 RE1 NDVR1
+fVRlr
+MASS2 RE2 NDVR2
+fVRBr
+NDVR3 ReFlag
+fRE
+fSpVRlr
+fSpVRBr

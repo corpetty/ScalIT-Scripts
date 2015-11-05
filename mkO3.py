@@ -1,24 +1,73 @@
 # coding=utf-8
-__author__ = 'Corey Petty'
 # !/usr/bin/env python
-import Triatomic.MakeFiles
+__author__ = 'Corey Petty'
+from triatomic.convergence_tests import multiple_run_from_dict
 
 #############################################################################################################
-# do convergence testing for tri-atomic molecules.
-# parameters: J, r, BR, jmax, nA0
+#############################################################################################################
+#                               TYPICAL PARAMETERS TO CHANGE FOR SCALIT RUNS
+#############################################################################################################
+#############################################################################################################
+
+
+#############################################################################################################
+#   molecule:       Which molecule are you calculating?
+#   mass_label:     What isotopes are you using, make up a name for it
+#   permutation:    Desired nuclear permutation to calculate (even/odd)
+#   parity:         Desired parity to calculate (even/odd)
+#############################################################################################################
+molecule = 'ozone'
+mass_label = 'o16'
+permutation = 'odd'
+parity = 'odd'
+#############################################################################################################
+#   j_total:    Array of Total Angular Momentum Values, J
+#   lr:         Array of Jacobi coordinate little r basis functions
+#   br:         Array of Jacobi coordinate Big R basis functions
+#   jmax:       Array of body fixed angular momentum values
+#   max_angle:  Ceiling value for number of angular basis functions
 #
-# conv_option < 0: generate files for *.pin
-#
-# conv_option = [0-1], fix J, r, R
-# conv_option = 0: jmax convergence testing
-# conv_option = 1: Combined angular basis convergence testing
-#
-# conv_option = [2-3], fix jmax, nA0
-# conv_option = 2: fix R;       r convergence testing
-# conv_option = 3: fix r;       R convergence testing
-# conv_option = 4: single run   specify all basis sizes
-#
-# other options: fix jmax, r, R; variable of J Total
+#   NOTE: all iterations of below arrays will be created
+#############################################################################################################
+j_total = [1, 2, 3, 10]
+lr = [20, 25]
+br = [30, 35]
+jmax = [80, 85]
+max_angle = 400
+#############################################################################################################
+#   central_energy:     Energy to converge eigenvalues around
+#   number_states:      Number of desired states to converge
+#   total_accuracy:     Desired iterative Lanczos accuracy of eigenvalues
+#############################################################################################################
+central_energy = 0.06
+number_states = 50
+total_accuracy = 1.0E-9
+#############################################################################################################
+#   host:   What computer are you running on?
+#       options: 'local'
+#                'Robinson'
+#                'Lonestar'
+#                'Hrothgar'
+#   work:    Base directory where input/output/run files will be stored
+#   data:    Base directory where intermediate data files will be stored
+#   scalit:  Directory where ScalIT is installed
+#   NOTE: DO NOT PUT A '/' AT THE END OF THE DIRECTORY
+#   TODO: automatically take off the '/' if user puts in
+#############################################################################################################
+host = 'Robinson'
+work = '/Users/coreypetty/Desktop/work'
+data = '/Users/coreypetty/Desktop/work/data'
+scalit = '/Users/coreypetty/work/ScalIT-ozone'
+
+
+#############################################################################################################
+#############################################################################################################
+#                           ADVANCED PARAMETERS TO CHANGE FOR SCALIT RUNS
+#############################################################################################################
+#############################################################################################################
+
+
+#############################################################################################################
 #
 # version: which program
 # version = 0: sequential
@@ -27,15 +76,11 @@ import Triatomic.MakeFiles
 #
 #############################################################################################################
 run_opts = dict(
-    version=-1,
-    conv_option=2,
-    nvar=[1, 2, 3],       # values of convergence parameter, list length specifies how many jobs in script
-    nodes_desired=1,            # number of nodes requested for mpi job.  Number of cores depends on platform
-    local_cores=4,              # if dirs['host'] is 'local', number of cores desired to run mpi jobs
-    run_time='48:00:00'         # used if host == Lonestar (hrs:mins:sec)
+    version=-1,       # values of convergence parameter
+    nodes_desired=3,            # number of nodes requested for mpi job.  Number of cores depends on platform
+    local_cores=2,              # if dirs['host'] is 'local', number of cores desired to run mpi jobs
+    run_time='48:00:00',         # used if host == Lonestar (hrs:mins:sec)
 )
-
-
 #############################################################################################################
 #   Molecular Parameters
 #
@@ -47,8 +92,8 @@ run_opts = dict(
 #   Rmax:           maximum distance in coordinate range for little r and Big R
 #############################################################################################################
 mol = dict(
-    Name='ozone',
-    mass_opt='mix',
+    Name=molecule,
+    mass_opt=mass_label,
     mass=(14578.471659, 9718.981106),
     Rmin=(1.5, 0.0),
     Rmax=(6.0, 5.0),
@@ -60,11 +105,10 @@ mol = dict(
 #    host options: local, Robinson, Hrothgar, Lonestar
 #############################################################################################################
 dirs = dict(
-    host='local',
-    work='/Users/coreypetty/work/ozone',
-    home='/Users/coreypetty',
-    data='/Users/coreypetty/work/ozone/data',
-    scalit='/Users/coreypetty/work/ScalIT-ozone'
+    host=host,
+    work=work,
+    data=data,
+    scalit=scalit
 )
 #############################################################################################################
 #           PRESINC Construction (*.pin file) Parameters
@@ -84,8 +128,8 @@ dirs = dict(
 pin_opts = dict(
     dvr_type=2,
     useSP='T',
-    num_sinc_fns=[6000, 6000],
-    max_DVR_fns=[80, 80]
+    num_sinc_fns=6000,
+    max_DVR_fns=100
 )
 #############################################################################################################
 #           Hamiltonian Construction (*.hin file) Parameters
@@ -116,20 +160,57 @@ pin_opts = dict(
 #                                   0 : Neither
 #############################################################################################################
 hin_opts = dict(
-    j_total=0,
+    j_total=10,
     jmax=130,
-    permutation='o',
-    parity='T',
+    permutation=permutation,
+    parity=parity,
     num_lr_functions=30,
     num_Br_functions=30,
-    restrict_num_angles='T',
-    num_angles=50,
+    restrict_num_angles='F',
+    num_angles=max_angle,
     ngi=300,
     FcFlag=0,
     CbFlag=0,
     AbsFlag=0,
     Ecutoff=0.1,  # TODO: This should be set automatically by molecule
     ReFlag=0
+)
+#############################################################################################################
+#          Diagonalization Step (*.in file) Switches
+#
+#   bj_NumberIters:     Number of iterations for Block-Jacobi diagonalization
+#   bj_Tolerance:       Tolerance threshhold for Block-Jacobi diagonalization
+#   qmr_NumberIters:    Number of iterations for QMR
+#   qmr_Tolerance:      Desired tolerance for QMR
+#   pist_E0:            Central energy for PIST (THIS IS WHERE YOUR EIGENVALUES WILL BE CENTERED ON)
+#   pist_LancToler:     Error Tolerance for Lanczos (THIS IS OVERALL ERROR OF RUN)
+#   pist_nStart:        Iteration that starts to check Lanczos tolerance
+#   pist_nStep:         How many Lanczos iterations before rechecking for tolerance
+#   pist_nMax:          Maximum number of Lanczos iterations before quitting
+#   pist_nE0            The number of eigenvalues to be calculated
+#   pist_nGap:          How many previous iterations to compare to for tolerance check
+#   osb_mE0:            Central energy of Wyatt window (This Must be close to pist_E0)
+#   osb_mDE:            Threshold energy to ...... TODO: explain this
+#   osb_mBeta:          Parameter for OSBD, as can be seen in sOSB options
+#   osb_nCnt:           Size of Wyatt energy window centered on osb_mE0
+#
+#############################################################################################################
+in_parameters = dict(
+    bj_NumberIters=10,
+    bj_Tolerance=1.0E-3,
+    qmr_NumberIters=10000,
+    qmr_Tolerance=1.0E-3,
+    pist_E0=0.0,
+    pist_LancToler=total_accuracy,
+    pist_nStart=50,
+    pist_nStep=10,
+    pist_nMax=400,
+    pist_nE0=30,
+    pist_nGap=5,
+    osb_mE0=0.0,
+    osb_mDE=1.0E-3,
+    osb_mBeta=1.0,
+    osb_nCnt=1000,
 )
 #############################################################################################################
 #          Diagonalization Step (*.in file) Switches
@@ -183,56 +264,19 @@ hin_opts = dict(
 #
 #############################################################################################################
 in_switches = dict(
-    sF='3',
+    sF=3,
     sDep=['F', 'F', 'F'],
-    sJOB='1',
-    sOSB='0',
+    sJOB=1,
+    sOSB=0,
     sCX='F',
     sNDVR='T',
     sST='T',
     sAP='F',
-    sHOSB='0',
-    sVOSB='0',
-    sHW='0',
-    sVX='0',
-    sPT='0'
-)
-#############################################################################################################
-#          Diagonalization Step (*.in file) Switches
-#
-#   bj_NumberIters:     Number of iterations for Block-Jacobi diagonalization
-#   bj_Tolerance:       Tolerance threshhold for Block-Jacobi diagonalization
-#   qmr_NumberIters:    Number of iterations for QMR
-#   qmr_Tolerance:      Desired tolerance for QMR
-#   pist_E0:            Central energy for PIST (THIS IS WHERE YOUR EIGENVALUES WILL BE CENTERED ON)
-#   pist_LancToler:     Error Tolerance for Lanczos (THIS IS OVERALL ERROR OF RUN)
-#   pist_nStart:        Iteration that starts to check Lanczos tolerance
-#   pist_nStep:         How many Lanczos iterations before rechecking for tolerance
-#   pist_nMax:          Maximum number of Lanczos iterations before quitting
-#   pist_nE0            The number of eigenvalues to be calculated
-#   pist_nGap:          How many previous iterations to compare to for tolerance check
-#   osb_mE0:            Central energy of Wyatt window (This Must be close to pist_E0)
-#   osb_mDE:            Threshold energy to ...... TODO: explain this
-#   osb_mBeta:          Parameter for OSBD, as can be seen in sOSB options
-#   osb_nCnt:           Size of Wyatt energy window centered on osb_mE0
-#
-#############################################################################################################
-in_parameters = dict(
-    bj_NumberIters='10',
-    bj_Tolerance='1.0D-3',
-    qmr_NumberIters='10000',
-    qmr_Tolerance='1.0D-3',
-    pist_E0='0.0',
-    pist_LancToler='1.0D-9',
-    pist_nStart='50',
-    pist_nStep='10',
-    pist_nMax='400',
-    pist_nE0='30',
-    pist_nGap='5',
-    osb_mE0='0.0',
-    osb_mDE='1.0D-3',
-    osb_mBeta='1.0',
-    osb_nCnt='1000',
+    sHOSB=0,
+    sVOSB=0,
+    sHW=0,
+    sVX=0,
+    sPT=0
 )
 #############################################################################################################
 #          Diagonalization Step (*.in file) Switches
@@ -275,4 +319,10 @@ params = dict(
     mol=mol,
     dirs=dirs
 )
-Triatomic.MakeFiles.mka3(params)
+variables = [
+    j_total,
+    lr,
+    br,
+    jmax
+]
+multiple_run_from_dict(params=params, variables=variables)

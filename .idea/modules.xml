@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ScalIT-Scripts.iml" filepath="$PROJECT_DIR$/.idea/ScalIT-Scripts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../python_files/.idea/python_files.iml" filepath="$PROJECT_DIR$/../python_files/.idea/python_files.iml" />
     </modules>
   </component>
 </project>

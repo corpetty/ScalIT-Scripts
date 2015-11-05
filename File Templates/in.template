@@ -1,0 +1,22 @@
+s_f num_lr num_br num_gm
+s_dep1 s_dep2 s_dep3
+s_job s_osb
+s_cx s_ndvr s_st s_ap
+bj_iters bj_tol qmr_iters qmr_tol
+pist_e0 pist_tol pist_start pist_step pist_max pist_num_eigs pist_gap
+osb_e0 osb_de osb_beta osb_count
+s_hosb s_vosb s_hw s_vx s_pt
+f_h0
+f_h0gm
+f_res
+f_dep1
+f_dep2
+f_dep3
+f_app
+f_apr
+f_hosb
+f_vosb
+f_eig
+f_hw
+f_vx
+f_pt
