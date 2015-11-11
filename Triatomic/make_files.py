@@ -1,12 +1,12 @@
 __author__ = 'Corey Petty'
 
 
-def step_one(paths, files, mol, pin_options):
+def step_one(paths, files, molecule, pin_options):
     """
 
     :param paths:
     :param files:
-    :param mol:
+    :param molecule:
     :param pin_options:
     :return:
     """
@@ -14,14 +14,14 @@ def step_one(paths, files, mol, pin_options):
     #    Create file substance, line by line
     line_one = '%(type)d %(mass)f %(nmax)d %(nmin)d %(useSP)s \n' \
                % {'type': pin_options.dvr_type,
-                  'mass': mol.lr.mass,
-                  'nmax': mol.lr.num_sinc_fns,
-                  'nmin': mol.lr.num_vbr_fns,
-                  'useSP': pin_options.use_spline
+                  'mass': molecule.lr.mass,
+                  'nmax': molecule.lr.num_sinc_fns,
+                  'nmin': molecule.lr.num_vbr_fns,
+                  'useSP': 'T' if molecule.use_spline else 'F'
                   }
     line_two = '%(Rmin)f %(Rmax)f\n' \
-               % {'Rmin': mol.lr.length[0],
-                  'Rmax': mol.lr.length[1]
+               % {'Rmin': molecule.lr.length[0],
+                  'Rmax': molecule.lr.length[1]
                   }
 
     line_three = '%(outfile)s' \
@@ -30,23 +30,23 @@ def step_one(paths, files, mol, pin_options):
     #    Write the files
     fh = open(paths.run_psovbr + '/' + files.presinc_lr + files.input, 'w')
     fh.write(line_one + line_two + line_three)
-    if pin_options.use_spline == "T":
+    if molecule.use_spline:
         fh.write('\n' + paths.pes_data + '/' + files.v_eff_lr)
     fh.close()
-    print '    File Generated: ' + paths.run_psovbr + '/' + files.presinc_lr + files.input
+    print('    File Generated: ' + paths.run_psovbr + '/' + files.presinc_lr + files.input)
 
     #  Big R
     #    Create file substance, line by line
     line_one = '%(type)d %(mass)f %(nmax)d %(nmin)d %(useSP)s \n' \
                % {'type': pin_options.dvr_type,
-                  'mass': mol.br.mass,
-                  'nmax': mol.br.num_sinc_fns,
-                  'nmin': mol.br.num_vbr_fns,
+                  'mass': molecule.br.mass,
+                  'nmax': molecule.br.num_sinc_fns,
+                  'nmin': molecule.br.num_vbr_fns,
                   'useSP': pin_options.use_spline
                   }
     line_two = '%(Rmin)f %(Rmax)f\n' \
-               % {'Rmin': mol.br.length[0],
-                  'Rmax': mol.br.length[1]
+               % {'Rmin': molecule.br.length[0],
+                  'Rmax': molecule.br.length[1]
                   }
 
     line_three = '%(outfile)s' \
@@ -58,51 +58,51 @@ def step_one(paths, files, mol, pin_options):
     if pin_options.use_spline == "T":
         fh.write('\n' + paths.pes_data + '/' + files.v_eff_br)
     fh.close()
-    print '    File Generated: ' + paths.run_psovbr + '/' + files.presinc_br + files.input
+    print('    File Generated: ' + paths.run_psovbr + '/' + files.presinc_br + files.input)
 
 
-def step_two(paths, files, mol, options):
+def step_two(paths, files, molecule, options):
     """
     Creates the Step Two (Hamiltonian Constructrion) input files.  Requires
     the following class instances.
     :param paths:
     :param files:
-    :param mol:
+    :param molecule:
     :param options:
     :return:
     """
 
     hin_file = [
         '%(jtol)d %(parity)s '
-        % {'jtol': mol.j_total,
-           'parity': 'F' if mol.parity == 'odd' else 'T'
+        % {'jtol': molecule.j_total,
+           'parity': 'F' if molecule.parity == 'odd' else 'T'
            },
         '%(jmax)d %(ngi)d \n'
-        % {'jmax': mol.j_max,
+        % {'jmax': molecule.j_max,
            'ngi': options.hin_options.ngi
            },
         '%(FcFlag)d %(CbFlag)d %(AbsFlag)d %(useSP)s %(Ecutoff)f\n'
         % {'FcFlag': options.hin_options.fc_flag,
            'CbFlag': options.hin_options.cb_flag,
            'AbsFlag': options.hin_options.abs_flag,
-           'useSP': options.pin_options.use_spline,
-           'Ecutoff': mol.energy_cutoff
+           'useSP': 'T' if molecule.use_spline else 'F',
+           'Ecutoff': molecule.energy_cutoff
            },
         '%(fH0)s \n'
         % {'fH0': paths.run_data + '/' + files.radial_ham},
         '%(fH0gm)s \n'
         % {'fH0gm': paths.run_data + '/' + files.angular_ham},
         '%(mass1)f %(re1)f %(ndvr1)d\n'
-        % {'mass1': mol.lr.mass,
-           're1': mol.lr.length[2],
-           'ndvr1': mol.lr.num_dvr_fns
+        % {'mass1': molecule.lr.mass,
+           're1': molecule.lr.length[2],
+           'ndvr1': molecule.lr.num_dvr_fns
            },
         '%(psovbr_lr)s \n'
         % {'psovbr_lr': paths.run_data + '/' + files.psovbr_lr},
         '%(mass2)f %(re2)f %(ndvr2)d\n'
-        % {'mass2': mol.br.mass,
-           're2': mol.br.length[2],
-           'ndvr2': mol.br.num_dvr_fns
+        % {'mass2': molecule.br.mass,
+           're2': molecule.br.length[2],
+           'ndvr2': molecule.br.num_dvr_fns
            },
         '%(psovbr_br)s \n'
         % {'psovbr_br': paths.run_data + '/' + files.psovbr_br},
@@ -114,13 +114,13 @@ def step_two(paths, files, mol, options):
     if options.in_switches.s_equil_r == "T":
         hin_file.append('%(f_equil_r)s \n'
                         % {'f_equil_r': paths.run_data + '/' + options.in_switches.f_equil_r})
-    if options.pin_options.use_spline == "T":
+    if molecule.use_spline:
         hin_file.append(paths.pes_data + '/' + files.psovbr_lr + '\n')
         hin_file.append(paths.pes_data + '/' + files.psovbr_br)
-    fh = open(name=paths.run + '/' + files.hamiltonian + files.input, mode='w')
+    fh = open(paths.run + '/' + files.hamiltonian + files.input, 'w')
     fh.write("".join(hin_file))
     fh.close()
-    print '    File Generated: ' + paths.run + '/' + files.hamiltonian + files.input
+    print('    File Generated: ' + paths.run + '/' + files.hamiltonian + files.input)
 
 
 def step_three(paths, files, mol, options):
@@ -201,20 +201,49 @@ def step_three(paths, files, mol, options):
     if options.in_switches.s_ap == 'T':
         in_file.append(options.in_switches.f_app + '\n')
         in_file.append(options.in_switches.f_apr + '\n')
-    if options.in_switches.s_hosb != '0':
+    if options.in_switches.s_hosb != 0:
         in_file.append(options.in_switches.f_hosb + '\n')
-    if options.in_switches.s_vosb != '0':
+    if options.in_switches.s_vosb != 0:
         in_file.append(options.in_switches.f_vosb + '\n')
         in_file.append(options.in_switches.f_eig + '\n')
-    if options.in_switches.s_hw != '0':
+    if options.in_switches.s_hw != 0:
         in_file.append(options.in_switches.f_hw + '\n')
-    if options.in_switches.s_vx != '0':
+    if options.in_switches.s_vx != 0:
         in_file.append(options.in_switches.f_vx + '\n')
-    if options.in_switches.s_pt != '0':
+    if options.in_switches.s_pt != 0:
         in_file.append(options.in_switches.f_pt + '\n')
 
     #  Write Out List To File
-    fh = open(paths.run + '/' + files.iterate + files.input, mode='w')
+    fh = open(paths.run + '/' + files.iterate + files.input, 'w')
     fh.write("".join(in_file))
     fh.close()
-    print '    File Generated: ' + paths.run + '/' + files.iterate + files.input
+    print('    File Generated: ' + paths.run + '/' + files.iterate + files.input)
+
+
+def step_four(directories, files, molecule, options):
+    mass1 = input("Please input mass of atom 1 (amu): ")
+    mass2 = input("Please input mass of atom 2 (amu): ")
+    mass3 = input("Please input mass of atom 3 (amu): ")
+    sin_file = [
+        '%(jtot)d %(parity)s\n'
+        % {'jtot': molecule.j_total,
+           'parity': 'e' if molecule.parity == 'even' else 'o'
+           },
+        '%(m1)f %(m2)f %(m3)f\n'
+        % {'m1': mass1,
+           'm2': mass2,
+           'm3': mass3
+           },
+        '%(nState)d %(gType)s %(sType)s %(kNum)d\n'
+        % {'nState': options.sin_options.num_states,
+           'gType': options.sin_options.g_type,
+           'sType': options.sin_options.s_type,
+           'kNum': options.sin_options.k_num
+          },
+        ''
+    ]
+    #  Write Out List To File
+    fh = open(directories.run + '/' + files.wavefunction + files.input, 'w')
+    fh.write("".join(sin_file))
+    fh.close()
+    print('    File Generated: ' + directories.run + '/' + files.wavefunction + files.input)
