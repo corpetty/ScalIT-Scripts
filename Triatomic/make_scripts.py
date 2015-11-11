@@ -48,7 +48,7 @@ def run_script(directories, files, molecule, mpi):
     get_executables(molecule=molecule, mpi=mpi)
 
     #  Open file for writing
-    fh = open(name=directories.run + '/' + files.run_script, mode='w')
+    fh = open(directories.run + '/' + files.run_script, 'w')
 
     #  Get SGE submission engine header for platform
     if mpi.use_sge:
@@ -79,12 +79,12 @@ def run_script(directories, files, molecule, mpi):
     fh.write('wait\n')
     fh.write('date')
     fh.close()
-    print '    File Generated: ' + directories.run + '/' + files.run_script
+    print('    File Generated: ' + directories.run + '/' + files.run_script)
 
 
 def pin_script(directories, files, molecule):
     #  Open file for writing
-    fh = open(name=directories.run_psovbr + '/' + files.run_psovbr_script, mode='w')
+    fh = open(directories.run_psovbr + '/' + files.run_psovbr_script, 'w')
 
     #  Write the file
     fh.write('#!/usr/bin/env bash\n')
@@ -110,4 +110,4 @@ def pin_script(directories, files, molecule):
     fh.close()
     st = os.stat(directories.run_psovbr + '/' + files.run_psovbr_script)
     os.chmod(directories.run_psovbr + '/' + files.run_psovbr_script, st.st_mode | stat.S_IEXEC)
-    print '    File Generated: ' + directories.run_psovbr + '/' + files.run_psovbr_script
+    print('    File Generated: ' + directories.run_psovbr + '/' + files.run_psovbr_script)

@@ -97,7 +97,8 @@ mol = dict(
     mass=(14578.471659, 9718.981106),
     Rmin=(1.5, 0.0),
     Rmax=(6.0, 5.0),
-    re=(2.401, 1.256)
+    re=(2.401, 1.256),
+    use_spline=True
 )
 #############################################################################################################
 #           Relevant User Directories
@@ -127,7 +128,6 @@ dirs = dict(
 #############################################################################################################
 pin_opts = dict(
     dvr_type=2,
-    useSP='T',
     num_sinc_fns=6000,
     max_DVR_fns=100
 )
@@ -200,7 +200,7 @@ in_parameters = dict(
     bj_Tolerance=1.0E-3,
     qmr_NumberIters=10000,
     qmr_Tolerance=1.0E-3,
-    pist_E0=0.0,
+    pist_E0=central_energy,
     pist_LancToler=total_accuracy,
     pist_nStart=50,
     pist_nStep=10,

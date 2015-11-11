@@ -1,8 +1,7 @@
 __author__ = 'Corey Petty'
 import triatomic.molecule as molecule
-import triatomic.environment as environment
+import util.environment as environment
 import triatomic.options as options
-import util.environment as mpi_env
 
 
 def create_class(params):
@@ -34,14 +33,15 @@ def create_class(params):
     num_vbr_fns = params['pin_opts']['max_DVR_fns']
     num_lr_dvr_fns = params['hin_opts']['num_lr_functions']
     num_br_dvr_fns = params['hin_opts']['num_Br_functions']
+    use_spline = params['mol']['use_spline']
     mol = molecule.Molecule(name=name, mass_combo=mass_combo, j_total=j_total, j_max=j_max, permutation=permutation,
                             parity=parity, energy_cutoff=energy_cutoff, mass=mass, lr_length=lr_length,
                             br_length=br_length, num_sinc_fns=num_sinc_fns, num_vbr_fns=num_vbr_fns,
-                            num_lr_dvr_fns=num_lr_dvr_fns, num_br_dvr_fns=num_br_dvr_fns)
+                            num_lr_dvr_fns=num_lr_dvr_fns, num_br_dvr_fns=num_br_dvr_fns,
+                            use_spline=use_spline)
 
     # Transfer Params variables to Options class
     dvr_type = params['pin_opts']['dvr_type']
-    use_spline = params['pin_opts']['useSP']
     restrict_num_angles = params['hin_opts']['restrict_num_angles']
     num_res_angles = params['hin_opts']['num_angles']
     ngi = params['hin_opts']['ngi']
@@ -56,6 +56,21 @@ def create_class(params):
     s_cx = params['in_opts']['sCX']
     s_ndvr = params['in_opts']['sNDVR']
     s_st = params['in_opts']['sST']
+    bj_num_iters = params['in_opts']['bj_NumberIters']
+    bj_tolerance = params['in_opts']['bj_Tolerance']
+    qmr_num_iters = params['in_opts']['qmr_NumberIters']
+    qmr_tolerance = params['in_opts']['qmr_Tolerance']
+    pist_e0 = params['in_opts']['pist_E0']
+    pist_lanc_tolerance = params['in_opts']['pist_LancToler']
+    pist_start = params['in_opts']['pist_nStart']
+    pist_step = params['in_opts']['pist_nStep']
+    pist_max = params['in_opts']['pist_nMax']
+    pist_num_e0 = params['in_opts']['pist_nE0']
+    pist_gap = params['in_opts']['pist_nGap']
+    osb_e0 = params['in_opts']['osb_mE0']
+    osb_de = params['in_opts']['osb_mDE']
+    osb_beta = params['in_opts']['osb_mBeta']
+    osb_count = params['in_opts']['osb_nCnt']
     s_ap = params['in_opts']['sAP']
     s_hosb = params['in_opts']['sHOSB']
     s_vosb = params['in_opts']['sVOSB']
@@ -73,9 +88,13 @@ def create_class(params):
     f_vx = params['in_file_names']['fVX']
     f_pt = params['in_file_names']['fPT']
 
-    opts = options.Options(dvr_type=dvr_type, use_spline=use_spline, restrict_num_angles=restrict_num_angles,
+    opts = options.Options(dvr_type=dvr_type, restrict_num_angles=restrict_num_angles,
                            num_res_angles=num_res_angles, ngi=ngi, fc_flag=fc_flag, cb_flag=cb_flag, abs_flag=abs_flag,
                            s_f=s_f, s_job=s_job, s_osb=s_osb, s_cx=s_cx, s_ndvr=s_ndvr, s_st=s_st,
+                           bj_num_iters=bj_num_iters, bj_tolerance=bj_tolerance, qmr_num_iters=qmr_num_iters,
+                           qmr_tolerance=qmr_tolerance, pist_e0=pist_e0, pist_lanc_tolerance=pist_lanc_tolerance,
+                           pist_start=pist_start, pist_step=pist_step, pist_max=pist_max, pist_num_e0=pist_num_e0,
+                           pist_gap=pist_gap, osb_e0=osb_e0, osb_de=osb_de, osb_beta=osb_beta, osb_count=osb_count,
                            s_equil_r=s_equil_r, f_equil_r=f_equil_r, s_dep=s_dep, f_dep=f_dep,
                            s_ap=s_ap, f_ap=f_ap, f_apr=f_apr, s_hosb=s_hosb, f_hosb=f_hosb,
                            s_vosb=s_vosb, f_vosb=f_vosb, f_eig=f_eig, s_hw=s_hw, f_hw=f_hw,
@@ -97,7 +116,7 @@ def create_class(params):
     nodes_desired = params['run_opts']['nodes_desired']
     run_time = params['run_opts']['run_time']
 
-    mpi = mpi_env.Mpi(use_mpi=use_mpi, use_sge=use_sge, platform=platform, cores=local_cores,
-                      nodes_desired=nodes_desired, runtime=run_time)
+    mpi = environment.Mpi(use_mpi=use_mpi, use_sge=use_sge, platform=platform, cores=local_cores,
+                          nodes_desired=nodes_desired, runtime=run_time)
 
     return paths, mol, opts, mpi

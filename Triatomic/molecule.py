@@ -12,7 +12,8 @@ class Molecule(object):
                  parity='even', energy_cutoff=1, mass=(0.0, 0.0),
                  lr_length=(0.0, 10.0, 5.0), br_length=(0.0, 10.0, 5.0),
                  num_sinc_fns=6000, num_vbr_fns=100,
-                 num_lr_dvr_fns=30, num_br_dvr_fns=30):
+                 num_lr_dvr_fns=30, num_br_dvr_fns=30,
+                 use_spline=True):
         self.name = name
         self.mass_combo = mass_combo
         self.j_total = j_total
@@ -24,6 +25,7 @@ class Molecule(object):
         self.lr = self.RadialCoordinate(mass[0], lr_length, num_sinc_fns, num_vbr_fns, num_lr_dvr_fns, suffix="lr")
         self.br = self.RadialCoordinate(mass[1], br_length, num_sinc_fns, num_vbr_fns, num_br_dvr_fns, suffix="BR")
         self.get_num_angles()
+        self.use_spline = use_spline
 
     class RadialCoordinate(object):
         def __init__(self, mass=0.0, length=(0.0, 10.0, 5.0), num_sinc_fns=6000, num_vbr_fns=100, num_dvr_fns=30,
@@ -42,7 +44,7 @@ class Molecule(object):
             elif self.parity == 'odd' or 'Odd' or 'F':
                 jp = 1
             else:
-                print 'Incorrect parity option, choose (even,odd)'
+                print('Incorrect parity option, choose (even,odd)')
                 return 0
             jt = self.j_total + jp
             if jt / 2 * 2 == jt:
@@ -62,7 +64,7 @@ class Molecule(object):
             elif self.parity == 'odd' or 'Odd' or 'F':  # odd parity
                 jp = 1
             else:
-                print 'Incorrect parity option, choose (even,odd)'
+                print('Incorrect parity option, choose (even,odd)')
                 return 0
             jt = self.j_total + jp  # total parity = (-1)^(p+JTol)
             if jt == jt / 2 * 2:  # even total parity
@@ -77,14 +79,14 @@ class Molecule(object):
                     if jk / 2 * 2 != jk:
                         self.jk_num += 1
         else:
-            print 'Incorrect permutation option, choose (even,odd)'
+            print('Incorrect permutation option, choose (even,odd)')
             return 0
 
     def print_jknum(self):
-        print '\n'
-        print '----> Calculating number of possible angles: '
-        print '    J total:      ' + str(self.j_total)
-        print '    j max:        ' + str(self.j_max)
-        print '    permutation:  ' + self.permutation
-        print '    parity:       ' + self.parity + '\n'
-        print '    Number of possible angles (jk_num): ' + str(self.jk_num) + '\n'
+        print('\n')
+        print('----> Calculating number of possible angles: ')
+        print('    J total:      ' + str(self.j_total))
+        print('    j max:        ' + str(self.j_max))
+        print('    permutation:  ' + self.permutation)
+        print('    parity:       ' + self.parity + '\n')
+        print('    Number of possible angles (jk_num): ' + str(self.jk_num) + '\n')
