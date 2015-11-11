@@ -1,11 +1,11 @@
-import util.environment
+import util_folder.environment
 
 __author__ = 'Corey Petty'
 
-import triatomic_mol.dict_to_class as dict_to_class
-import triatomic_mol.set_environment as env
-import triatomic_mol.make_files as make_files
-import triatomic_mol.make_scripts as make_scripts
+import triatomic.dict_to_class as dict_to_class
+import triatomic.set_environment as env
+import triatomic.make_files as make_files
+import triatomic.make_scripts as make_scripts
 import itertools
 import os.path
 
@@ -17,7 +17,7 @@ def multiple_run_from_dict(params, variables):
     (paths, mol, opts, mpienv) = dict_to_class.create_class(params=params)
 
     #  Instantiate Files class
-    files = util.environment.Files()
+    files = util_folder.environment.Files()
 
     #  Create files for all combinations of basis functions
     basis_sizes = list(itertools.product(*variables[1:]))

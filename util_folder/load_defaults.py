@@ -1,4 +1,4 @@
-from util import general_functions
+from util_folder import general_functions
 __author__ = 'Corey Petty'
 
 

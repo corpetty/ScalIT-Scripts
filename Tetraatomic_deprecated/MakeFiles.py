@@ -4,7 +4,7 @@ __author__ = 'Corey Petty'
 import pinFiles  # generate *.pin files and *.sh script for *.pin/*.pout
 import inFiles  # generate *.hin and *.in files
 import indexing  # calculates number of angular basis functions for .in files
-from Util import setDirectories, shFiles  # sets directory environment, if doesn't exist, creates
+from util_folder import setDirectories, shFiles  # sets directory environment, if doesn't exist, creates
 
 
 def mka4(params):

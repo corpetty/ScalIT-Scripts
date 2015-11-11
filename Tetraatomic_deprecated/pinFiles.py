@@ -3,7 +3,7 @@ __author__ = 'Corey Petty'
 
 import posix
 
-from Util import shFiles
+from util_folder import shFiles
 
 
 def mkpsh(params):
