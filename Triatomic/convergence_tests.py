@@ -1,4 +1,4 @@
-import util_folder.environment
+import util.environment
 
 __author__ = 'Corey Petty'
 
@@ -17,7 +17,7 @@ def multiple_run_from_dict(params, variables):
     (paths, mol, opts, mpienv) = dict_to_class.create_class(params=params)
 
     #  Instantiate Files class
-    files = util_folder.environment.Files()
+    files = util.environment.Files()
 
     #  Create files for all combinations of basis functions
     basis_sizes = list(itertools.product(*variables[1:]))

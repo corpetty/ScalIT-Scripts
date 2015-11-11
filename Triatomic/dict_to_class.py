@@ -1,6 +1,6 @@
 __author__ = 'Corey Petty'
 import triatomic.molecule as molecule
-import util_folder.environment as environment
+import util.environment as environment
 import triatomic.options as options
 
 
