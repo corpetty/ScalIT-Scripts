@@ -42,7 +42,7 @@ def step_one(paths, files, molecule, pin_options):
                   'mass': molecule.br.mass,
                   'nmax': molecule.br.num_sinc_fns,
                   'nmin': molecule.br.num_vbr_fns,
-                  'useSP': pin_options.use_spline
+                  'useSP': molecule.use_spline
                   }
     line_two = '%(Rmin)f %(Rmax)f\n' \
                % {'Rmin': molecule.br.length[0],
@@ -55,7 +55,7 @@ def step_one(paths, files, molecule, pin_options):
     #    Write the files
     fh = open(paths.run_psovbr + '/' + files.presinc_br + files.input, 'w')
     fh.write(line_one + line_two + line_three)
-    if pin_options.use_spline == "T":
+    if molecule.use_spline == "T":
         fh.write('\n' + paths.pes_data + '/' + files.v_eff_br)
     fh.close()
     print('    File Generated: ' + paths.run_psovbr + '/' + files.presinc_br + files.input)
