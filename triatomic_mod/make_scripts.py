@@ -68,7 +68,7 @@ def run_script(directories, files, molecule, mpi):
                 'input': files.hamiltonian + files.input
                 }
              )
-    fh.write('%(mpi)s $BIN_DIR/%(name)s/%(exec)s < $WK_DIR/%(input)s\n'
+    fh.write('%(mpi)s $BIN_DIR/%(exec)s < $WK_DIR/%(input)s\n'
              % {'mpi': mpi.cmd,
                 'name': molecule.name,
                 'exec': mpi.in_exec,

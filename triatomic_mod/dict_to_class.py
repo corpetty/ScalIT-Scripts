@@ -1,7 +1,7 @@
 __author__ = 'Corey Petty'
-import triatomic.molecule as molecule
+import triatomic_mod.molecule as molecule
 import util.environment as environment
-import triatomic.options as options
+import triatomic_mod.options as options
 
 
 def create_class(params):

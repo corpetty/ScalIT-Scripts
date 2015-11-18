@@ -221,9 +221,23 @@ def step_three(paths, files, mol, options):
 
 
 def step_four(directories, files, molecule, options):
+    """
+    This part makes the wavefucntion input file for a ScalIT run.  Unlike the options,
+    it will require some inputs from the user.
+
+    Args:
+        directories:
+        files:
+        molecule:
+        options:
+
+    Returns:
+
+    """
     mass1 = input("Please input mass of atom 1 (amu): ")
     mass2 = input("Please input mass of atom 2 (amu): ")
     mass3 = input("Please input mass of atom 3 (amu): ")
+    eig_index = input("Please input the indices of the states you want: ")
     sin_file = [
         '%(jtot)d %(parity)s\n'
         % {'jtot': molecule.j_total,
@@ -239,11 +253,14 @@ def step_four(directories, files, molecule, options):
            'gType': options.sin_options.g_type,
            'sType': options.sin_options.s_type,
            'kNum': options.sin_options.k_num
-          },
-        ''
+           }
     ]
+    if options.sin_options.num_states < 0:
+        for index in eig_index:
+            #  TODO: Fix this
+            print(index)
+
     #  Write Out List To File
-    fh = open(directories.run + '/' + files.wavefunction + files.input, 'w')
-    fh.write("".join(sin_file))
-    fh.close()
-    print('    File Generated: ' + directories.run + '/' + files.wavefunction + files.input)
+    with open(directories.run + '/' + files.wavefunction + files.input, 'w') as fh:
+        fh.write("".join(sin_file))
+        print('    File Generated: ' + directories.run + '/' + files.wavefunction + files.input)

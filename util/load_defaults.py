@@ -1,7 +1,7 @@
 from util import general_functions
 __author__ = 'Corey Petty'
 
-
+#  TODO: finish and implement (somehow)
 def triatomic_load(molecule: object):
     chosen_system = input("Please type system to load: ")
     default_file = "Molecule Defaults/" + chosen_system + ".default"

@@ -2,10 +2,10 @@ import util.environment
 
 __author__ = 'Corey Petty'
 
-import triatomic.dict_to_class as dict_to_class
-import triatomic.set_environment as env
-import triatomic.make_files as make_files
-import triatomic.make_scripts as make_scripts
+import triatomic_mod.dict_to_class as dict_to_class
+import triatomic_mod.set_environment as env
+import triatomic_mod.make_files as make_files
+import triatomic_mod.make_scripts as make_scripts
 import itertools
 import os.path
 

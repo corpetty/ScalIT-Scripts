@@ -1,7 +1,7 @@
 # coding=utf-8
 # !/usr/bin/env python
 __author__ = 'Corey Petty'
-from triatomic.convergence_tests import multiple_run_from_dict
+from triatomic_mod.convergence_tests import multiple_run_from_dict
 
 #############################################################################################################
 #############################################################################################################
