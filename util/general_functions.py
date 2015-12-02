@@ -1,6 +1,7 @@
 __author__ = 'Corey Petty'
 
 import sys
+import shlex
 
 
 def dictdump(obj, nested_level=0, output=sys.stdout):
@@ -44,3 +45,14 @@ def read_dict_from_file(filename: str) -> dict:
                 dict_from_file[key.strip()] = eval(value)
     infile.close()
     return dict_from_file
+
+
+def dict_from_file_template(inputfilename: str, templatefilename: str) -> dict:
+    out_dict = {}
+    with open(inputfilename, mode='r') as hinfile:
+        infile_tokens = shlex.split(hinfile)
+        with open(templatefilename, mode='r') as templatefile:
+            template_tokens = shlex.split(templatefile)
+            for hin_token, temp_token in zip(infile_tokens, template_tokens):
+                out_dict[temp_token] = hin_token
+    return out_dict

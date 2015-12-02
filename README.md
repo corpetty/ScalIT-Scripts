@@ -38,3 +38,4 @@ specific molecules.
           - angular momentum quantum number associated with little r, j
     - The bottom section corresponds to advanced changes for **ScalIT** runs, mostly algorithmic changes.
   3. run python file to generate all input files and scripts to run them.
+    - $\> python mk\<molecule name\>_\<mass option\>_<specific convergence test\>.py

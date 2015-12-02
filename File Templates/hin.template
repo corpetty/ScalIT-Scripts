@@ -1,12 +1,12 @@
-JTot parity jmax nGI
+J_total parity j_max nGI
 FcFlag CbFlag AbsFlag useSP Ecutoff
-fH0
-fH0gm
-MASS1 RE1 NDVR1
-fVRlr
-MASS2 RE2 NDVR2
-fVRBr
-NDVR3 ReFlag
+f_h0
+f_h0gm
+mass_lr equil_lr num_lr
+f_VRlr
+mass_br equil_br num_br
+f_VRBr
+theta_ceiling ReFlag
 fRE
 fSpVRlr
 fSpVRBr

@@ -18,15 +18,15 @@ def generate_paths(directories, molecule):
 
     #  Runtime Paths
     directories.run = directories.work + '/' + molecule.name + '/' + molecule.mass_combo + '/J' \
-                      + str(molecule.j_total) + '/' + molecule.permutation
+        + str(molecule.j_total) + '/' + molecule.permutation
     directories.run_psovbr = directories.work + '/' + molecule.name + '/' + molecule.mass_combo \
-                             + '/psodvr'
+        + '/psodvr'
 
     #  Data Paths
     directories.run_data = directories.data + '/' + molecule.name + '/' + molecule.mass_combo + '/J' \
-                           + str(molecule.j_total) + '/' + molecule.permutation
+        + str(molecule.j_total) + '/' + molecule.permutation
     directories.run_psovbr_data = directories.data + '/' + molecule.name + '/' + molecule.mass_combo \
-                                  + '/psodvr'
+        + '/psodvr'
 
     check_existence(paths=directories)
 
