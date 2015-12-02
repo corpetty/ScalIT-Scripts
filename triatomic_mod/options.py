@@ -108,6 +108,7 @@ class Options(object):
             self.osb_beta = osb_beta
             self.osb_count = osb_count
 
+    #  TODO: move s_equil_r to hin_opts and change to True
     class InSwitches(object):
         def __init__(self,
                      s_equil_r=0, f_equil_r='fRES.dat',

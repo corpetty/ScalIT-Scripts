@@ -107,7 +107,7 @@ def create_class(params):
         use_mpi = False
 
     platform = params['dirs']['host']
-    if platform == ('Robinson' or 'Lonestar' or 'Hrothgar'):
+    if platform == ('Robinson' or 'Lonestar4' or 'Hrothgar'):
         use_sge = True
     else:
         use_sge = False

@@ -72,51 +72,48 @@ def step_two(paths, files, molecule, options):
     :return:
     """
 
-    hin_file = [
-        '%(jtol)d %(parity)s '
-        % {'jtol': molecule.j_total,
-           'parity': 'F' if molecule.parity == 'odd' else 'T'
-           },
-        '%(jmax)d %(ngi)d \n'
-        % {'jmax': molecule.j_max,
-           'ngi': options.hin_options.ngi
-           },
-        '%(FcFlag)d %(CbFlag)d %(AbsFlag)d %(useSP)s %(Ecutoff)f\n'
-        % {'FcFlag': options.hin_options.fc_flag,
-           'CbFlag': options.hin_options.cb_flag,
-           'AbsFlag': options.hin_options.abs_flag,
-           'useSP': 'T' if molecule.use_spline else 'F',
-           'Ecutoff': molecule.energy_cutoff
-           },
-        '%(fH0)s \n'
-        % {'fH0': paths.run_data + '/' + files.radial_ham},
-        '%(fH0gm)s \n'
-        % {'fH0gm': paths.run_data + '/' + files.angular_ham},
-        '%(mass1)f %(re1)f %(ndvr1)d\n'
-        % {'mass1': molecule.lr.mass,
-           're1': molecule.lr.length[2],
-           'ndvr1': molecule.lr.num_dvr_fns
-           },
-        '%(psovbr_lr)s \n'
-        % {'psovbr_lr': paths.run_data + '/' + files.psovbr_lr},
-        '%(mass2)f %(re2)f %(ndvr2)d\n'
-        % {'mass2': molecule.br.mass,
-           're2': molecule.br.length[2],
-           'ndvr2': molecule.br.num_dvr_fns
-           },
-        '%(psovbr_br)s \n'
-        % {'psovbr_br': paths.run_data + '/' + files.psovbr_br},
-        '%(ndvr)d %(reFlag)d\n'
-        % {'ndvr': options.hin_options.num_res_angles,
-           'reFlag': options.in_switches.s_equil_r
-           }
-    ]
-    if options.in_switches.s_equil_r == "T":
-        hin_file.append('%(f_equil_r)s \n'
-                        % {'f_equil_r': paths.run_data + '/' + options.in_switches.f_equil_r})
+    hin_file = ['%(jtol)d %(parity)s '
+                % {'jtol': molecule.j_total,
+                   'parity': 'F' if molecule.parity == 'odd' else 'T'
+                   },
+                '%(jmax)d %(ngi)d \n'
+                % {'jmax': molecule.j_max,
+                   'ngi': options.hin_options.ngi
+                   },
+                '%(FcFlag)d %(CbFlag)d %(AbsFlag)d %(useSP)s %(Ecutoff)f\n'
+                % {'FcFlag': options.hin_options.fc_flag,
+                   'CbFlag': options.hin_options.cb_flag,
+                   'AbsFlag': options.hin_options.abs_flag,
+                   'useSP': 'T' if molecule.use_spline else 'F',
+                   'Ecutoff': molecule.energy_cutoff
+                   },
+                '%(fH0)s \n'
+                % {'fH0': paths.run_data + '/' + files.radial_ham},
+                '%(fH0gm)s \n'
+                % {'fH0gm': paths.run_data + '/' + files.angular_ham},
+                '%(mass1)f %(re1)f %(ndvr1)d\n'
+                % {'mass1': molecule.lr.mass,
+                   're1': molecule.lr.length[2],
+                   'ndvr1': molecule.lr.num_dvr_fns
+                   },
+                '%(psovbr_lr)s \n'
+                % {'psovbr_lr': paths.run_psovbr_data + '/' + files.psovbr_lr},
+                '%(mass2)f %(re2)f %(ndvr2)d\n'
+                % {'mass2': molecule.br.mass,
+                   're2': molecule.br.length[2],
+                   'ndvr2': molecule.br.num_dvr_fns
+                   }, '%(psovbr_br)s \n'
+                % {'psovbr_br': paths.run_psovbr_data + '/' + files.psovbr_br},
+                '%(ndvr)d %(reFlag)d\n'
+                % {'ndvr': options.hin_options.num_res_angles,
+                   'reFlag': options.in_switches.s_equil_r
+                   },
+                '%(f_equil_r)s \n'
+                % {'f_equil_r': paths.run_data + '/' + options.in_switches.f_equil_r}
+                ]
     if molecule.use_spline:
-        hin_file.append(paths.pes_data + '/' + files.psovbr_lr + '\n')
-        hin_file.append(paths.pes_data + '/' + files.psovbr_br)
+        hin_file.append(paths.pes_data + '/' + files.v_eff_lr + '\n')
+        hin_file.append(paths.pes_data + '/' + files.v_eff_br)
     fh = open(paths.run + '/' + files.hamiltonian + files.input, 'w')
     fh.write("".join(hin_file))
     fh.close()

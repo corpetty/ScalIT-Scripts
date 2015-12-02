@@ -4,7 +4,8 @@ import stat
 
 
 def set_header(molecule, mpi):
-    #  TODO: Add Lonestar, Hrothgar header specifics
+    #  TODO: Add Hrothgar header specifics
+    #  TODO: Transfer platform specifics to Class.appendeges
     if mpi.use_sge:
         mpi.header = [
             '#!/bin/bash\n',
@@ -25,6 +26,10 @@ def set_header(molecule, mpi):
         if mpi.platform == 'Robinson':
             mpi.header.append('#$ -q normal.q\n')
             mpi.header.append('#$ -pe mpi %(cores)d\n\n' % {'cores': mpi.cores})
+        elif mpi.platform == 'Lonestar4':
+            mpi.header.append('#$ -q normal\n')
+            mpi.header.append('#$ -l h_rt=' + mpi.runtime + '\n')
+            mpi.header.append('#$ -pe 12way %(cores)d\n\n' % {'cores': mpi.cores})
     else:
         mpi.header = []
 

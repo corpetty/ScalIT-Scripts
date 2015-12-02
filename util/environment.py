@@ -31,6 +31,7 @@ class Mpi(object):
         self.cores_per_node = 1
         self.runtime = runtime
         self.header = ''
+        self.appendeges = ''
         self.set_platform_specifics()
 
     def set_platform_specifics(self):
@@ -55,6 +56,9 @@ class Mpi(object):
             self.cmd = 'ibrun -n %(cores)d -o 0 ' \
                        % {'cores': self.cores}
             self.cmdhin = 'ibrun -n 4 -o 0 '
+            self.use_mpi = True
+            self.use_sge = True
+            self.appendeges = '#$ -l h_rt=' + self.runtime + '\n'
         elif self.platform == 'Hrothgar':
             self.cores_per_node = 12
             self.cores = self.cores_per_node * self.nodes_desired
