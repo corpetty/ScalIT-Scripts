@@ -154,13 +154,13 @@ def step_three(paths, files, mol, options):
            'sST': options.in_options.s_st,
            'sAP': options.in_switches.s_ap
            },
-        '%(BJ_iters)d %(BJ_tol)f %(QMR_iters)d %(QMR_tol)f\n'
+        '%(BJ_iters)d %(BJ_tol)g %(QMR_iters)d %(QMR_tol)g\n'
         % {'BJ_iters': options.in_options.bj_num_iters,
            'BJ_tol': options.in_options.bj_tolerance,
            'QMR_iters': options.in_options.qmr_num_iters,
            'QMR_tol': options.in_options.qmr_tolerance
            },
-        '%(pist_e0)f %(lanc_tol)f %(lanc_start)d %(lanc_step)d %(lanc_max)d %(lanc_num_eig)d %(lanc_gap)d\n'
+        '%(pist_e0)g %(lanc_tol)g %(lanc_start)d %(lanc_step)d %(lanc_max)d %(lanc_num_eig)d %(lanc_gap)d\n'
         % {'pist_e0': options.in_options.pist_e0,
            'lanc_tol': options.in_options.pist_lanc_tolerance,
            'lanc_start': options.in_options.pist_start,
@@ -169,7 +169,7 @@ def step_three(paths, files, mol, options):
            'lanc_num_eig': options.in_options.pist_num_e0,
            'lanc_gap': options.in_options.pist_gap
            },
-        '%(osb_e0)f %(osb_de)f %(osb_beta)f %(osb_count)d\n'
+        '%(osb_e0)g %(osb_de)g %(osb_beta)g %(osb_count)d\n'
         % {'osb_e0': options.in_options.osb_e0,
            'osb_de': options.in_options.osb_de,
            'osb_beta': options.in_options.osb_beta,
