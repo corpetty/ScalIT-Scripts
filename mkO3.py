@@ -18,8 +18,8 @@ from triatomic_mod.convergence_tests import multiple_run_from_dict
 #############################################################################################################
 molecule = 'ozone'
 mass_label = 'o16'
-permutation = 'odd'
-parity = 'odd'
+permutation = 'even'
+parity = 'even'
 #############################################################################################################
 #   j_total:    Array of Total Angular Momentum Values, J
 #   lr:         Array of Jacobi coordinate little r basis functions

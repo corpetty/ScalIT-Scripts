@@ -36,16 +36,16 @@ def set_header(molecule, mpi):
 
 def get_executables(molecule, mpi):
     if mpi.use_mpi:
-        if molecule.permutation:
-            mpi.hin_exec = 'p%(name)s_o' % {'name': molecule.name}
-        else:
+        if molecule.permutation == 'even':
             mpi.hin_exec = 'p%(name)s_e' % {'name': molecule.name}
+        else:
+            mpi.hin_exec = 'p%(name)s_o' % {'name': molecule.name}
         mpi.in_exec = 'p_iterate'
     else:
-        if molecule.permutation:
-            mpi.hin_exec = '%(name)s_o' % {'name': molecule.name}
-        else:
+        if molecule.permutation == 'even':
             mpi.hin_exec = '%(name)s_e' % {'name': molecule.name}
+        else:
+            mpi.hin_exec = '%(name)s_o' % {'name': molecule.name}
         mpi.in_exec = 'iterate'
 
 

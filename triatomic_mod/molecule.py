@@ -54,7 +54,7 @@ class Molecule(object):
             self.jk_num = 0
             for j in range(0, self.j_max + 1):
                 k_max = min(self.j_total, j)
-                for _ in range(k_min, k_max + 1):
+                for k in range(k_min, k_max + 1):
                     jk = j + jp
                     if jk % 2 == 0:
                         self.jk_num += 1
@@ -74,7 +74,7 @@ class Molecule(object):
             self.jk_num = 0
             for j in range(0, self.j_max + 1):
                 k_max = min(self.j_total, j)
-                for _ in range(k_min, k_max + 1):
+                for k in range(k_min, k_max + 1):
                     jk = j + jp
                     if jk % 2 != 0:
                         self.jk_num += 1
