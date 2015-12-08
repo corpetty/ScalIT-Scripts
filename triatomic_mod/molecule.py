@@ -38,10 +38,10 @@ class Molecule(object):
             self.suffix = suffix
 
     def get_num_angles(self):
-        if self.permutation == 'even' or 'Even' or 'T':
-            if self.parity == 'even' or 'Even' or 'T':
+        if self.permutation == ('even' or 'Even' or 'T' or True):
+            if self.parity == ('even' or 'Even' or 'T' or True):
                 jp = 0
-            elif self.parity == 'odd' or 'Odd' or 'F':
+            elif self.parity == ('odd' or 'Odd' or 'F' or False):
                 jp = 1
             else:
                 print('Incorrect parity option, choose (even,odd)')
@@ -58,10 +58,10 @@ class Molecule(object):
                     jk = j + jp
                     if jk % 2 == 0:
                         self.jk_num += 1
-        elif self.permutation == 'odd' or 'Odd' or 'F':  # even permutation
-            if self.parity == 'even' or 'Even' or 'T':  # even parity
+        elif self.permutation == ('odd' or 'Odd' or 'F' or False):  # even permutation
+            if self.parity == ('even' or 'Even' or 'T' or True):  # even parity
                 jp = 0
-            elif self.parity == 'odd' or 'Odd' or 'F':  # odd parity
+            elif self.parity == ('odd' or 'Odd' or 'F' or False):  # odd parity
                 jp = 1
             else:
                 print('Incorrect parity option, choose (even,odd)')
