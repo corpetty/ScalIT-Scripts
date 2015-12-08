@@ -51,8 +51,7 @@ def multiple_run_from_dict(params, variables):
                 mol.lr.num_dvr_fns = lr
                 mol.br.num_dvr_fns = br
                 mol.j_max = jmax
-                mol.get_num_angles
-                mol.get_num_angles
+                mol.get_num_angles()
                 env.generate_filenames(files=files, molecule=mol)
                 make_files.step_two(paths=paths, files=files, molecule=mol, options=opts)
                 make_files.step_three(paths=paths, files=files, mol=mol, options=opts)

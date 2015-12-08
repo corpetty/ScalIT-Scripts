@@ -18,12 +18,12 @@ class Molecule(object):
         self.mass_combo = mass_combo
         self.j_total = j_total
         self.j_max = j_max
-        self.jk_num = 0
         self.permutation = permutation
         self.parity = parity
         self.energy_cutoff = energy_cutoff
         self.lr = self.RadialCoordinate(mass[0], lr_length, num_sinc_fns, num_vbr_fns, num_lr_dvr_fns, suffix="lr")
         self.br = self.RadialCoordinate(mass[1], br_length, num_sinc_fns, num_vbr_fns, num_br_dvr_fns, suffix="BR")
+        self.jk_num = None
         self.get_num_angles()
         self.use_spline = use_spline
 
@@ -47,16 +47,16 @@ class Molecule(object):
                 print('Incorrect parity option, choose (even,odd)')
                 return 0
             jt = self.j_total + jp
-            if jt / 2 * 2 == jt:
+            if jt % 2 == 0:
                 k_min = 0
             else:
                 k_min = 1
             self.jk_num = 0
             for j in range(0, self.j_max + 1):
                 k_max = min(self.j_total, j)
-                for k in range(k_min, k_max + 1):
+                for _ in range(k_min, k_max + 1):
                     jk = j + jp
-                    if jk / 2 * 2 == jk:
+                    if jk % 2 == 0:
                         self.jk_num += 1
         elif self.permutation == 'odd' or 'Odd' or 'F':  # even permutation
             if self.parity == 'even' or 'Even' or 'T':  # even parity
@@ -67,16 +67,16 @@ class Molecule(object):
                 print('Incorrect parity option, choose (even,odd)')
                 return 0
             jt = self.j_total + jp  # total parity = (-1)^(p+JTol)
-            if jt == jt / 2 * 2:  # even total parity
+            if jt % 2 == 0:  # even total parity
                 k_min = 0
             else:
                 k_min = 1
             self.jk_num = 0
             for j in range(0, self.j_max + 1):
                 k_max = min(self.j_total, j)
-                for k in range(k_min, k_max + 1):
+                for _ in range(k_min, k_max + 1):
                     jk = j + jp
-                    if jk / 2 * 2 != jk:
+                    if jk % 2 != 0:
                         self.jk_num += 1
         else:
             print('Incorrect permutation option, choose (even,odd)')
