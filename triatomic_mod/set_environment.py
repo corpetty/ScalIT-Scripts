@@ -53,7 +53,7 @@ def generate_filenames(files, molecule):
                         % {'lr': molecule.lr.num_dvr_fns,
                            'br': molecule.br.num_dvr_fns,
                            'gm': molecule.j_max,
-                           'par': molecule.permutation
+                           'par': molecule.parity
                            }
 
     #  Step Two Output Data Files
@@ -67,7 +67,7 @@ def generate_filenames(files, molecule):
                         % {'lr': molecule.lr.num_dvr_fns,
                            'br': molecule.br.num_dvr_fns,
                            'gm': molecule.j_max,
-                           'par': molecule.permutation
+                           'par': molecule.parity
                            }
 
     #  Step Three Input/Output File Extension Prefix
@@ -75,7 +75,7 @@ def generate_filenames(files, molecule):
                     % {'lr': molecule.lr.num_dvr_fns,
                        'br': molecule.br.num_dvr_fns,
                        'gm': molecule.j_max,
-                       'par': molecule.permutation
+                       'par': molecule.parity
                        }
 
     #  Scripts for running files
@@ -83,7 +83,7 @@ def generate_filenames(files, molecule):
                        % {'lr': molecule.lr.num_dvr_fns,
                           'br': molecule.br.num_dvr_fns,
                           'gm': molecule.j_max,
-                          'par': molecule.permutation
+                          'par': molecule.parity
                           }
 
     #  Script to run Step 1, PSOVBR data creation
