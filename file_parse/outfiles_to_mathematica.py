@@ -22,7 +22,7 @@ def print_eigenvalues():
                 mol.j_max = jmax
                 mol.get_num_angles()
                 env.generate_filenames(files=files, molecule=mol)
-                outfiles.append(paths.run + '/' + files.iterate + files.output)
+                outfiles.append(paths.run + '/' + files.iterate + "$JOB_ID." + files.output)
 
     #  check existence of outfiles, remove if not in existence
 
