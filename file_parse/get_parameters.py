@@ -30,7 +30,7 @@ def combined_dict_from_inputs(hinfilename: str, infilename: str) -> dict:
     return return_dict
 
 
-def permutation(scriptfilename:str) -> str:
+def permutation(scriptfilename: str) -> str:
     with open(scriptfilename, mode='r') as scriptfile:
         for line in scriptfile:
             for word in line.split():

@@ -3,6 +3,7 @@ import os
 import stat
 
 
+#  TODO:  Add bash script generator to submit all jobs SGE submissions
 def set_header(molecule, mpi):
     #  TODO: Add Hrothgar header specifics
     #  TODO: Transfer platform specifics to Class.appendeges

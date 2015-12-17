@@ -23,6 +23,12 @@ a variety of operations on them to facilitate using the ScalIT software suite.
 All triatomics that are currently implemented in **ScalIT**.  Future add-on methods will auto-load defaults for 
 specific molecules.
 
+## Requirements
+  1. Python 3.2 or greater
+  2. itertools package
+  3. posixpath package
+  4. shlex package
+
 ## How to run
 
   1. Copy mkO3.py to another file, name it something relevant.  I tend to use the formality:
