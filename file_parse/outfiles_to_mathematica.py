@@ -29,9 +29,10 @@ def print_eigenvalues():
                 parameter_sets.append([jtot, lr, br, mol.jk_num])
 
     #  check existence of outfiles, remove if not in existence
-    for outfile in outfiles:
+    for num, outfile in enumerate(outfiles):
         if not posixpath.exists(outfile):
             outfiles.remove(outfile)
+            parameter_sets.remove(parameter_sets[num])
 
     #  extract eigenvalues from easy in above list
     eig_list = []
@@ -39,6 +40,14 @@ def print_eigenvalues():
         eig_list.append(get_params.eigenvalues(outfile=outfile))
 
     #  format each list into mathematica ready input
+    formatted_eig_list = format_mathematica(mol, opts, parameter_sets, eig_list)
+
+    #  print to screen
+    for eigs in formatted_eig_list:
+        print(eigs)
+
+
+def format_mathematica(mol, opts, parameter_sets: list, eig_list: list) -> list:
     formatted_eig_list = []
     for num, eigs in enumerate(eig_list):
         formatted_eig_string = "%(mass_option)sJ%(jtot)dr%(lr)dR%(br)dgm%(gm)d%(perm)s%(parity)s = {" \
@@ -46,7 +55,7 @@ def print_eigenvalues():
                'jtot': parameter_sets[num][0],
                'lr': parameter_sets[num][1],
                'br': parameter_sets[num][2],
-               'gm': min(opts.hin_options.num_res_angles, parameter_sets[num][4]),
+               'gm': min(opts.hin_options.num_res_angles, parameter_sets[num][3]),
                'perm': mol.permutation,
                'parity': mol.parity
                }
@@ -54,7 +63,4 @@ def print_eigenvalues():
             formatted_eig_string += str(eig).replace("E|e|D", "*^") + ", "
         formatted_eig_string = re.sub(", $", "};\n", formatted_eig_string)
         formatted_eig_list.append(formatted_eig_string)
-
-    #  print to screen
-    for eigs in formatted_eig_list:
-        print(eigs)
+    return formatted_eig_list

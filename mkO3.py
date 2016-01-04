@@ -1,7 +1,6 @@
 # coding=utf-8
 # !/usr/bin/env python
 __author__ = 'Corey Petty'
-from triatomic_mod.convergence_tests import multiple_run_from_dict
 
 #############################################################################################################
 #############################################################################################################
@@ -325,4 +324,4 @@ variables = [
     br,
     jmax
 ]
-multiple_run_from_dict(params=params, variables=variables)
+

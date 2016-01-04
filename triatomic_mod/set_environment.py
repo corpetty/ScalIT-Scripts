@@ -49,40 +49,40 @@ def generate_filenames(files, molecule):
     files.v_eff_br = molecule.name + "_vBR.dat"
 
     #  Step Two Input/Output File Extention Prefix
-    files.hamiltonian = "r%(lr)dR%(br)dgm%(gm)d%(par)s.h" \
+    files.hamiltonian = "r%(lr)dR%(br)djmax%(jmax)d%(par)s.h" \
                         % {'lr': molecule.lr.num_dvr_fns,
                            'br': molecule.br.num_dvr_fns,
-                           'gm': molecule.j_max,
+                           'jmax': molecule.j_max,
                            'par': molecule.parity
                            }
 
     #  Step Two Output Data Files
-    files.radial_ham = "H0-r%(lr)dR%(br)dgm%(gm)d%(par)s.dat" \
+    files.radial_ham = "H0-r%(lr)dR%(br)djmax%(jmax)d%(par)s.dat" \
                        % {'lr': molecule.lr.num_dvr_fns,
                           'br': molecule.br.num_dvr_fns,
-                          'gm': molecule.j_max,
-                          'par': molecule.permutation
+                          'jmax': molecule.j_max,
+                          'par': molecule.parity
                           }
-    files.angular_ham = "H0gm-r%(lr)dR%(br)dgm%(gm)d%(par)s.dat" \
+    files.angular_ham = "H0gm-r%(lr)dR%(br)djmax%(jmax)d%(par)s.dat" \
                         % {'lr': molecule.lr.num_dvr_fns,
                            'br': molecule.br.num_dvr_fns,
-                           'gm': molecule.j_max,
+                           'jmax': molecule.j_max,
                            'par': molecule.parity
                            }
 
     #  Step Three Input/Output File Extension Prefix
-    files.iterate = "r%(lr)dR%(br)dgm%(gm)d%(par)s." \
+    files.iterate = "r%(lr)dR%(br)djmax%(jmax)d%(par)s." \
                     % {'lr': molecule.lr.num_dvr_fns,
                        'br': molecule.br.num_dvr_fns,
-                       'gm': molecule.j_max,
+                       'jmax': molecule.j_max,
                        'par': molecule.parity
                        }
 
     #  Scripts for running files
-    files.run_script = "r%(lr)dR%(br)dgm%(gm)d%(par)s.sh" \
+    files.run_script = "r%(lr)dR%(br)djmax%(jmax)d%(par)s.sh" \
                        % {'lr': molecule.lr.num_dvr_fns,
                           'br': molecule.br.num_dvr_fns,
-                          'gm': molecule.j_max,
+                          'jmax': molecule.j_max,
                           'par': molecule.parity
                           }
 
