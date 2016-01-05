@@ -91,7 +91,7 @@ def generate_filenames(files, molecule):
 
 
 def check_existence(paths):
-    for key, value in vars(paths).items():
+    for _, value in vars(paths).items():
         if not posixpath.exists(value):
             print('    Creating: ' + value)
             os.makedirs(value)

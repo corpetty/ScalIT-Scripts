@@ -1,6 +1,5 @@
 __author__ = 'Corey Petty'
 import itertools
-import run_parameters as rp
 import file_parse.get_parameters as get_params
 from triatomic_mod import dict_to_class
 from triatomic_mod import set_environment as env
@@ -9,14 +8,14 @@ import posixpath
 import re
 
 
-def print_eigenvalues():
+def print_eigenvalues(params, variables):
     #  Get list of files to parse from run_parameters file
     files = environment.Files()
     outfiles = []
     parameter_sets = []
-    (paths, mol, opts, mpienv) = dict_to_class.create_class(params=rp.params)
-    basis_sizes = list(itertools.product(*rp.variables[1:]))
-    for jtot in rp.variables[0]:
+    (paths, mol, opts, mpienv) = dict_to_class.create_class(params=params)
+    basis_sizes = list(itertools.product(*variables[1:]))
+    for jtot in variables[0]:
             mol.j_total = jtot
             env.generate_paths(directories=paths, molecule=mol)
             for lr, br, jmax in basis_sizes:
