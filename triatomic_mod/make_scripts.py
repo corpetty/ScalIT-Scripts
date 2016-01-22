@@ -80,7 +80,7 @@ def run_script(directories, files, molecule, mpi):
                 'name': molecule.name,
                 'exec': mpi.in_exec,
                 'input': files.iterate + files.input,
-                'output': files.iterate + "$JOB_ID." + files.output
+                'output': files.iterate + files.output
                 }
              )
     fh.write(')& \n')
