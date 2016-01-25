@@ -13,3 +13,12 @@ def total_runtime(outfile: str):
                  'min': sum(time_list)/60,
                  'hr': sum(time_list)/3600
                  })
+
+
+def print_lanczos_error(outfile: str) -> str:
+    return_string = "Could not find error, check that file ran properly"
+    with open(outfile, mode='r') as f:
+        for line in f:
+            if "Max Lanczos" in line:
+                return_string = "Lanczos Error: {}".format(line.split()[3])
+    return return_string

@@ -53,6 +53,7 @@ def format_csv(mol: Molecule, opts: Options, parameter_sets: list, eig_list: lis
 
 def print_eigenvalues(params, variables) -> int:
     from ScriptIT import exit_func
+    from file_parse.run_stats import print_lanczos_error
     #  instantiate choice for return.
     choice = None
     #  Get list of files to parse from run_parameters file
@@ -82,7 +83,9 @@ def print_eigenvalues(params, variables) -> int:
 
     #  extract eigenvalues from easy in above list
     eig_list = []
+    err_list = []
     for outfile in outfiles:
+        err_list.append(print_lanczos_error(outfile))
         eig_list.append(get_params.eigenvalues(outfile=outfile))
 
     while choice != -1:
@@ -98,7 +101,8 @@ def print_eigenvalues(params, variables) -> int:
         if choice == 1:
             formatted_eig_list = format_mathematica(mol, opts, parameter_sets, eig_list)
             #  print to screen
-            for eigs in formatted_eig_list:
+            for num, eigs in enumerate(formatted_eig_list):
+                print(err_list[num])
                 print(eigs)
         elif choice == 2:
             format_csv(mol, opts, parameter_sets, eig_list)
