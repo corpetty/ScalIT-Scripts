@@ -55,4 +55,4 @@ def multiple_run_from_dict(params, variables):
                 env.generate_filenames(files=files, molecule=mol)
                 make_files.step_two(paths=paths, files=files, molecule=mol, options=opts)
                 make_files.step_three(paths=paths, files=files, mol=mol, options=opts)
-                make_scripts.run_script(directories=paths, files=files, molecule=mol, mpi=mpienv)
+                make_scripts.run_script(directories=paths, files=files, molecule=mol, mpi=mpienv, options=opts)
