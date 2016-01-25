@@ -7,8 +7,12 @@ __author__ = 'Corey Petty'
 #                               TYPICAL PARAMETERS TO CHANGE FOR SCALIT RUNS
 #############################################################################################################
 #############################################################################################################
-
-
+#  run_switch: choose which parts of ScalIT to run together (default is 3)
+#     1.) hamiltonian construction only
+#     2.) iteratate step only - assumes 1 has been run already
+#     3.) both steps together
+#############################################################################################################
+run_switch = 3
 #############################################################################################################
 #   molecule:       Which molecule are you calculating?
 #   mass_label:     What isotopes are you using, make up a name for it
@@ -75,7 +79,8 @@ scalit = '/Users/coreypetty/work/ScalIT-ozone'
 #
 #############################################################################################################
 run_opts = dict(
-    version=-1,       # values of convergence parameter
+    version=-1,                 # values of convergence parameter
+    run_switch=run_switch,
     nodes_desired=3,            # number of nodes requested for mpi job.  Number of cores depends on platform
     local_cores=2,              # if dirs['host'] is 'local', number of cores desired to run mpi jobs
     run_time='48:00:00',         # used if host == Lonestar (hrs:mins:sec)
@@ -316,7 +321,7 @@ params = dict(
     in_opts=in_opts,
     in_file_names=in_file_names,
     mol=mol,
-    dirs=dirs
+    dirs=dirs,
 )
 variables = [
     j_total,

@@ -3,6 +3,7 @@ __author__ = 'Corey Petty'
 
 class Options(object):
     def __init__(self,
+                 run_switch=3,
                  dvr_type=2, restrict_num_angles="F", num_res_angles=0, ngi=300, fc_flag=0,
                  cb_flag=0, abs_flag=0, s_f=3, s_job=1, s_osb=0, s_cx='F', s_ndvr='T', s_st='T',
                  bj_num_iters=10, bj_tolerance=1.0E-3, qmr_num_iters=10000, qmr_tolerance=1.0E-3, pist_e0=0.0,
@@ -47,6 +48,7 @@ class Options(object):
         self.sin_options = self.SinOptions(k_num=k_num, g_type=g_type, s_type=s_type, num_states=num_states,
                                            lr_plotpoints=lr_plotpoints, br_plotpoints=br_plotpoints,
                                            angle_plotpoints=angle_plotpoints)
+        self.run_switch = run_switch
 
     class PinOptions(object):
         def __init__(self,

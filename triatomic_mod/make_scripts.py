@@ -50,7 +50,7 @@ def get_executables(molecule, mpi):
         mpi.in_exec = 'iterate'
 
 
-def run_script(directories, files, molecule, mpi):
+def run_script(directories, files, molecule, mpi, options):
     get_executables(molecule=molecule, mpi=mpi)
 
     #  Open file for writing
@@ -67,22 +67,25 @@ def run_script(directories, files, molecule, mpi):
     fh.write('WK_DIR=%(run_dir)s\n\n' % {'run_dir': directories.run})
     fh.write('date\n')
     fh.write('( \n')
-    fh.write('%(hinmpi)s $BIN_DIR/%(name)s/%(exec)s < $WK_DIR/%(input)s > $WK_DIR/%(output)s\n'
-             % {'hinmpi': mpi.cmdhin,
-                'name': molecule.name,
-                'exec': mpi.hin_exec,
-                'input': files.hamiltonian + files.input,
-                'output': files.hamiltonian + files.output
-                }
-             )
-    fh.write('%(mpi)s $BIN_DIR/%(exec)s < $WK_DIR/%(input)s > $WK_DIR/%(output)s\n'
-             % {'mpi': mpi.cmd,
-                'name': molecule.name,
-                'exec': mpi.in_exec,
-                'input': files.iterate + files.input,
-                'output': files.iterate + files.output
-                }
-             )
+
+    if options.run_switch == (1 or 3):
+        fh.write('%(hinmpi)s $BIN_DIR/%(name)s/%(exec)s < $WK_DIR/%(input)s > $WK_DIR/%(output)s\n'
+                 % {'hinmpi': mpi.cmdhin,
+                    'name': molecule.name,
+                    'exec': mpi.hin_exec,
+                    'input': files.hamiltonian + files.input,
+                    'output': files.hamiltonian + files.output
+                    }
+                 )
+    if options.run_switch == (2 or 3):
+        fh.write('%(mpi)s $BIN_DIR/%(exec)s < $WK_DIR/%(input)s > $WK_DIR/%(output)s\n'
+                 % {'mpi': mpi.cmd,
+                    'name': molecule.name,
+                    'exec': mpi.in_exec,
+                    'input': files.iterate + files.input,
+                    'output': files.iterate + files.output
+                    }
+                 )
     fh.write(')& \n')
     fh.write('wait\n')
     fh.write('date')

@@ -41,6 +41,7 @@ def create_class(params):
                             use_spline=use_spline)
 
     # Transfer Params variables to Options class
+    run_switch = params['run_opts']['run_switch']
     dvr_type = params['pin_opts']['dvr_type']
     restrict_num_angles = params['hin_opts']['restrict_num_angles']
     num_res_angles = params['hin_opts']['num_angles']
@@ -88,7 +89,7 @@ def create_class(params):
     f_vx = params['in_file_names']['fVX']
     f_pt = params['in_file_names']['fPT']
 
-    opts = options.Options(dvr_type=dvr_type, restrict_num_angles=restrict_num_angles,
+    opts = options.Options(run_switch=run_switch, dvr_type=dvr_type, restrict_num_angles=restrict_num_angles,
                            num_res_angles=num_res_angles, ngi=ngi, fc_flag=fc_flag, cb_flag=cb_flag, abs_flag=abs_flag,
                            s_f=s_f, s_job=s_job, s_osb=s_osb, s_cx=s_cx, s_ndvr=s_ndvr, s_st=s_st,
                            bj_num_iters=bj_num_iters, bj_tolerance=bj_tolerance, qmr_num_iters=qmr_num_iters,
@@ -100,7 +101,7 @@ def create_class(params):
                            s_vosb=s_vosb, f_vosb=f_vosb, f_eig=f_eig, s_hw=s_hw, f_hw=f_hw,
                            s_vx=s_vx, f_vx=f_vx, s_pt=s_pt, f_pt=f_pt)
 
-    # Transfer Paramss variables to Mpi class
+    # Transfer Params variables to Mpi class
     if params['run_opts']['version'] != 0:
         use_mpi = True
     else:
