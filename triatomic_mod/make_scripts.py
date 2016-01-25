@@ -68,7 +68,7 @@ def run_script(directories, files, molecule, mpi, options):
     fh.write('date\n')
     fh.write('( \n')
 
-    if options.run_switch == (1 or 3):
+    if options.run_switch == (1 | 3):
         fh.write('%(hinmpi)s $BIN_DIR/%(name)s/%(exec)s < $WK_DIR/%(input)s > $WK_DIR/%(output)s\n'
                  % {'hinmpi': mpi.cmdhin,
                     'name': molecule.name,
@@ -77,7 +77,7 @@ def run_script(directories, files, molecule, mpi, options):
                     'output': files.hamiltonian + files.output
                     }
                  )
-    if options.run_switch == (2 or 3):
+    if options.run_switch == (2 | 3):
         fh.write('%(mpi)s $BIN_DIR/%(exec)s < $WK_DIR/%(input)s > $WK_DIR/%(output)s\n'
                  % {'mpi': mpi.cmd,
                     'name': molecule.name,
