@@ -8,6 +8,7 @@ import triatomic_mod.make_files as make_files
 import triatomic_mod.make_scripts as make_scripts
 import itertools
 import os.path
+from triatomic_mod.notify import check_if_using_ceiling
 
 
 def multiple_run_from_dict(params, variables):
@@ -52,6 +53,7 @@ def multiple_run_from_dict(params, variables):
                 mol.br.num_dvr_fns = br
                 mol.j_max = jmax
                 mol.get_num_angles()
+                check_if_using_ceiling(jk_num=mol.jk_num, angle_ceiling=opts.hin_options.num_res_angles)
                 env.generate_filenames(files=files, molecule=mol)
                 make_files.step_two(paths=paths, files=files, molecule=mol, options=opts)
                 make_files.step_three(paths=paths, files=files, mol=mol, options=opts)

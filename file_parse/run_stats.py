@@ -15,11 +15,11 @@ def total_runtime(outfile: str):
                  })
 
 
-def print_lanczos_error(outfile: str) -> str:
+def get_lanczos_error(outfile: str) -> str:
     return_string = "Lanczos Error not found, job may be running or encountered an error. \n" + \
                     "  see file {}".format(outfile)
     with open(outfile, mode='r') as f:
         for line in f:
             if "Max Lanczos" in line:
-                return_string = "Lanczos Error: {}".format(line.split()[3])
+                return_string = "{}".format(line.split()[3])
     return return_string

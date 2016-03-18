@@ -30,13 +30,13 @@ def format_mathematica(mol: Molecule, opts: Options, parameter_sets: list, eig_l
     return formatted_eig_list
 
 
-def format_csv(mol: Molecule, opts: Options, parameter_sets: list, eig_list: list):
+def format_csv(mol: Molecule, opts: Options, parameter_sets: list, eig_list: list, err_list: list):
     from util.general_functions import check_csv_duplicates
     filename = mol.name + "states.csv"
     with open(filename, mode='a') as csvfile:
         filewriter = csv.writer(csvfile, delimiter=',')
         filewriter.writerow(['mass_label', 'J_total', 'j_max', 'num_lr', 'num_br', 'num_gm', 'permutation', 'parity',
-                             'num_states', 'states'])
+                             'lanczos_error', 'num_states', 'states'])
         for num, eigs in enumerate(eig_list):
             formatted_eig_string = ""
             for eig in eigs:
@@ -45,15 +45,16 @@ def format_csv(mol: Molecule, opts: Options, parameter_sets: list, eig_list: lis
             filewriter.writerow([mol.mass_combo, parameter_sets[num][0], parameter_sets[num][4],
                                  parameter_sets[num][1], parameter_sets[num][2],
                                  min(parameter_sets[num][3], opts.hin_options.num_res_angles),
-                                 mol.permutation, mol.parity, len(eigs), formatted_eig_string])
-        print("Files written to {}".format(filename))
+                                 mol.permutation, mol.parity, err_list[num], len(eigs),
+                                 formatted_eig_string])
+        print("Files written to {}\n".format(filename))
     print("Checking for duplicate entries and removing")
     check_csv_duplicates(filename)
 
 
 def print_eigenvalues(params, variables) -> int:
     from ScriptIT import exit_func
-    from file_parse.run_stats import print_lanczos_error
+    from file_parse.run_stats import get_lanczos_error
     #  instantiate choice for return.
     choice = None
     #  Get list of files to parse from run_parameters file
@@ -85,7 +86,7 @@ def print_eigenvalues(params, variables) -> int:
     eig_list = []
     err_list = []
     for outfile in outfiles:
-        err_list.append(print_lanczos_error(outfile))
+        err_list.append(get_lanczos_error(outfile))
         eig_list.append(get_params.eigenvalues(outfile=outfile))
 
     while choice != -1:
@@ -102,10 +103,10 @@ def print_eigenvalues(params, variables) -> int:
             formatted_eig_list = format_mathematica(mol, opts, parameter_sets, eig_list)
             #  print to screen
             for num, eigs in enumerate(formatted_eig_list):
-                print(err_list[num])
+                print("Lanczos Error: " + err_list[num])
                 print(eigs)
         elif choice == 2:
-            format_csv(mol, opts, parameter_sets, eig_list)
+            format_csv(mol, opts, parameter_sets, eig_list, err_list)
         elif choice == 0:
             print("Exiting")
             exit_func()

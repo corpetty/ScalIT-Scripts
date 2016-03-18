@@ -17,26 +17,30 @@ run_switch = 3
 #############################################################################################################
 #   molecule:       Which molecule are you calculating?
 #   mass_label:     What isotopes are you using, make up a name for it
-#   permutation:    Desired nuclear permutation to calculate (even/odd)
+#   permutation:    Desired nuclear permutation to calculate (Agg,Auu,Agu,Aug)
 #   parity:         Desired parity to calculate (even/odd)
 #############################################################################################################
-molecule = 'ozone'
-mass_label = 'o16'
-permutation = 'even'
+molecule = 'ne4'
+mass_label = 'ne20'
+permutation = 'Agg'
 parity = 'even'
 #############################################################################################################
 #   j_total:    Array of Total Angular Momentum Values, J
-#   lr:         Array of Jacobi coordinate little r basis functions
+#   lr1:        Array of Jacobi coordinate little r1 basis functions
+#   lr2:        Array of Jacobi coordinate little r2 basis functions
 #   br:         Array of Jacobi coordinate Big R basis functions
-#   jmax:       Array of body fixed angular momentum values
+#   j1max:      Array of body fixed angular momentum values corresponding to lr1
+#   j2max:      Array of body fixed angular momentum values corresponding to lr2
 #   max_angle:  Ceiling value for number of angular basis functions
 #
 #   NOTE: all iterations of below arrays will be created
 #############################################################################################################
 j_total = [1, 2]
-lr = [25]
+lr1 = [25]
+lr2 = [25]
 br = [35]
-jmax = [80, 85]
+j1max = [80, 85]
+j2max = [80, 85]
 max_angle = 400
 #############################################################################################################
 #   central_energy:     Energy to converge eigenvalues around
@@ -50,7 +54,7 @@ total_accuracy = 1.0E-9
 #   host:   What computer are you running on?
 #       options: 'local'
 #                'Robinson'
-#                'Lonestar'
+#                'Lonestar4'
 #                'Hrothgar'
 #   work:    Base directory where input/output/run files will be stored
 #   data:    Base directory where intermediate data files will be stored
@@ -99,11 +103,11 @@ run_opts = dict(
 mol = dict(
     Name=molecule,
     mass_opt=mass_label,
-    mass=(14578.471659, 9718.981106),
-    Rmin=(1.5, 0.0),
-    Rmax=(6.0, 5.0),
-    re=(2.401, 1.256),
-    use_spline=True
+    mass=(55.442105, 55.442105, 110.88421),
+    Rmin=(0.9, 0.9, 0.0),
+    Rmax=(3.5, 3.5, 3.5),
+    re=(1.1225, 1.1225, 0.05),  # Note: fix re_Br
+    use_spline=False
 )
 #############################################################################################################
 #           Relevant User Directories
@@ -167,9 +171,12 @@ pin_opts = dict(
 hin_opts = dict(
     j_total=10,
     jmax=130,
+    j1max=30,
+    j2max=30,
     permutation=permutation,
     parity=parity,
-    num_lr_functions=30,
+    num_lr1_functions=5,
+    num_lr2_functions=5,
     num_Br_functions=30,
     restrict_num_angles='F',
     num_angles=max_angle,
@@ -177,7 +184,7 @@ hin_opts = dict(
     FcFlag=0,
     CbFlag=0,
     AbsFlag=0,
-    Ecutoff=0.1,  # TODO: This should be set automatically by molecule
+    Ecutoff=0.0,  # TODO: This should be set automatically by molecule
     ReFlag=0
 )
 #############################################################################################################
@@ -269,8 +276,8 @@ in_parameters = dict(
 #
 #############################################################################################################
 in_switches = dict(
-    sF=3,
-    sDep=['F', 'F', 'F'],
+    sF=4,
+    sDep=['F', 'F', 'F', 'F'],
     sJOB=1,
     sOSB=0,
     sCX='F',
@@ -300,7 +307,7 @@ in_switches = dict(
 #############################################################################################################
 in_file_names = dict(
     fRES='fRES.dat',
-    fDep=['fDep1.dat', 'fDep2.dat', 'fDep3.dat'],
+    fDep=['fDep1.dat', 'fDep2.dat', 'fDep3.dat', 'fDep4.dat'],
     fAPP='fAPP.dat',
     fAPR='fAPR.dat',
     fHOSB='fHOSB.dat',
@@ -326,8 +333,10 @@ params = dict(
 )
 variables = [
     j_total,
-    lr,
+    lr1,
+    lr2,
     br,
-    jmax
+    j1max,
+    j2max
 ]
 

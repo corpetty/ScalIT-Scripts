@@ -80,7 +80,7 @@ class Molecule(object):
                         self.jk_num += 1
         else:
             print('Incorrect permutation option, choose (even,odd)')
-            return 0
+            return 0  # TODO:  is this line needed?
 
     def print_jknum(self):
         print('\n')

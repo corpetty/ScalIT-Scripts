@@ -1,8 +1,6 @@
 __author__ = 'Corey Petty'
 # !/usr/bin/env python
 
-import Tetraatomic_deprecated.MakeFiles
-
 #############################################################################################################
 # do convergence testing for tri-atomic molecules.
 # parameters: J, r1, r2, BR, j1_max, j2_max, theta
@@ -29,8 +27,8 @@ import Tetraatomic_deprecated.MakeFiles
 #############################################################################################################
 run_opts = dict(
     version=-1,
-    conv_option=-1,
-    nvar=[3, 4, 5],             # values of convergence parameter, list length specifies how many jobs in script
+    conv_option=0,
+    nvar=[0, 0, 0],             # values of convergence parameter, list length specifies how many jobs in script
     nodes_desired=1,            # number of nodes requested for mpi job.  Number of cores depends on platform
     local_cores=4,              # if dirs['host'] is 'local', number of cores desired to run mpi jobs
     run_time='48:00:00'         # used if host == Lonestar (hrs:mins:sec)
@@ -47,11 +45,11 @@ run_opts = dict(
 #   Rmax:           maximum distance in coordinate range for r1, r2, R
 #############################################################################################################
 mol = dict(
-    Name='ne4',
-    mass=(55.442105, 55.442105, 110.88421),
-    Rmin=(0.9, 0.9, 0.0),
-    Rmax=(3.5, 3.5, 3.5),
-    re=(1.1225, 1.1225, 0.05),
+    Name='',
+    mass=(0.0, 0.0, 0.0),
+    Rmin=(0.0, 0.0, 0.0),
+    Rmax=(0.0, 0.0, 0.0),
+    re=(0.0, 0.0, 0.0),
 )
 #############################################################################################################
 #           Relevant User Directories
@@ -60,9 +58,9 @@ mol = dict(
 #############################################################################################################
 dirs = dict(
     host='local',
-    home='/Users/coreypetty',                      # directory location of your home folder
-    data='/Users/coreypetty/work/data',            # directory location of your data folder (where to store large files)
-    scalit='/Users/coreypetty/work/ScalIT-ozone'   # directory location of your ScalIT installation
+    home='~',                    # directory location of your home folder
+    data='~/data',               # directory location of your data folder (where to store large files)
+    scalit='~/ScalIT-ozone'      # directory location of your ScalIT installation
 )
 #############################################################################################################
 #           PRESINC Construction (*.pin file) Parameters
@@ -81,9 +79,9 @@ dirs = dict(
 #############################################################################################################
 pin_opts = dict(                    # All set to default values
     dvr_type=2,
-    useSP='F',
+    useSP='T',
     num_sinc_fns=[6000, 6000, 6000],
-    max_DVR_fns=[40, 40, 40]
+    max_DVR_fns=[80, 80, 80]
 )
 #############################################################################################################
 #           Hamiltonian Construction (*.hin file) Parameters
@@ -117,15 +115,15 @@ pin_opts = dict(                    # All set to default values
 #                                   0 : Neither
 #############################################################################################################
 hin_opts = dict(
-    j_total=0,
-    j1_max=15,
-    j2_max=15,
-    j_max=30,
+    jtotal=0,
+    j1_max=0,
+    j2_max=0,
+    j_max=0,
     permutation='Agg',
     parity='T',
-    num_r1_functions=6,
-    num_r2_functions=6,
-    num_Br_functions=7,
+    num_r1_functions=0,
+    num_r2_functions=0,
+    num_Br_functions=0,
     restrict_num_angles='T',
     num_angles=50,
     ngi=300,
@@ -151,10 +149,10 @@ hin_opts = dict(
 #############################################################################################################
 in_opts = dict(                                 # All set to default values
     opt0='F F F F\n',
-    opt1='1 4\n',
+    opt1='1 0\n',
     opt2='F T T F\n',
     bjQMR='10 1.0D-3 10000 1.0D-3\n',
-    pistConv='0.0 1.0D-6 50 10 400 30 5\n',
+    pistConv='0.0 1.0D-9 50 10 400 30 5\n',
     nState='0.0 1.0D-3 10.0 1000\n',
     opt3='0 0 0 0 0\n',
 )
@@ -168,4 +166,4 @@ params = dict(
     mol=mol,
     dirs=dirs
 )
-Tetraatomic_deprecated.MakeFiles.mka4(params)
+Deprecated.Tetraatomic_deprecated.MakeFiles.mka4(params)

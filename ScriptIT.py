@@ -2,6 +2,7 @@ import sys
 from triatomic_mod.convergence_tests import multiple_run_from_dict
 from triatomic_mod.parameter_file_utils import print_run_variables
 from file_parse import structure_outfiles
+from triatomic_mod.notify import check_rp_errors
 import importlib
 __author__ = 'Corey Petty'
 
@@ -12,6 +13,11 @@ def main(filename: str):
     else:
         rp = importlib.import_module(filename)
     print_run_variables(params=rp.params, variables=rp.variables)
+
+    #  Check to see if run parameters have errors
+    if check_rp_errors(params=rp.params, variables=rp.variables):
+        exit_func()
+
     choice = None
     while choice != 0:
         print_main_menu()
