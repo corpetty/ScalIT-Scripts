@@ -14,7 +14,7 @@ from triatomic_mod.notify import check_if_using_ceiling
 def multiple_run_from_dict(params, variables):
     print('*** CREATING FILES FOR MULTIPLE SCALIT RUNS ***')
 
-    #  Populate classes from dictionary
+    #  Instantiate and populate classes from dictionary
     (paths, mol, opts, mpienv) = dict_to_class.create_class(params=params)
 
     #  Instantiate Files class
