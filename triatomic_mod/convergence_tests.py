@@ -15,7 +15,7 @@ def multiple_run_from_dict(params, variables):
     print('*** CREATING FILES FOR MULTIPLE SCALIT RUNS ***')
 
     #  Instantiate and populate classes from dictionary
-    (paths, mol, opts, mpienv) = dict_to_class.create_class(params=params)
+    (paths, mol, opts, platform) = dict_to_class.create_class(params=params)
 
     #  Instantiate Files class
     files = util.environment.Files()
@@ -57,4 +57,4 @@ def multiple_run_from_dict(params, variables):
                 env.generate_filenames(files=files, molecule=mol)
                 make_files.step_two(paths=paths, files=files, molecule=mol, options=opts)
                 make_files.step_three(paths=paths, files=files, mol=mol, options=opts)
-                make_scripts.run_script(directories=paths, files=files, molecule=mol, mpi=mpienv, options=opts)
+                make_scripts.run_script(directories=paths, files=files, molecule=mol, platform=platform, options=opts)

@@ -108,20 +108,11 @@ def create_class(params):
         use_mpi = False
 
     platform = params['dirs']['host']
-
     local_cores = params['run_opts']['local_cores']
     nodes_desired = params['run_opts']['nodes_desired']
     run_time = params['run_opts']['run_time']
 
-    # TODO: get rid of this
-    # mpi = environment.Mpi(use_mpi=use_mpi, use_sge=use_sge, platform=platform, cores=local_cores,
-    #                       nodes_desired=nodes_desired, runtime=run_time)
+    platform = environment.Platform(use_mpi=use_mpi, platform=platform, cores=local_cores,
+                                    nodes_desired=nodes_desired, runtime=run_time)
 
-    # platform = 'local', submission_type = "sge", submission_header = '', submission_appendeges = '',
-    # use_mpi = True, mpi_cmd = 'mpirun', mpi_hin_cmd = 'mpirun', cores_per_node = 12, nodes_desired = 1, cores = 1,
-    # runtime = '48:00:00', project = 'ScalIT'
-
-    mpi = environment.Platform(use_mpi=use_mpi, platform=platform, cores=local_cores,
-                               nodes_desired=nodes_desired, runtime=run_time)
-
-    return paths, mol, opts, mpi
+    return paths, mol, opts, platform

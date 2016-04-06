@@ -4,37 +4,6 @@ import stat
 
 
 #  TODO:  Add bash script generator to submit all jobs SGE submissions
-def set_header(molecule, mpi):
-    #  TODO: Add Hrothgar header specifics
-    #  TODO: Transfer platform specifics to Class.appendeges
-    if mpi.use_sge:
-        mpi.header = [
-            '#!/bin/bash\n',
-            '#$ -V\n',
-            '#$ -cwd\n',
-            '#$ -j y\n',
-            '#$ -R y\n',
-            '#$ -S /bin/bash\n',
-            '#$ -N J%(j_total)d%(mol)s_%(perm)s\n'
-            % {'j_total': molecule.j_total,
-               'mol': molecule.name,
-               'perm': molecule.permutation
-               },
-            '#$ -o $JOB_NAME.%(cores)d.$JOB_ID.o\n'
-            % {'cores': mpi.cores},
-            '#$ -e $JOB_NAME.e$JOB_ID\n'
-        ]
-        if mpi.platform == 'Robinson':
-            mpi.header.append('#$ -q normal.q\n')
-            mpi.header.append('#$ -pe mpi %(cores)d\n\n' % {'cores': mpi.cores})
-        elif mpi.platform == 'Lonestar4':
-            mpi.header.append('#$ -q normal\n')
-            mpi.header.append('#$ -l h_rt=' + mpi.runtime + '\n')
-            mpi.header.append('#$ -pe 12way %(cores)d\n\n' % {'cores': mpi.cores})
-    else:
-        mpi.header = []
-
-
 def set_submission_header(molecule, platform, directories):
     if platform.submission_type == 'sge':
         platform.submission_header = [
@@ -169,23 +138,23 @@ def set_submission_footer(molecule, platform):
         ]
 
 
-def get_executables(molecule, mpi):
-    if mpi.use_mpi:
+def get_executables(molecule, platform):
+    if platform.use_mpi:
         if molecule.permutation == 'even':
-            mpi.hin_exec = 'p%(name)s_e' % {'name': molecule.name}
+            platform.hin_exec = 'p%(name)s_e' % {'name': molecule.name}
         else:
-            mpi.hin_exec = 'p%(name)s_o' % {'name': molecule.name}
-        mpi.in_exec = 'p_iterate'
+            platform.hin_exec = 'p%(name)s_o' % {'name': molecule.name}
+        platform.in_exec = 'p_iterate'
     else:
         if molecule.permutation == 'even':
-            mpi.hin_exec = '%(name)s_e' % {'name': molecule.name}
+            platform.hin_exec = '%(name)s_e' % {'name': molecule.name}
         else:
-            mpi.hin_exec = '%(name)s_o' % {'name': molecule.name}
-        mpi.in_exec = 'iterate'
+            platform.hin_exec = '%(name)s_o' % {'name': molecule.name}
+        platform.in_exec = 'iterate'
 
 
-def run_script(directories, files, molecule, mpi, options):
-    get_executables(molecule=molecule, mpi=mpi)
+def run_script(directories, files, molecule, platform, options):
+    get_executables(molecule=molecule, platform=platform)
 
     #  Open file for writing
     fh = open(directories.run + '/' + files.run_script, 'w')
@@ -193,9 +162,9 @@ def run_script(directories, files, molecule, mpi, options):
     #  Get submission engine header for platform if necessary
     #  OLD
     # set_header(molecule=molecule, mpi=mpi)
-    set_submission_header(molecule=molecule, platform=mpi, directories=directories)
-    fh.write("".join(mpi.submission_header))
-    fh.write("".join(mpi.submission_appendeges))
+    set_submission_header(molecule=molecule, platform=platform, directories=directories)
+    fh.write("".join(platform.submission_header))
+    fh.write("".join(platform.submission_appendeges))
 
     #  Write remaining part of the file
     fh.write('BIN_DIR=%(bin_dir)s\n' % {'bin_dir': directories.bin})
@@ -205,18 +174,18 @@ def run_script(directories, files, molecule, mpi, options):
 
     if (options.run_switch == 1) or (options.run_switch == 3):
         fh.write('%(hinmpi)s $BIN_DIR/%(name)s/%(exec)s < $WK_DIR/%(input)s > $WK_DIR/%(output)s\n'
-                 % {'hinmpi': mpi.mpi_hin_cmd,
+                 % {'hinmpi': platform.mpi_hin_cmd,
                     'name': molecule.name,
-                    'exec': mpi.hin_exec,
+                    'exec': platform.hin_exec,
                     'input': files.hamiltonian + files.input,
                     'output': files.hamiltonian + files.output
                     }
                  )
     if (options.run_switch == 2) or (options.run_switch == 3):
         fh.write('%(mpi)s $BIN_DIR/%(exec)s < $WK_DIR/%(input)s > $WK_DIR/%(output)s\n'
-                 % {'mpi': mpi.mpi_cmd,
+                 % {'mpi': platform.mpi_cmd,
                     'name': molecule.name,
-                    'exec': mpi.in_exec,
+                    'exec': platform.in_exec,
                     'input': files.iterate + files.input,
                     'output': files.iterate + files.output
                     }
@@ -224,8 +193,8 @@ def run_script(directories, files, molecule, mpi, options):
     fh.write(')& \n')
     fh.write('wait\n')
     fh.write('date')
-    set_submission_footer(molecule=molecule, platform=mpi)
-    fh.write("".join(mpi.submission_footer))
+    set_submission_footer(molecule=molecule, platform=platform)
+    fh.write("".join(platform.submission_footer))
     fh.close()
     print('    File Generated: ' + directories.run + '/' + files.run_script)
 
