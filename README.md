@@ -15,11 +15,15 @@ a variety of operations on them to facilitate using the ScalIT software suite.
   - local platform that runs **ScalIT**
   - Robinson HPCC at TTU
   - Hrothgar HPCC at TTU
-  - Lonestar4 HPCC at UT Austin
+  - Lonestar5 HPCC at UT Austin
+  - Eter HPCC at Initituto Tecnologico de Aeronautica, SP, Brasil
 
-## Systems that have been implemented
+## Molecular systems that have been implemented
 
-All triatomics that are currently implemented in **ScalIT**.  
+All triatomics that are currently implemented in **ScalIT** can be generated.
+  The only molecular default parameter files that exist are
+  
+  - HO_2
 
 ## Requirements
   1. Python 3.2 or greater

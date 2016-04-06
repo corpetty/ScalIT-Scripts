@@ -50,8 +50,9 @@ total_accuracy = 1.0E-9
 #   host:   What computer are you running on?
 #       options: 'local'
 #                'Robinson'
-#                'Lonestar4'
+#                'Lonestar5'
 #                'Hrothgar'
+#   project: Project name that is charged "core hours"
 #   work:    Base directory where input/output/run files will be stored
 #   data:    Base directory where intermediate data files will be stored
 #   scalit:  Directory where ScalIT is installed
@@ -59,6 +60,7 @@ total_accuracy = 1.0E-9
 #   TODO: automatically take off the '/' if user puts in
 #############################################################################################################
 host = 'Robinson'
+project = 'ScalIT'
 work = '/Users/coreypetty/Desktop/work'
 data = '/Users/coreypetty/Desktop/work/data'
 scalit = '/Users/coreypetty/work/ScalIT-ozone'
@@ -112,6 +114,7 @@ mol = dict(
 #############################################################################################################
 dirs = dict(
     host=host,
+    project=project,
     work=work,
     data=data,
     scalit=scalit

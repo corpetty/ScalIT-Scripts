@@ -101,23 +101,18 @@ def create_class(params):
                            s_vosb=s_vosb, f_vosb=f_vosb, f_eig=f_eig, s_hw=s_hw, f_hw=f_hw,
                            s_vx=s_vx, f_vx=f_vx, s_pt=s_pt, f_pt=f_pt)
 
-    # Transfer Params variables to Mpi class
+    # Transfer Params variables to Platform class
     if params['run_opts']['version'] != 0:
         use_mpi = True
     else:
         use_mpi = False
 
     platform = params['dirs']['host']
-    if platform == ('Robinson' or 'Lonestar4' or 'Hrothgar'):
-        use_sge = True
-    else:
-        use_sge = False
-
     local_cores = params['run_opts']['local_cores']
     nodes_desired = params['run_opts']['nodes_desired']
     run_time = params['run_opts']['run_time']
 
-    mpi = environment.Mpi(use_mpi=use_mpi, use_sge=use_sge, platform=platform, cores=local_cores,
-                          nodes_desired=nodes_desired, runtime=run_time)
+    platform = environment.Platform(use_mpi=use_mpi, platform=platform, cores=local_cores,
+                                    nodes_desired=nodes_desired, runtime=run_time)
 
-    return paths, mol, opts, mpi
+    return paths, mol, opts, platform

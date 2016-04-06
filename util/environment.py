@@ -20,7 +20,8 @@ class Files(object):
 
 class Mpi(object):
     def __init__(self,
-                 use_mpi=True, use_sge=False, platform='local', nodes_desired=1, cores=1, runtime='48:00:00'):
+                 use_mpi=True, use_sge=True, platform='local', nodes_desired=1, cores=1, runtime='48:00:00',
+                 project=''):
         self.use_mpi = use_mpi
         self.use_sge = use_sge
         self.platform = platform
@@ -31,7 +32,8 @@ class Mpi(object):
         self.cores_per_node = 1
         self.runtime = runtime
         self.header = ''
-        self.appendeges = ''
+        self.submission_appendeges = ''
+        self.project = project
         self.set_platform_specifics()
 
     def set_platform_specifics(self):
@@ -58,7 +60,7 @@ class Mpi(object):
             self.cmdhin = 'ibrun -n 4 -o 0 '
             self.use_mpi = True
             self.use_sge = True
-            self.appendeges = '#$ -l h_rt=' + self.runtime + '\n'
+            self.submission_appendeges = '#$ -l h_rt=' + self.runtime + '\n'
         elif self.platform == 'Hrothgar':
             self.cores_per_node = 12
             self.cores = self.cores_per_node * self.nodes_desired
@@ -66,7 +68,89 @@ class Mpi(object):
                        % {'np': self.cores}
             self.cmdhin = "mpirun -np 4 -machinefile machinefile.$JOB_ID "
         elif self.platform == 'Lonestar5':
+            self.cores_per_node = 24
+            self.cores = self.cores_per_node * self.nodes_desired
+            self.cmd = 'ibrun tacc_affinity ' \
+                       % {'cores': self.cores}
+            self.cmdhin = "ibrun tacc_affinity "
+            self.submission_appendeges = [
+                '#SBATCH -A {}      # <-- Allocation name to charge job against\n'.format(self.project),
+            ]
+
+
+class Platform(object):
+    def __init__(self, platform='', submission_type='', submission_header='', submission_appendeges='',
+                 use_mpi=True, mpi_cmd='mpirun', mpi_hin_cmd='mpirun', cores_per_node=12, nodes_desired=1, cores=1,
+                 runtime='48:00:00', project=''):
+        self.platform = platform
+        self.submission_type = submission_type
+        self.submission_header = submission_header
+        self.nodes_desired = nodes_desired
+        self.cores_per_node = cores_per_node
+        self.cores = cores
+        self.use_mpi = use_mpi
+        self.mpi_cmd = mpi_cmd
+        self.mpi_hin_cmd = mpi_hin_cmd
+        self.runtime = runtime
+        self.project = project
+        self.submission_appendeges = submission_appendeges
+        self.set_platform_specifics()
+
+    def set_platform_specifics(self):
+        if not self.use_mpi:
+            self.mpi_cmd = ''
+            self.mpi_hin_cmd = ''
+            self.cores = 1
+        elif self.platform == 'local':
+            self.mpi_cmd = 'mpirun -np %(np)d ' \
+                       % {'np': self.cores}
+            self.mpi_hin_cmd = 'mpirun -np %(np)d ' \
+                          % {'np': self.cores}
+        elif self.platform == 'Robinson':
             self.cores_per_node = 12
             self.cores = self.cores_per_node * self.nodes_desired
-            self.cmd = 'ibrun -n %(cores) -o 0 ' \
+            self.mpi_cmd = "mpirun -np %(np)d -machinefile machinefile.$JOB_ID " \
+                       % {'np': self.cores}
+            self.mpi_hin_cmd = "mpirun -np 4 -machinefile machinefile.$JOB_ID "
+        elif self.platform == 'Lonestar4':
+            self.cores_per_node = 12
+            self.cores = self.cores_per_node * self.nodes_desired
+            self.mpi_cmd = 'ibrun -n %(cores)d -o 0 ' \
                        % {'cores': self.cores}
+            self.mpi_hin_cmd = 'ibrun -n 4 -o 0 '
+            self.use_mpi = True
+            self.submission_type = 'sge'
+            self.submission_appendeges = '#$ -l h_rt=' + self.runtime + '\n'
+        elif self.platform == 'Hrothgar':
+            self.submission_type = 'sge'
+            self.cores_per_node = 12
+            self.cores = self.cores_per_node * self.nodes_desired
+            self.mpi_cmd = "mpirun -np %(np)d -machinefile machinefile.$JOB_ID " \
+                       % {'np': self.cores}
+            self.mpi_hin_cmd = "mpirun -np 4 -machinefile machinefile.$JOB_ID "
+            self.submission_appendeges = [
+                '#$ -q normal\n',
+                '#$ -P hrothgar\n',
+                '\n'
+            ]
+        elif self.platform == 'Lonestar5':
+            self.cores_per_node = 24
+            self.cores = self.cores_per_node * self.nodes_desired
+            self.mpi_cmd = 'ibrun tacc_affinity ' \
+                       % {'cores': self.cores}
+            self.mpi_hin_cmd = "ibrun tacc_affinity "
+            self.submission_type = 'slurm'
+            self.submission_appendeges = [
+                '#SBATCH -A {}              # <-- Allocation name to charge job against\n'.format(self.project),
+                '#SBATCH -p normal              # Queue name\n',
+                '\n'
+            ]
+        elif self.platform == "Eter":
+            self.cores_per_node = 20
+            self.cores = self.cores_per_node * self.nodes_desired
+            self.mpi_cmd = 'mpirun -np $PBS_NP'
+            self.mpi_hin_cmd = 'mpirun -np $PBS_NP'
+            self.submission_type = 'pbs'
+            self.submission_appendeges = [
+                '\n'
+            ]
