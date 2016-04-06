@@ -136,6 +136,8 @@ def set_submission_footer(molecule, platform):
             '\n',
             "echo -e \"\\n## Job finalizado em $(date +'%d-%m-%Y as %T') ###################\"\n",
         ]
+    else:
+        platform.submission_footer = []
 
 
 def get_executables(molecule, platform):

@@ -81,10 +81,11 @@ class Mpi(object):
 class Platform(object):
     def __init__(self, platform='', submission_type='', submission_header='', submission_appendeges='',
                  use_mpi=True, mpi_cmd='mpirun', mpi_hin_cmd='mpirun', cores_per_node=12, nodes_desired=1, cores=1,
-                 runtime='48:00:00', project=''):
+                 runtime='48:00:00', project='', submission_footer=''):
         self.platform = platform
         self.submission_type = submission_type
         self.submission_header = submission_header
+        self.submission_footer = submission_footer
         self.nodes_desired = nodes_desired
         self.cores_per_node = cores_per_node
         self.cores = cores
