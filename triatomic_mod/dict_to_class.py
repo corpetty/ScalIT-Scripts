@@ -6,6 +6,10 @@ import triatomic_mod.options as options
 
 def create_class(params):
     """
+    This routine takes all the parameters put together into dictionaries by the parameter files taken
+    as input with ScripIT.py, and populates the classes which are used for the rest of ScalIT Scripts
+
+    This is a not a very good way to do this, but it works for now, and doesn't require much changing.
 
     :param params:
     :type params: dict
@@ -111,8 +115,9 @@ def create_class(params):
     local_cores = params['run_opts']['local_cores']
     nodes_desired = params['run_opts']['nodes_desired']
     run_time = params['run_opts']['run_time']
+    project = params['dirs']['project']
 
     platform = environment.Platform(use_mpi=use_mpi, platform=platform, cores=local_cores,
-                                    nodes_desired=nodes_desired, runtime=run_time)
+                                    nodes_desired=nodes_desired, runtime=run_time, project=project)
 
     return paths, mol, opts, platform
