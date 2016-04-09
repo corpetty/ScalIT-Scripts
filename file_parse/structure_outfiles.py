@@ -78,16 +78,20 @@ def print_eigenvalues(params, variables) -> int:
     #  check existence of outfiles, remove if not in existence
     for num, outfile in enumerate(outfiles):
         if not posixpath.exists(outfile):
-            outfiles = outfiles.remove(outfile)
-            parameter_sets = parameter_sets.remove(parameter_sets[num])
+            outfiles.remove(outfile)
+            parameter_sets.remove(parameter_sets[num])
             print("{} is not formatted correctly, skipping it".format(outfile))
 
     #  extract eigenvalues from easy in above list
     eig_list = []
     err_list = []
     for outfile in outfiles:
-        err_list.append(get_lanczos_error(outfile))
-        eig_list.append(get_params.eigenvalues(outfile=outfile))
+        try:
+            err_list.append(get_lanczos_error(outfile))
+            eig_list.append(get_params.eigenvalues(outfile=outfile))
+        except (FileNotFoundError, IOError):
+            print("{} not found, wasn't run")
+            pass
 
     while choice != -1:
         #  Get choice from user on desired output
