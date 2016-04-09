@@ -78,8 +78,8 @@ def print_eigenvalues(params, variables) -> int:
     #  check existence of outfiles, remove if not in existence
     for num, outfile in enumerate(outfiles):
         if not posixpath.exists(outfile):
-            outfiles.remove(outfile)
-            parameter_sets.remove(parameter_sets[num])
+            outfiles = outfiles.remove(outfile)
+            parameter_sets = parameter_sets.remove(parameter_sets[num])
             print("{} is not formatted correctly, skipping it".format(outfile))
 
     #  extract eigenvalues from easy in above list
