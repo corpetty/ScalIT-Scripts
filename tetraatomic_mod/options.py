@@ -4,7 +4,7 @@ __author__ = 'Corey Petty'
 class Options(object):
     def __init__(self,
                  run_switch=3,
-                 dvr_type=2, restrict_num_angles="F", num_res_angles=0, ngi=300, fc_flag=0,
+                 dvr_type=2, restrict_num_angles="F", num_res_angles=0, ngi1=300, ngi2=300, fc_flag=0,
                  cb_flag=0, abs_flag=0, s_f=4, s_job=1, s_osb=0, s_cx='F', s_ndvr='T', s_st='T',
                  bj_num_iters=10, bj_tolerance=1.0E-3, qmr_num_iters=10000, qmr_tolerance=1.0E-3, pist_e0=0.0,
                  pist_lanc_tolerance=1.0E-9, pist_start=50, pist_step=10, pist_max=400, pist_num_e0=30, pist_gap=5,
@@ -23,7 +23,7 @@ class Options(object):
                  ):
         self.pin_options = self.PinOptions(dvr_type=dvr_type)
         self.hin_options = self.HinOptions(restrict_num_angles=restrict_num_angles, num_res_angles=num_res_angles,
-                                           ngi=ngi, fc_flag=fc_flag, cb_flag=cb_flag, abs_flag=abs_flag)
+                                           ngi1=ngi1, ngi2=ngi2, fc_flag=fc_flag, cb_flag=cb_flag, abs_flag=abs_flag)
         self.in_options = self.InOptions(s_f=s_f, s_job=s_job, s_osb=s_osb, s_cx=s_cx, s_ndvr=s_ndvr,
                                          s_st=s_st,
                                          bj_num_iters=bj_num_iters,
@@ -58,12 +58,14 @@ class Options(object):
 
     class HinOptions(object):
         def __init__(self,
-                     restrict_num_angles="F", num_res_angles=0, ngi=300,
+                     restrict_num_angles="F", num_res_angles=0, ngi1=300, ngi2=300,
                      fc_flag=0, cb_flag=0, abs_flag=0
                      ):
             self.restrict_num_angles = restrict_num_angles
             self.num_res_angles = num_res_angles
-            self.ngi = ngi
+            self.ngi1 = ngi1
+            self.ngi2 = ngi2
+            self.ngi12 = ngi1 + ngi2
             self.fc_flag = fc_flag
             self.cb_flag = cb_flag
             self.abs_flag = abs_flag

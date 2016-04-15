@@ -57,7 +57,6 @@ total_accuracy = 1.0E-9
 #   data:    Base directory where intermediate data files will be stored
 #   scalit:  Directory where ScalIT is installed
 #   NOTE: DO NOT PUT A '/' AT THE END OF THE DIRECTORY
-#   TODO: automatically take off the '/' if user puts in
 #############################################################################################################
 host = 'Robinson'
 project = 'ScalIT'

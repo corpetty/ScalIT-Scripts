@@ -9,6 +9,15 @@ class Directories(object):
         self.work = work
         self.data = data
         self.scalit = scalit
+        self.check_for_slash()
+
+    def check_for_slash(self):
+        if self.data[-1] == '/':
+            self.data = self.data[:-1]
+        if self.work[-1] == '/':
+            self.work = self.work[:-1]
+        if self.scalit[-1] == '/':
+            self.scalit = self.scalit[:-1]
 
 
 class Files(object):

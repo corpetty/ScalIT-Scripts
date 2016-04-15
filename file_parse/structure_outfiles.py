@@ -90,7 +90,7 @@ def print_eigenvalues(params, variables) -> int:
             err_list.append(get_lanczos_error(outfile))
             eig_list.append(get_params.eigenvalues(outfile=outfile))
         except (FileNotFoundError, IOError):
-            print("{} not found, wasn't run")
+            print("{} not found, wasn't run".format(outfile))
             pass
 
     while choice != -1:
