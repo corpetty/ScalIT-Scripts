@@ -142,10 +142,10 @@ def set_submission_footer(molecule, platform):
 
 def get_executables(molecule, platform):
     if platform.use_mpi:
-        platform.hin_exec = 'p%(name)s_{permutation}s' % {'name': molecule.name, 'permutation': molecule.permutation}
+        platform.hin_exec = 'p%(name)s_%(permutation)s' % {'name': molecule.name, 'permutation': molecule.permutation}
         platform.in_exec = 'p_iterate'
     else:
-        platform.hin_exec = '%(name)s_{permutation}s' % {'name': molecule.name, 'permutation': molecule.permutation}
+        platform.hin_exec = '%(name)s_%(permutation)s' % {'name': molecule.name, 'permutation': molecule.permutation}
         platform.in_exec = 'iterate'
 
 
