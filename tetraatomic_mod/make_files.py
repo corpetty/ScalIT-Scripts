@@ -97,7 +97,7 @@ def step_two(paths, files, molecule, options):
     :return:
     """
 
-    hin_file = ['%(jtol)d %(parity)s '
+    hin_file = ['%(jtol)d %(parity)s \n'
                 % {'jtol': molecule.j_total,
                    'parity': 'F' if molecule.parity == 'odd' else 'T'
                    },
