@@ -1,5 +1,6 @@
 import sys
-from triatomic_mod.convergence_tests import multiple_run_from_dict
+import triatomic_mod.convergence_tests
+import tetraatomic_mod.convergence_tests
 from triatomic_mod.parameter_file_utils import print_run_variables
 from file_parse import structure_outfiles
 from triatomic_mod.notify import check_rp_errors
@@ -25,7 +26,10 @@ def main(filename: str):
         print('\n')
 
         if choice == 1:
-            multiple_run_from_dict(params=rp.params, variables=rp.variables)
+            if rp.params['molecule_size'] == 4:
+                tetraatomic_mod.convergence_tests.multiple_run_from_dict(params=rp.params, variables=rp.variables)
+            else:
+                triatomic_mod.convergence_tests.multiple_run_from_dict(params=rp.params, variables=rp.variables)
             choice = 0
         elif choice == 2:
             choice = structure_outfiles.print_eigenvalues(params=rp.params, variables=rp.variables)
