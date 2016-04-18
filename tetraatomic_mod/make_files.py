@@ -102,9 +102,9 @@ def step_two(paths, files, molecule, options):
                    'parity': 'F' if molecule.parity == 'odd' else 'T'
                    },
                 '%(j1max)d %(j2max)d %(j12max)d %(ngi1)d %(ngi2)d %(ngi12)d\n'
-                % {'j1max': molecule.j_max,
-                   'j2max': molecule.j_max,
-                   'j12max': molecule.j_max,
+                % {'j1max': molecule.j1_max,
+                   'j2max': molecule.j2_max,
+                   'j12max': molecule.j12_max,
                    'ngi1': options.hin_options.ngi1,
                    'ngi2': options.hin_options.ngi2,
                    'ngi12': options.hin_options.ngi12
