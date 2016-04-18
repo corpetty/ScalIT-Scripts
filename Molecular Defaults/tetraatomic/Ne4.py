@@ -63,6 +63,7 @@ total_accuracy = 1.0E-9
 #   TODO: automatically take off the '/' if user puts in
 #############################################################################################################
 host = 'Robinson'
+project = 'wavelets'
 work = '/Users/coreypetty/Desktop/work'
 data = '/Users/coreypetty/Desktop/work/data'
 scalit = '/Users/coreypetty/work/ScalIT-ozone'
@@ -111,11 +112,11 @@ mol = dict(
 )
 #############################################################################################################
 #           Relevant User Directories
-#    NOTE: DO NOT end directories with a "/", this will be added when necessary
-#    host options: local, Robinson, Hrothgar, Lonestar
+#    host options: local, Robinson, Hrothgar, Lonestar5
 #############################################################################################################
 dirs = dict(
     host=host,
+    project=project,
     work=work,
     data=data,
     scalit=scalit

@@ -115,16 +115,12 @@ def create_class(params):
         use_mpi = False
 
     platform = params['dirs']['host']
-    if platform == ('Robinson' or 'Lonestar4' or 'Hrothgar'):
-        use_sge = True
-    else:
-        use_sge = False
-
     local_cores = params['run_opts']['local_cores']
     nodes_desired = params['run_opts']['nodes_desired']
     run_time = params['run_opts']['run_time']
+    project = params['dirs']['project']
 
-    mpi = environment.Mpi(use_mpi=use_mpi, use_sge=use_sge, platform=platform, cores=local_cores,
-                          nodes_desired=nodes_desired, runtime=run_time)
+    platform = environment.Platform(use_mpi=use_mpi, platform=platform, cores=local_cores,
+                                    nodes_desired=nodes_desired, runtime=run_time, project=project)
 
-    return paths, mol, opts, mpi
+    return paths, mol, opts, platform
