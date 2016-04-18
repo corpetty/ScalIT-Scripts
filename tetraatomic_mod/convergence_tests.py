@@ -24,7 +24,7 @@ def multiple_run_from_dict(params, variables):
     basis_sizes = list(itertools.product(*variables[1:]))
     env.generate_paths(directories=paths, molecule=mol)
     env.generate_filenames(files=files, molecule=mol)
-    if not os.path.exists(paths.run_psovbr_data + '/' + files.psovbr_lr):
+    if not os.path.exists(paths.run_psovbr_data + '/' + files.psovbr_lr1):
         print('   WARNING: PSOVBR metadata does not exist!  Be sure to run Step 1 first.')
         make_files.step_one(paths=paths, files=files, molecule=mol, pin_options=opts.pin_options)
         make_scripts.pin_script(directories=paths, files=files, molecule=mol)
@@ -48,10 +48,12 @@ def multiple_run_from_dict(params, variables):
             mol.j_total = jtot
             env.generate_paths(directories=paths, molecule=mol)
             print('\n----> Generating files for J = %(J)d' % {'J': mol.j_total})
-            for lr, br, jmax in basis_sizes:
-                mol.lr.num_dvr_fns = lr
+            for lr1, lr2, br, j1max, j2max in basis_sizes:
+                mol.lr1.num_dvr_fns = lr1
+                mol.lr2.num_dvr_fns = lr2
                 mol.br.num_dvr_fns = br
-                mol.j_max = jmax
+                mol.j1_max = j1max
+                mol.j2_max = j2max
                 mol.get_num_angles()
                 # check_if_using_ceiling(jk_num=mol.jk_num, angle_ceiling=opts.hin_options.num_res_angles)
                 env.generate_filenames(files=files, molecule=mol)
