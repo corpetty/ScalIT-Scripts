@@ -51,8 +51,8 @@ def create_class(params):
     dvr_type = params['pin_opts']['dvr_type']
     restrict_num_angles = params['hin_opts']['restrict_num_angles']
     num_res_angles = params['hin_opts']['num_angles']
-    ngi = params['hin_opts']['ngi1']
-    ngi = params['hin_opts']['ngi2']
+    ngi1 = params['hin_opts']['ngi1']
+    ngi2 = params['hin_opts']['ngi2']
     fc_flag = params['hin_opts']['FcFlag']
     cb_flag = params['hin_opts']['CbFlag']
     abs_flag = params['hin_opts']['AbsFlag']
@@ -97,8 +97,8 @@ def create_class(params):
     f_pt = params['in_file_names']['fPT']
 
     opts = options.Options(run_switch=run_switch, dvr_type=dvr_type, restrict_num_angles=restrict_num_angles,
-                           num_res_angles=num_res_angles, ngi=ngi, fc_flag=fc_flag, cb_flag=cb_flag, abs_flag=abs_flag,
-                           s_f=s_f, s_job=s_job, s_osb=s_osb, s_cx=s_cx, s_ndvr=s_ndvr, s_st=s_st,
+                           num_res_angles=num_res_angles, ngi1=ngi1, ngi2=ngi2, fc_flag=fc_flag, cb_flag=cb_flag,
+                           abs_flag=abs_flag, s_f=s_f, s_job=s_job, s_osb=s_osb, s_cx=s_cx, s_ndvr=s_ndvr, s_st=s_st,
                            bj_num_iters=bj_num_iters, bj_tolerance=bj_tolerance, qmr_num_iters=qmr_num_iters,
                            qmr_tolerance=qmr_tolerance, pist_e0=pist_e0, pist_lanc_tolerance=pist_lanc_tolerance,
                            pist_start=pist_start, pist_step=pist_step, pist_max=pist_max, pist_num_e0=pist_num_e0,

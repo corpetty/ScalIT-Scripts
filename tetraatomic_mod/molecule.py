@@ -26,7 +26,7 @@ class Molecule(object):
         self.lr1 = self.RadialCoordinate(mass[0], lr1_length, num_sinc_fns, num_vbr_fns, num_lr1_dvr_fns, suffix="lr1")
         self.lr2 = self.RadialCoordinate(mass[1], lr2_length, num_sinc_fns, num_vbr_fns, num_lr2_dvr_fns, suffix="lr2")
         self.br = self.RadialCoordinate(mass[2], br_length, num_sinc_fns, num_vbr_fns, num_br_dvr_fns, suffix="BR")
-        self.jk_num = None
+        self.jk_num = 0
         self.get_num_angles()
         self.use_spline = use_spline
 
