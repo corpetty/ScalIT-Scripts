@@ -318,6 +318,7 @@ in_opts = dict()
 in_opts.update(in_switches)
 in_opts.update(in_parameters)
 params = dict(
+    molecule_size=3,
     run_opts=run_opts,
     pin_opts=pin_opts,
     hin_opts=hin_opts,
