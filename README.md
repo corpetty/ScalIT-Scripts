@@ -20,10 +20,13 @@ a variety of operations on them to facilitate using the ScalIT software suite.
 
 ## Molecular systems that have been implemented
 
-All triatomics that are currently implemented in **ScalIT** can be generated.
+All triatomics and tetraatomics that are currently implemented in **ScalIT** can be generated.
   The only molecular default parameter files that exist are
   
-  - HO_2
+  - triatomic molecules:
+    - HO_2
+  - tetraatomic molecules:
+    - Ne_4
 
 ## Requirements
   1. Python 3.2 or greater
