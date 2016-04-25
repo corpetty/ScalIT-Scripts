@@ -141,6 +141,7 @@ class Platform(object):
             self.submission_appendeges = [
                 '#$ -q normal\n',
                 '#$ -P hrothgar\n',
+                '#$ -pe mpi {}\n'.format(self.cores),
                 '\n'
             ]
         elif self.platform == 'Lonestar5':
