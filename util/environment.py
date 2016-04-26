@@ -117,11 +117,17 @@ class Platform(object):
             self.mpi_hin_cmd = 'mpirun -np %(np)d ' \
                           % {'np': self.cores}
         elif self.platform == 'Robinson':
+            self.submission_type = 'sge'
             self.cores_per_node = 12
             self.cores = self.cores_per_node * self.nodes_desired
             self.mpi_cmd = "mpirun -np %(np)d -machinefile machinefile.$JOB_ID " \
                        % {'np': self.cores}
             self.mpi_hin_cmd = "mpirun -np 4 -machinefile machinefile.$JOB_ID "
+            self.submission_appendeges = [
+                '#$ -q normal.q\n',
+                '#$ -pe mpi {}\n'.format(self.cores),
+                '\n'
+            ]
         elif self.platform == 'Lonestar4':
             self.cores_per_node = 12
             self.cores = self.cores_per_node * self.nodes_desired

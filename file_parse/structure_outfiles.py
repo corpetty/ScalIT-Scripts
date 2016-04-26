@@ -36,17 +36,18 @@ def format_csv(mol: Molecule, opts: Options, parameter_sets: list, eig_list: lis
     with open(filename, mode='a') as csvfile:
         filewriter = csv.writer(csvfile, delimiter=',')
         filewriter.writerow(['mass_label', 'J_total', 'j_max', 'num_lr', 'num_br', 'num_gm', 'permutation', 'parity',
-                             'lanczos_error', 'num_states', 'states'])
+                             'lanczos_error', 'num_states', 'states', 'states_real'])
         for num, eigs in enumerate(eig_list):
             formatted_eig_string = ""
             for eig in eigs:
                 formatted_eig_string += str(eig).replace("E|e|D", "*^") + ", "
             formatted_eig_string = formatted_eig_string[:-2]
+            formatted_eig_float = [float(x) for x in formatted_eig_string.split(',')]
             filewriter.writerow([mol.mass_combo, parameter_sets[num][0], parameter_sets[num][4],
                                  parameter_sets[num][1], parameter_sets[num][2],
                                  min(parameter_sets[num][3], opts.hin_options.num_res_angles),
                                  mol.permutation, mol.parity, err_list[num], len(eigs),
-                                 formatted_eig_string])
+                                 formatted_eig_string, formatted_eig_float])
         print("Files written to {}\n".format(filename))
     print("Checking for duplicate entries and removing")
     check_csv_duplicates(filename)
