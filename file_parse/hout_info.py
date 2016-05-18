@@ -37,7 +37,7 @@ def get_parity(houtfilename: str) -> str:
     with open(houtfilename, mode='r') as houtfile:
         for line in houtfile:
             if 'JTol' in line:
-                parity = line.split()[4]
+                parity = line.split()[3]
     if parity == 'T':
         parity = 'even'
     else:

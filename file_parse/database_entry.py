@@ -112,7 +112,7 @@ def make_db_row(job) -> dict:
     job_dict['num_cores_out'] = get_num_cores_out(scriptfilename=shfile)
     job_dict['time_hout_mpi'] = mpi_time
     job_dict['time_hout_cpu'] = cpu_time
-    job_dict['core_hours_hout'] = mpi_time * job_dict['num_cores_hout']
+    job_dict['core_hours_hout'] = mpi_time / 3600 * job_dict['num_cores_hout']
     job_dict['num_states_calculated'] = len(get_eigenvalues(outfile=outfile))
     job_dict['lanczos_err'] = get_lanczos_error(outfile=outfile)
     job_dict['time_out_diag'] = diag_time
