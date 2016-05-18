@@ -55,7 +55,7 @@ def format_csv(mol: Molecule, opts: Options, parameter_sets: list, eig_list: lis
 
 def print_eigenvalues(params, variables) -> int:
     from ScriptIT import exit_func
-    from file_parse.run_stats import get_lanczos_error
+    from file_parse.out_info import get_lanczos_error
     #  instantiate choice for return.
     choice = None
     #  Get list of files to parse from run_parameters file

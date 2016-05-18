@@ -22,3 +22,11 @@ def sort_splittings(states: list) -> list:
             sorted_list.append([states[i]])
         i += 1
     return sorted_list
+
+
+# TODO: finish this, it is in progress
+def state_labels(states: list) -> list:
+    eh2cm = 219474.63  # wavenumber conversion
+    # Get first Permutation
+    # Check if each state is paired or not
+
