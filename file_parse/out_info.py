@@ -34,7 +34,7 @@ def total_runtime_out(outfile: str) -> list:
         for num, time in enumerate(time_list):
             time_list[num] = datetime.timedelta(seconds=time)
     if len(time_list) < 4:
-        time_list = [None, None, None, None]
+        time_list = [0, 0, 0, 0]
     return time_list
 
 
