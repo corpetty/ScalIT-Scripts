@@ -42,15 +42,3 @@ class TestFind(unittest.TestCase):
                 ['temp/run.sh', 'temp/run.hin', None, 'temp/run.hout', None],
             ],
             result)
-
-root_path = '/Users/coreypetty/Dropbox/Research/Ozone/JobFiles/Robinson/ozone/o16o16o16/J1/even'
-
-all_files = list(find_jobs(root_path))
-for job in all_files:
-    print(job)
-# for file in houts:
-#     mpi_time, cpu_time = total_runtime_hout(file)
-#     time_list = total_runtime_out(file)
-#     print(mpi_time, cpu_time)
-#     for time in time_list:
-#         print(time)

@@ -121,3 +121,13 @@ def make_db_row(job) -> dict:
     job_dict['core_hours_out'] = float(job_dict['time_out_tot'].seconds) / float(3600) * float(job_dict['num_cores_out'])
     job_dict['states'] = get_eigenvalues(outfile=outfile)
     return job_dict
+
+
+def plot_df(df):
+    import matplotlib.pyplot as plt
+    import numpy as np
+    num_plots = len(df) - 1
+    f, ax = plt.subplots(num_plots, sharex=True, sharey=True, figsize=(12, num_plots * 3))
+    for pos in range(num_plots):
+        ax[pos].plot(np.array(df.states.iloc[pos + 1]) - np.array(df.states.iloc[pos]))
+        ax[pos].set_title('{},{},{}'.format(df.num_lr.iloc[pos + 1], df.num_br.iloc[pos + 1], df.num_gm.iloc[pos + 1]))
