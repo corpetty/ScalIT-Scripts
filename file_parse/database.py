@@ -73,6 +73,7 @@ def make_dataframe(root_dir) -> pd.DataFrame:
     job_dicts = []
     for job in jobs:
         job_dicts.append(make_db_row(job))
+    print("----> Cleaning out incomplete runs\n")
     for num, job_dict in enumerate(job_dicts):
         if job_dict is not None:
             df.loc[num] = pd.Series(job_dict)

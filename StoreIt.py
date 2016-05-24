@@ -9,10 +9,10 @@ def main(filename: str):
     else:
         root_dir = filename
 
-    outfile_name = input("Please input desired output JSON filenamae: ")
+    outfile_name = input("Please input desired output JSON filename: ")
 
+    print("\n----> Collecting data from job files")
     df = db.make_dataframe(root_dir=root_dir)
-    print("\nDataFrame created")
     df.to_json(outfile_name, date_unit='s', )
     print("DataFrame converted to JSON format: {}".format(outfile_name))
 
