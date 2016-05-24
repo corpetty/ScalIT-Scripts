@@ -55,14 +55,14 @@ def make_dataframe(root_dir) -> pd.DataFrame:
         'platform',
         'num_cores_hout',
         'num_cores_out',
-        'time_hout_mpi',
-        'time_hout_cpu',
+        'hout_mpi_time',
+        'hout_cpu_time',
         'core_hours_hout',
         'num_states_calculated',
         'lanczos_err',
-        'time_out_diag',
-        'time_out_lanc',
-        'time_out_tot',
+        'out_diag_time',
+        'out_lanc_time',
+        'out_tot_time',
         'core_hours_out',
         'states',
     ]
@@ -110,15 +110,15 @@ def make_db_row(job) -> dict:
     job_dict['platform'] = get_platform(scriptfilename=shfile)
     job_dict['num_cores_hout'] = hout_info.get_num_cores(houtfilename=houtfile)
     job_dict['num_cores_out'] = get_num_cores_out(scriptfilename=shfile)
-    job_dict['time_hout_mpi'] = mpi_time
-    job_dict['time_hout_cpu'] = cpu_time
+    job_dict['hout_mpi_time'] = mpi_time
+    job_dict['hout_cpu_time'] = cpu_time
     job_dict['core_hours_hout'] = mpi_time / 3600 * job_dict['num_cores_hout']
     job_dict['num_states_calculated'] = len(get_eigenvalues(outfile=outfile))
     job_dict['lanczos_err'] = get_lanczos_error(outfile=outfile)
-    job_dict['time_out_diag'] = diag_time
-    job_dict['time_out_lanc'] = lanc_time
-    job_dict['time_out_tot'] = load_time + diag_time + osbw_time + lanc_time
-    job_dict['core_hours_out'] = float(job_dict['time_out_tot'].seconds) / float(3600) * float(job_dict['num_cores_out'])
+    job_dict['out_diag_time'] = diag_time
+    job_dict['out_lanc_time'] = lanc_time
+    job_dict['out_tot_time'] = load_time + diag_time + osbw_time + lanc_time
+    job_dict['core_hours_out'] = float(job_dict['out_tot_time'].seconds) / float(3600) * float(job_dict['num_cores_out'])
     job_dict['states'] = get_eigenvalues(outfile=outfile)
     return job_dict
 
@@ -126,6 +126,7 @@ def make_db_row(job) -> dict:
 def plot_df(df):
     import matplotlib.pyplot as plt
     import numpy as np
+    print("Start basis: {},{},{}".format(df.num_lr.iloc[0], df.num_br.iloc[0], df.num_gm.iloc[0]))
     num_plots = len(df) - 1
     f, ax = plt.subplots(num_plots, sharex=True, sharey=True, figsize=(12, num_plots * 3))
     for pos in range(num_plots):

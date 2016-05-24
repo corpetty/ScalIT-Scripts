@@ -51,7 +51,12 @@ def break_apart_path(houtfilename: str) -> (str, str, int, str):
         for line in houtfile:
             if 'Filename to store H0' in line:
                 name, mass_option, j, permutation, _ = line.split('/')[-5:]
-    j = j[1:]
+    try:
+        j = j[1:]
+    except TypeError:
+        print("ERROR: cannot parse directory structure, please produce files with ScriptIT.py")
+        print("       Failed on following file: {}".format(houtfilename))
+        quit()
     return name, mass_option, j, permutation
 
 
