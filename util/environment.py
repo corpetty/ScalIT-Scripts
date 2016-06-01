@@ -27,7 +27,7 @@ class Files(object):
     pass
 
 
-class Mpi(object):
+class Mpi(object):  # Deprecated
     def __init__(self,
                  use_mpi=True, use_sge=True, platform='local', nodes_desired=1, cores=1, runtime='48:00:00',
                  project=''):

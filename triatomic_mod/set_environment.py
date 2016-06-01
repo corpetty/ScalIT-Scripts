@@ -29,6 +29,7 @@ def generate_paths(directories, molecule):
         + '/psodvr'
 
     check_existence(paths=directories)
+    print('')
 
 
 def generate_filenames(files, molecule):

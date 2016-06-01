@@ -133,3 +133,9 @@ def plot_df(df):
     for pos in range(num_plots):
         ax[pos].plot(np.array(df.states.iloc[pos + 1]) - np.array(df.states.iloc[pos]))
         ax[pos].set_title('{},{},{}'.format(df.num_lr.iloc[pos + 1], df.num_br.iloc[pos + 1], df.num_gm.iloc[pos + 1]))
+
+
+def print_num_jobs_in_df(df):
+    print(" J, perm, parity, num_jobs")
+    for index, group in df.groupby(['j_total', 'permutation', 'parity']):
+        print('{:>2}, {:>4s}, {:>6s}, {:>8}'.format(*index, len(group)))
