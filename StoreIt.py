@@ -13,7 +13,7 @@ def main(filename: str):
 
     print("\n----> Collecting data from job files")
     df = db.make_dataframe(root_dir=root_dir)
-    df.to_json(outfile_name, date_unit='s', )
+    df.to_json(outfile_name, date_unit='s', double_precision=15)
     print("DataFrame converted to JSON format: {}".format(outfile_name))
 
 

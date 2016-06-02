@@ -1,6 +1,6 @@
 __author__ = 'Corey Petty'
 import datetime
-
+import os
 
 def get_total_runtime(houtfile: str) -> (datetime.datetime, datetime.datetime):
     mpi_time = 0
@@ -47,6 +47,9 @@ def get_parity(houtfilename: str) -> str:
 
 def break_apart_path(houtfilename: str) -> (str, str, int, str):
     name, mass_option, j, permutation = '', '', 0, ''
+    if os.stat(houtfilename).st_size == 0:
+        print("{} is empty, check it".format(houtfilename))
+        return name, mass_option, j, permutation
     with open(houtfilename, mode='r') as houtfile:
         for line in houtfile:
             if 'Filename to store H0' in line:
