@@ -77,6 +77,8 @@ def make_dataframe(root_dir) -> pd.DataFrame:
     for num, job_dict in enumerate(job_dicts):
         if job_dict is not None:
             df.loc[num] = pd.Series(job_dict)
+        else:
+            print("Removing: {}".format(job_dict))
 
     return df
 
@@ -127,15 +129,27 @@ def make_db_row(job) -> dict:
 def plot_df(df):
     import matplotlib.pyplot as plt
     import numpy as np
-    print("Start basis: {},{},{}".format(df.num_lr.iloc[0], df.num_br.iloc[0], df.num_gm.iloc[0]))
+    print("Start basis: {},{},{},{}".format(df.num_lr.iloc[0], df.num_br.iloc[0], df.j_max.iloc[0], df.num_gm.iloc[0]))
     num_plots = len(df) - 1
     f, ax = plt.subplots(num_plots, sharex=True, sharey=True, figsize=(12, num_plots * 3))
     for pos in range(num_plots):
         ax[pos].plot(np.array(df.states.iloc[pos + 1]) - np.array(df.states.iloc[pos]))
-        ax[pos].set_title('{},{},{}'.format(df.num_lr.iloc[pos + 1], df.num_br.iloc[pos + 1], df.num_gm.iloc[pos + 1]))
+        ax[pos].set_title('{},{},{},{}'.format(df.num_lr.iloc[pos + 1],
+                                               df.num_br.iloc[pos + 1],
+                                               df.j_max.iloc[pos + 1],
+                                               df.num_gm.iloc[pos + 1]))
 
 
 def print_num_jobs_in_df(df):
     print(" J, perm, parity, num_jobs")
     for index, group in df.groupby(['j_total', 'permutation', 'parity']):
         print('{:>2}, {:>4s}, {:>6s}, {:>8}'.format(*index, len(group)))
+
+
+def get_values(df, params:dict):
+    value_df = df[df[[key for key in params.keys()]].isin(params).all(1)]
+    if len(value_df) > 1:
+        print("Returned Dataframe, increase parameter specification for value list return")
+        return value_df
+    else:
+        return value_df.states.values[0]
