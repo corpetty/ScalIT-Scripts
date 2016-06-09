@@ -77,8 +77,6 @@ def make_dataframe(root_dir) -> pd.DataFrame:
     for num, job_dict in enumerate(job_dicts):
         if job_dict is not None:
             df.loc[num] = pd.Series(job_dict)
-        else:
-            print("Removing: {}".format(job_dict))
 
     return df
 
@@ -89,6 +87,7 @@ def make_db_row(job) -> dict:
     import file_parse.hout_info as hout_info
     #  Check to make sure all files are present
     if not all(job):
+        print("Not complete job set: {}".format(job))
         return
     #  Unpack input
     shfile, hinfile, infile, houtfile, outfile = job
