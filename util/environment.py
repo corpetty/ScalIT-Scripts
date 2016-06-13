@@ -81,7 +81,7 @@ class Mpi(object):  # Deprecated
             self.cores = self.cores_per_node * self.nodes_desired
             self.cmd = 'ibrun tacc_affinity ' \
                        % {'cores': self.cores}
-            self.cmdhin = "ibrun tacc_affinity "
+            self.cmdhin = "ibrun -n {} -o 0 tacc_affinity ".format(self.cores_per_node)
             self.submission_appendeges = [
                 '#SBATCH -A {}      # <-- Allocation name to charge job against\n'.format(self.project),
             ]

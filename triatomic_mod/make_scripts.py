@@ -101,7 +101,8 @@ def set_submission_header(molecule, platform, directories):
                'mol': molecule.name,
                'perm': molecule.permutation
                },
-            '#SBATCH -o $SLURM_JOB_NAME.{}.o%j   # Name of stdout output file\n'.format(
+            '#SBATCH -o job.{}.{}.o%j   # Name of stdout output file\n'.format(
+                molecule.parity,
                 platform.cores
             ),
             '#SBATCH -e mpi_job.o%j         # Name of stdout output file\n',

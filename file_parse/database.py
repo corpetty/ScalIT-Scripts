@@ -145,10 +145,19 @@ def print_num_jobs_in_df(df):
         print('{:>2}, {:>4s}, {:>6s}, {:>8}'.format(*index, len(group)))
 
 
-def get_values(df, params:dict):
+def get_values(df, params: dict):
     value_df = df[df[[key for key in params.keys()]].isin(params).all(1)]
     if len(value_df) > 1:
         print("Returned Dataframe, increase parameter specification for value list return")
         return value_df
     else:
         return value_df.states.values[0]
+
+
+def remove_duplicates(series: pd.Series()):
+    new_series = set()
+    for value in series.values:
+        if value not in new_series:
+            new_series.add(value)
+    new_series = pd.Series(list(new_series))
+    return new_series.sort_values().reset_index(drop=True)
