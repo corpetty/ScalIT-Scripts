@@ -1,4 +1,7 @@
 # ScalIT-Scripts
+
+**NOTE: THIS INFORMATION IS DEPRECATED, AND NEEDS UPDATING**
+
 A Python Scripting sytem to create input files and respective run scripts for running the **ScalIT** software suite.  
 
 The system is built on creating Python classes as data structures to store parameters.  Once filled, you can perform

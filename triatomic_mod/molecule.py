@@ -87,6 +87,6 @@ class Molecule(object):
         print('----> Calculating number of possible angles: ')
         print('    J total:      ' + str(self.j_total))
         print('    j max:        ' + str(self.j_max))
-        print('    permutation:  ' + self.permutation)
         print('    parity:       ' + self.parity + '\n')
+        print('    permutation:  ' + self.permutation)
         print('    Number of possible angles (jk_num): ' + str(self.jk_num) + '\n')
